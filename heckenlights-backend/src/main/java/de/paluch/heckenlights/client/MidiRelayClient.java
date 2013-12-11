@@ -24,7 +24,7 @@ public class MidiRelayClient
     public String getCurrentPlayId()
     {
 
-        PlayerStateRepresentation state = clientProxy.getState();
+        PlayerStateRepresentation state = getState();
         if (state.isRunning() && state.getTrack() != null)
         {
             return state.getTrack().getId();
@@ -36,13 +36,18 @@ public class MidiRelayClient
     public int getRemainingTime()
     {
 
-        PlayerStateRepresentation state = clientProxy.getState();
+        PlayerStateRepresentation state = getState();
         if (state.isRunning())
         {
             return state.getEstimatedSecondsToPlay();
         }
 
         return 0;
+    }
+
+    public PlayerStateRepresentation getState()
+    {
+        return clientProxy.getState();
     }
 
     public void play(String id, String fileName, byte[] body)

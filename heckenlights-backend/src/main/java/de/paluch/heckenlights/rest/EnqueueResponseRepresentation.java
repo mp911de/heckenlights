@@ -2,15 +2,35 @@ package de.paluch.heckenlights.rest;
 
 import de.paluch.heckenlights.model.PlayStatus;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:57
  */
+@XmlRootElement(name = "enqueued")
+@XmlAccessorType(XmlAccessType.NONE)
 public class EnqueueResponseRepresentation
 {
-    private PlayStatus playStatus;
-    private String message;
+
+    @XmlAttribute(name = "enqueuedCommandId")
     private String enqueuedCommandId;
+
+    @XmlElement(name = "playStatus")
+    private PlayStatus playStatus;
+
+    @XmlElement(name = "message")
+    private String message;
+
+    @XmlElement(name = "trackName")
+    private String trackName;
+
+    @XmlElement(name = "durationToPlay")
+    private int durationToPlay;
 
     public EnqueueResponseRepresentation()
     {
@@ -22,6 +42,14 @@ public class EnqueueResponseRepresentation
         this.message = message;
     }
 
+    public String getEnqueuedCommandId()
+    {
+        return enqueuedCommandId;
+    }
+    public void setEnqueuedCommandId(String enqueuedCommandId)
+    {
+        this.enqueuedCommandId = enqueuedCommandId;
+    }
     public PlayStatus getPlayStatus()
     {
         return playStatus;
@@ -38,13 +66,20 @@ public class EnqueueResponseRepresentation
     {
         this.message = message;
     }
-
-    public String getEnqueuedCommandId()
+    public int getDurationToPlay()
     {
-        return enqueuedCommandId;
+        return durationToPlay;
     }
-    public void setEnqueuedCommandId(String enqueuedCommandId)
+    public void setDurationToPlay(int durationToPlay)
     {
-        this.enqueuedCommandId = enqueuedCommandId;
+        this.durationToPlay = durationToPlay;
+    }
+    public String getTrackName()
+    {
+        return trackName;
+    }
+    public void setTrackName(String trackName)
+    {
+        this.trackName = trackName;
     }
 }

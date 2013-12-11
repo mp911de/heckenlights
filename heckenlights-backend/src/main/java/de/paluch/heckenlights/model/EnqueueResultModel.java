@@ -4,12 +4,13 @@ package de.paluch.heckenlights.model;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 01.12.13 21:08
  */
-public class EnqueueResult
+public class EnqueueResultModel
 {
 
     private String commandId;
     private int durationToPlay;
     private String exception;
+    private String trackName;
 
     public String getCommandId()
     {
@@ -34,5 +35,13 @@ public class EnqueueResult
     public void setException(String exception)
     {
         this.exception = exception;
+    }
+    public String getTrackName()
+    {
+        return trackName;
+    }
+    public void setTrackName(String trackName)
+    {
+        this.trackName = trackName;
     }
 }

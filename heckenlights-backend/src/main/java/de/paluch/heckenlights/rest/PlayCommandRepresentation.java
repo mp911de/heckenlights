@@ -1,44 +1,57 @@
-package de.paluch.heckenlights.model;
+package de.paluch.heckenlights.rest;
 
-import com.mongodb.DBObject;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import de.paluch.heckenlights.model.PlayStatus;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
- * @since 28.11.13 21:10
+ * @since 02.12.13 18:15
  */
-@Document
-public class PlayCommand
+@XmlRootElement(name = "playCommand")
+@XmlAccessorType(XmlAccessType.NONE)
+public class PlayCommandRepresentation
 {
-    @Id
+    @XmlAttribute(name = "id")
     private String id;
 
-    @Indexed
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @XmlElement(name = "created")
     private Date created;
 
+    @XmlElement(name = "trackName")
     private String trackName;
 
+    @XmlElement(name = "playStatus")
     private PlayStatus playStatus;
 
-    private ObjectId attachedFile;
-
+    @XmlElement(name = "duration")
     private int duration;
 
+    @XmlElement(name = "externalSessionId")
     private String externalSessionId;
 
+    @XmlElement(name = "submissionHost")
     private String submissionHost;
 
+    @XmlElement(name = "exception")
     private String exception;
 
-    private List<ObjectId> captures = new ArrayList<>();
+    @XmlElementWrapper(name = "captures")
+    @XmlElement(name = "capture")
+    private List<PlayCaptureRepresentation> captures = new ArrayList<>();
+
+    @XmlElement(name = "timeToStart")
+    private int timeToStart;
 
     public String getId()
     {
@@ -72,14 +85,6 @@ public class PlayCommand
     {
         this.playStatus = playStatus;
     }
-    public ObjectId getAttachedFile()
-    {
-        return attachedFile;
-    }
-    public void setAttachedFile(ObjectId attachedFile)
-    {
-        this.attachedFile = attachedFile;
-    }
     public int getDuration()
     {
         return duration;
@@ -112,12 +117,21 @@ public class PlayCommand
     {
         this.exception = exception;
     }
-    public List<ObjectId> getCaptures()
+    public List<PlayCaptureRepresentation> getCaptures()
     {
         return captures;
     }
-    public void setCaptures(List<ObjectId> captures)
+    public void setCaptures(List<PlayCaptureRepresentation> captures)
     {
         this.captures = captures;
+    }
+
+    public int getTimeToStart()
+    {
+        return timeToStart;
+    }
+    public void setTimeToStart(int timeToStart)
+    {
+        this.timeToStart = timeToStart;
     }
 }

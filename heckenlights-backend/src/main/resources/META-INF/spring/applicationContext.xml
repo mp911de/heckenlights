@@ -6,8 +6,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
                 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-
     <mongo:mongo id="mongo" host="localhost" port="27017" />
 
     <mongo:db-factory id="mongoDbFactory" dbname="heckenlights" mongo-ref="mongo" />
@@ -34,7 +32,7 @@
     <!-- TODO: Timeouts -->
     <bean id="midiRelayClientProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="de.paluch.heckenlights.client.MidiRelayClient.MidiRelayClientProxy"/>
-        <property name="baseUri" value="http://localhost:9595" />
+        <property name="baseUri" value="http://s-mac:9595" />
     </bean>
 
 

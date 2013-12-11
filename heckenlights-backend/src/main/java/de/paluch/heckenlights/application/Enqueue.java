@@ -1,21 +1,26 @@
 package de.paluch.heckenlights.application;
 
+import com.google.common.io.Closer;
 import de.paluch.heckenlights.model.DurationExceededException;
 import de.paluch.heckenlights.model.EnqueueModel;
-import de.paluch.heckenlights.model.EnqueueResult;
+import de.paluch.heckenlights.model.EnqueueResultModel;
 import de.paluch.heckenlights.model.PlayStatus;
-import de.paluch.heckenlights.repositories.PlayCommandRepositoryService;
+import de.paluch.heckenlights.repositories.PlayCommandService;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 /**
@@ -26,34 +31,50 @@ import java.util.UUID;
 public class Enqueue
 {
     @Inject
-    private PlayCommandRepositoryService playCommandRepositoryService;
+    private PlayCommandService playCommandService;
 
     private final static int MINIMAL_DURATION_SEC = 10;
     private final static int MAXIMAL_DURATION_SEC = 300;
 
-    public EnqueueResult enqueue(EnqueueModel enqueue)
+    public EnqueueResultModel enqueue(EnqueueModel enqueue)
             throws IOException, InvalidMidiDataException, DurationExceededException
     {
+        Closer closer = Closer.create();
+        try
+        {
 
-        int durationInSecs = getDuration(enqueue);
-        validateDuration(durationInSecs);
+            Sequence sequence = getSequence(closer, enqueue.getContent());
+            int durationInSecs = getDuration(sequence);
+            validateDuration(durationInSecs);
 
-        enqueue.setDuration(durationInSecs);
+            enqueue.setDuration(durationInSecs);
 
-        String id = UUID.randomUUID().toString();
-        int timeToPlay = playCommandRepositoryService.estimateTimeToPlayQueue();
-        ObjectId fileReference =
-                playCommandRepositoryService.createFile(enqueue.getFileName(), "audio/midi", enqueue.getContent(), id);
+            String id = UUID.randomUUID().toString();
+            int timeToPlay = playCommandService.estimateTimeToPlayQueue();
+            ObjectId fileReference =
+                    playCommandService.createFile(enqueue.getFileName(), "audio/midi", enqueue.getContent(), id);
 
-        EnqueueResult result = new EnqueueResult();
+            enqueue.setTrackName(getSequenceName(sequence));
+            enqueue.setPlayStatus(PlayStatus.ENQUEUED);
+            enqueue.setCommandId(id);
 
-        result.setDurationToPlay(timeToPlay);
-        result.setCommandId(id);
-        enqueue.setPlayStatus(PlayStatus.ENQUEUED);
+            playCommandService.storeEnqueueRequest(enqueue, fileReference);
 
-        playCommandRepositoryService.storeEnqueueRequest(enqueue, fileReference);
+            EnqueueResultModel result = new EnqueueResultModel();
+            result.setDurationToPlay(timeToPlay);
+            result.setCommandId(enqueue.getCommandId());
+            result.setTrackName(enqueue.getTrackName());
 
-        return result;
+            return result;
+        } finally
+        {
+            closer.close();
+        }
+    }
+    private Sequence getSequence(Closer closer, byte[] content) throws InvalidMidiDataException, IOException
+    {
+        Sequence sequence = MidiSystem.getSequence(closer.register(new ByteArrayInputStream(content)));
+        return sequence;
     }
 
     private void validateDuration(int durationInSecs) throws DurationExceededException
@@ -71,12 +92,10 @@ public class Enqueue
         }
     }
 
-    private int getDuration(EnqueueModel enqueue) throws IOException, InvalidMidiDataException
+    private int getDuration(Sequence sequence) throws IOException, InvalidMidiDataException
     {
-        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(enqueue.getContent()))
+        try
         {
-            Sequence sequence = MidiSystem.getSequence(byteArrayInputStream);
-
             // Create a sequencer for the sequence
             Sequencer sequencer = MidiSystem.getSequencer();
             sequencer.open();
@@ -89,5 +108,38 @@ public class Enqueue
         {
             return -1;
         }
+    }
+
+    protected String getSequenceName(Sequence sequence)
+    {
+        for (Track track : sequence.getTracks())
+        {
+            for (int i = 0; i < track.size(); i++)
+            {
+                MidiEvent midiEvent = track.get(i);
+                if (midiEvent.getMessage() instanceof MetaMessage)
+                {
+                    MidiMessageDetail detail = new MidiMessageDetail(midiEvent.getMessage());
+
+                    if (detail.getT2() == 3 || detail.getT2() == 6)
+                    {
+                        try
+                        {
+                            if (detail.getBytes()[0] == -1)
+                            {
+                                return new String(detail.getBytes(), 3, detail.getBytes().length - 3, "ASCII");
+                            }
+
+                            return new String(detail.getBytes(), "ASCII");
+                        } catch (UnsupportedEncodingException e)
+                        {
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return null;
     }
 }
