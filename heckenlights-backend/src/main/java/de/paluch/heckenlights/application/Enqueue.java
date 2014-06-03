@@ -1,6 +1,7 @@
 package de.paluch.heckenlights.application;
 
 import com.google.common.io.Closer;
+import de.paluch.heckenlights.EnqueueS;
 import de.paluch.heckenlights.model.DurationExceededException;
 import de.paluch.heckenlights.model.EnqueueModel;
 import de.paluch.heckenlights.model.EnqueueResultModel;
@@ -54,7 +55,9 @@ public class Enqueue
             ObjectId fileReference =
                     playCommandService.createFile(enqueue.getFileName(), "audio/midi", enqueue.getContent(), id);
 
-            enqueue.setTrackName(getSequenceName(sequence));
+
+
+            enqueue.setTrackName(new EnqueueS().getSequenceName(sequence));
             enqueue.setPlayStatus(PlayStatus.ENQUEUED);
             enqueue.setCommandId(id);
 
