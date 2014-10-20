@@ -17,13 +17,13 @@ class RestApiClient {
         return array("POST", "PUT", "PATCH");
     }
 
-    public function __construct($partnerEndpoint, $sessionId) {
+    public function __construct($baseUrl, $sessionId) {
                 if (!extension_loaded('curl')) {
                         throw new Exception('Missing required cURL extension.');
                 }
 
-        $this->baseUrl = $this->getBaseUrlFromPartnerEndpoint($partnerEndpoint);
         $this->sessionId = $sessionId;
+        $this->baseUrl = $baseUrl;
     }
 
     public function setProxySettings($proxySettings) {
@@ -50,15 +50,6 @@ class RestApiClient {
         $this->compressionEnabled = $compressionEnabled;
     }
 
-    private function getBaseUrlFromPartnerEndpoint($partnerEndpoint) {
-        preg_match("!(https?://.*)/services/Soap/u/(\d{1,2}\.\d)(/.*)?!", $partnerEndpoint, $matches);
-
-        if ($matches[2] < 20.0) {
-            throw new Exception("REST API operations only supported in API 20.0 and higher.");
-        }
-
-        return $matches[1];
-    }
 
     public function send($method, $path, $additionalHeaders, $data, $expectBinary) {
         if (strpos($path, "/") !== 0) {
@@ -70,13 +61,10 @@ class RestApiClient {
         $ch = curl_init();
 
         $httpHeaders = array(
-            "Authorization: OAuth " . $this->sessionId,
             "User-Agent: " . $this->userAgent,
-            "X-PrettyPrint: true",
-            "Expect:"
         );
 
-        if (isset($additionalHeaders)) {
+        if (isset($additionalHeaders) && is_array($additionalHeaders)) {
             $httpHeaders = array_merge($httpHeaders, $additionalHeaders);
         }
 

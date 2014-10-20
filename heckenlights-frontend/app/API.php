@@ -83,7 +83,7 @@ abstract class API
 
     public function processAPI()
     {
-        if ((int)method_exists($this->endpoint) > 0) {
+        if ((int)method_exists($this, $this->endpoint) > 0) {
             return $this->_response($this->{$this->endpoint}($this->args));
         }
         return $this->_response('', 400);

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>H.E.C.K.E.N.L.I.G.H.T.S.</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -15,6 +15,7 @@
     <!-- Custom styles for this template -->
     <link href="css/site.css" rel="stylesheet">
     <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/jquery.fileupload.css" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -58,10 +59,6 @@
         <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a
             mostly barebones HTML document.</p>
 
-        <h3>Two columns</h3>
-
-        <p>Get two columns <strong>starting at desktops and scaling to large desktops</strong>.</p>
-        <input type="button" onclick="preparePlaylistLoad()"/>
 
         <div class="row">
             <div class="col-md-8">
@@ -80,10 +77,27 @@
                         </div>
                     </a>
                 </div>
+
+                <button id="reload" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Upload Track (Midi-File)</span>
+                    <!-- The file input field used as target for the file upload widget -->
+                    <input id="fileupload" type="file" name="files[]" accept="audio/sp-midi">
+                </span>
+                <br>
+                <br>
+                <!-- The global progress bar -->
+                <div id="progress" class="progress">
+                    <div class="progress-bar progress-bar-success"></div>
+                </div>
+                <div id="warning" class="alert alert-warning" style="display: none" role="alert"></div>
+                <div id="success" class="alert alert-success" style="display: none" role="alert"></div>
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
 <!-- /.container -->
 
@@ -92,6 +106,14 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="js/jquery.ui.widget.js"></script>
+<script src="js/jquery.iframe-transport.js"></script>
+<script src="js/jquery.fileupload.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        heckenlights().initialize();
+    });
+</script>
 </body>
 </html>
