@@ -47,8 +47,12 @@ public class MidiRelayClient
 
     public PlayerStateRepresentation getState()
     {
-        return clientProxy.getState();
-    }
+		try {
+			return clientProxy.getState();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
     public void play(String id, String fileName, byte[] body)
     {
