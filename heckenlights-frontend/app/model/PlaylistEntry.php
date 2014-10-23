@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: mark
  * Date: 11.12.13
  * Time: 21:22
  */
-
 class PlaylistEntry
 {
     public $id = '';
@@ -13,6 +13,8 @@ class PlaylistEntry
     public $playStatus = '';
     public $duration = 0;
     public $timeToStart = 0;
+    public $playing = false;
+    public $remaining = 0;
 
     /**
      * @param int $duration
@@ -94,7 +96,37 @@ class PlaylistEntry
         return $this->trackName;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isPlaying()
+    {
+        return $this->playing;
+    }
 
+    /**
+     * @param boolean $playing
+     */
+    public function setPlaying($playing)
+    {
+        $this->playing = $playing;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemaining()
+    {
+        return $this->remaining;
+    }
+
+    /**
+     * @param int $remaining
+     */
+    public function setRemaining($remaining)
+    {
+        $this->remaining = $remaining;
+    }
 
 
 }

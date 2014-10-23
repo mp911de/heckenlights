@@ -1,10 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 11.12.13
- * Time: 21:19
- */
+#############################
+# Global Settings
+#############################
 
-define('backend', "http://localhost:8090");
+# Backend Base Uri
+define('backend', 'http://localhost:8080');
+
+# API Uri
+define('apiBase', 'api/v1/');
+
+
+if (file_exists('settings-override.php')) {
+    require 'settings-override.php';
+} else {
+    define('recaptchaPublicKey', '');
+    define('recaptchaPrivateKey', '');
+}
 ?>

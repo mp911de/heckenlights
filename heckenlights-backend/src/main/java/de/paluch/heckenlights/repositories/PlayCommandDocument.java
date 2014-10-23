@@ -1,14 +1,15 @@
 package de.paluch.heckenlights.repositories;
 
-import de.paluch.heckenlights.model.PlayStatus;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import de.paluch.heckenlights.model.PlayStatus;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -119,4 +120,21 @@ public class PlayCommandDocument
     {
         this.captures = captures;
     }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof PlayCommandDocument)) return false;
+
+		PlayCommandDocument that = (PlayCommandDocument) o;
+
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }

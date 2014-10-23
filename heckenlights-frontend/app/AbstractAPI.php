@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 11.12.13
- * Time: 21:14
- */
 
-abstract class API
+abstract class AbstractAPI
 {
     /**
      * Property: method
@@ -18,12 +12,6 @@ abstract class API
      * The Model requested in the URI. eg: /files
      */
     protected $endpoint = '';
-    /**
-     * Property: verb
-     * An optional additional descriptor about the endpoint, used for things that can
-     * not be handled by the basic methods. eg: /files/process
-     */
-    protected $verb = '';
     /**
      * Property: args
      * Any additional URI components after the endpoint and verb have been removed, in our
@@ -37,6 +25,8 @@ abstract class API
      */
     protected $file = Null;
 
+    protected $status = 200;
+
     /**
      * Constructor: __construct
      * Allow for CORS, assemble and pre-process the data
@@ -45,13 +35,9 @@ abstract class API
     {
         //header("Access-Control-Allow-Orgin: *");
         //header("Access-Control-Allow-Methods: *");
-        header("Content-Type: application/json");
 
         $this->args = explode('/', rtrim($request, '/'));
         $this->endpoint = array_shift($this->args);
-        if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
-            $this->verb = array_shift($this->args);
-        }
 
         $this->method = $_SERVER['REQUEST_METHOD'];
         if ($this->method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
@@ -83,16 +69,39 @@ abstract class API
 
     public function processAPI()
     {
-        if ((int)method_exists($this, $this->endpoint) > 0) {
-            return $this->_response($this->{$this->endpoint}($this->args));
+        try {
+            $methodname = strtolower($this->method);
+            if ((int)method_exists($this, $methodname) > 0) {
+                return $this->_response($this->{$methodname}($this->args));
+            }
+
+            throw new InvalidArgumentException();
+        } catch (InvalidArgumentException $e) {
+            $this->status = 400;
+            return $this->_error('Bad Request' . ($e->getMessage() != null ? ": " . $e->getMessage() : ""));
+        } catch (Exception $e) {
+            $this->status = 500;
+            return $this->_error($e->getMessage());
         }
-        return $this->_response('', 400);
     }
 
-    private function _response($data, $status = 200)
+    private function _error($message)
     {
-        header("HTTP/1.1 " . $status . " " . $this->_requestStatus($status));
-        return json_encode($data);
+        return $this->_response(Array('error' => $message, 'status' => $this->status));
+    }
+
+
+    private function _response($data)
+    {
+        if ($data == null && $this->status == 200) {
+            $this->status = 204;
+            header("HTTP/1.1 " . $this->status . " " . $this->_requestStatus($this->status));
+            return null;
+        } else {
+            header("HTTP/1.1 " . $this->status . " " . $this->_requestStatus($this->status));
+            header("Content-Type: application/json");
+            return json_encode($data);
+        }
     }
 
     private function _cleanInputs($data)

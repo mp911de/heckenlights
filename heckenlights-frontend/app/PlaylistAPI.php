@@ -1,47 +1,47 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mark
- * Date: 11.12.13
- * Time: 21:12
- */
 
-require_once 'API.php';
+require_once 'AbstractAPI.php';
 require_once 'settings.php';
-require_once 'PlaylistEntry.php';
-require_once 'PlaylistModel.php';
+require_once 'model/PlaylistEntry.php';
+require_once 'model/PlaylistModel.php';
 require_once 'RestApiClient.php';
+require_once 'UploadHandler.php';
 
-class PlaylistAPI extends API
+class PlaylistAPI extends AbstractAPI
 {
 
-    public function __construct($request, $origin)
+    public function __construct($request)
     {
         parent::__construct($request);
-        $this->endpoint = 'playlist';
-
-        // Abstracted out for example
     }
 
 
     /**
-     * Example of an Endpoint
+     * GET /playlist
      */
-    protected function playlist()
+    protected function get()
     {
-        if ($this->method == 'GET') {
-            return $this->getPlaylist();
-        } else {
-            return "Only accepts GET requests";
+        session_start();
+        return $this->getPlaylist();
+    }
+
+    /**
+     * POST /playlist/queue
+     */
+    protected function post()
+    {
+        session_start();
+        if (sizeof($this->args) == 1 && $this->args[0] == 'queue') {
+            return $this->submitMidiFile();
         }
+        throw new InvalidArgumentException();
     }
 
 
     private function getPlaylist()
     {
         $client = new RestApiClient(constant('backend'), '');
-
-        $rawResponse = $client->send("GET", "/heckenlights?playStatus=ENQUEUED", ["Accept: application/json"], '', false);
+        $rawResponse = $client->send("GET", "/?playStatus=ENQUEUED", ["Accept: application/json"], '', false);
 
         if (stripos($rawResponse->header, "HTTP/1.1 200") != 0) {
             throw new Exception("Bad Request");
@@ -54,33 +54,81 @@ class PlaylistAPI extends API
     {
         $json = json_decode($jsonData, true);
         $result = array();
-        if (isset($json['playCommands']) && is_array($json['playCommands']['playCommand'])) {
-            $wrapper = $json['playCommands'];
-            $playcommands = $wrapper['playCommand'];
 
-            $i = 0;
+        if (isset($json['playCommands']) && is_array($json['playCommands'])) {
+            $playcommands = $json['playCommands'];
             foreach ($playcommands as $playcommand) {
 
-
                 $entry = new PlaylistEntry();
-                $entry->setId($playcommand['@id']);
+                $entry->setId($playcommand['id']);
                 $entry->setDuration($playcommand['duration']);
                 $entry->setPlayStatus($playcommand['playStatus']);
+
+                if ("PLAYING" === $playcommand['playStatus']) {
+                    $entry->setPlaying(true);
+                }
 
                 if (array_key_exists('trackName', $playcommand)) {
                     $entry->setTrackName($playcommand['trackName']);
                 }
 
-                if (array_key_exists('timeToStart', $playcommand)) {
-                    $entry->setTimeToStart($playcommand['timeToStart']);
+                if (array_key_exists('trackName', $playcommand)) {
+                    $entry->setTrackName($playcommand['trackName']);
                 }
 
-                $result[$i++] = $entry;
+                if (array_key_exists('remaining', $playcommand)) {
+                    $entry->setRemaining($playcommand['remaining']);
+                }
+
+                $result[] = $entry;
             }
         }
-
         return $result;
     }
+
+    private function submitMidiFile()
+    {
+        $callback = function ($file, $result) {
+            $client = new RestApiClient(constant('backend'), '');
+
+            $headers = ["Content-Type: application/octet-stream", "Accept: application/json", "X-Submission-Host: " . $_SERVER['REMOTE_ADDR'],
+                "X-External-SessionId: " . session_id(), "X-Request-FileName: " . $file->name];
+
+            $rawResponse = $client->send("POST", "/", $headers, $file->contents);
+            $result->encode = false;
+
+            $header = $rawResponse->header;
+            if (is_array($header)) {
+                $header = implode($header);
+            }
+
+            if (strlen(strstr($header, "HTTP/1.1 200")) > 0) {
+                $enqueue = json_decode($rawResponse->body);
+                if (isset($enqueue) && isset($enqueue->playStatus)) {
+                    if ($enqueue->playStatus == 'ERROR') {
+                        $result->success = false;
+                    }
+                }
+            } else {
+
+                $result->success = false;
+                if (strlen(strstr($header, "HTTP/1.1 400")) > 0) {
+                    $result->status = 400;
+                } else {
+                    $result->status = 500;
+                }
+            }
+
+            $result->response = json_decode($rawResponse->body);
+        };
+
+        $upload_handler = new UploadHandler();
+        $upload_handler->invoke($callback);
+        $this->status = $upload_handler->status;
+
+        return $upload_handler->get_response();
+    }
+
 }
 
 ?>

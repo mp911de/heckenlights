@@ -1,5 +1,7 @@
 <?php
-class RestApiClient {
+
+class RestApiClient
+{
     private $baseUrl;
     private $sessionId;
     private $proxySettings;
@@ -9,49 +11,59 @@ class RestApiClient {
     private $logs;
     private $loggingEnabled = false;
 
-    public static function getMethods() {
+    public static function getMethods()
+    {
         return array("GET", "POST", "PUT", "PATCH", "DELETE", "HEAD");
     }
 
-    public static function getMethodsWithBodies() {
+    public static function getMethodsWithBodies()
+    {
         return array("POST", "PUT", "PATCH");
     }
 
-    public function __construct($baseUrl, $sessionId) {
-                if (!extension_loaded('curl')) {
-                        throw new Exception('Missing required cURL extension.');
-                }
+    public function __construct($baseUrl, $sessionId)
+    {
+        if (!extension_loaded('curl')) {
+            throw new Exception('Missing required cURL extension.');
+        }
 
         $this->sessionId = $sessionId;
         $this->baseUrl = $baseUrl;
     }
 
-    public function setProxySettings($proxySettings) {
+    public function setProxySettings($proxySettings)
+    {
         $this->proxySettings = $proxySettings;
     }
 
-    public function setIncludeSessionCookie($includeSessionCookie) {
+    public function setIncludeSessionCookie($includeSessionCookie)
+    {
         $this->includeSessionCookie = $includeSessionCookie;
     }
 
-    public function getUserAgent() {
+    public function getUserAgent()
+    {
         return $this->userAgent;
     }
 
-    public function setUserAgent($userAgent) {
+    public function setUserAgent($userAgent)
+    {
         $this->userAgent = $userAgent;
     }
 
-    public function getCompressionEnabled() {
+    public function getCompressionEnabled()
+    {
         return $this->compressionEnabled;
     }
 
-    public function setCompressionEnabled($compressionEnabled) {
+    public function setCompressionEnabled($compressionEnabled)
+    {
         $this->compressionEnabled = $compressionEnabled;
     }
 
 
-    public function send($method, $path, $additionalHeaders, $data, $expectBinary) {
+    public function send($method, $path, $additionalHeaders, $data)
+    {
         if (strpos($path, "/") !== 0) {
             throw new Exception("Path must start with /");
         }
@@ -101,11 +113,11 @@ class RestApiClient {
 
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl . $path);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeaders);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $expectBinary ? 0 : 1);
-        curl_setopt($ch, CURLOPT_HEADER, $expectBinary ? 0 : 1);
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, $expectBinary ? 1 : 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);                                //TODO: use ca-bundle instead
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
         if ($this->proxySettings != null) {
             curl_setopt($ch, CURLOPT_PROXY, $this->proxySettings["proxy_host"]);
@@ -144,7 +156,7 @@ class RestApiClient {
             }
         }
 
-        $httpResponse = new HttpResponse($chResponse, $headerSize, $expectBinary);
+        $httpResponse = new HttpResponse($chResponse, $headerSize);
 
         curl_close($ch);
 
@@ -153,45 +165,50 @@ class RestApiClient {
 
     //LOGGING FUNCTIONS
 
-    public function isLoggingEnabled() {
+    public function isLoggingEnabled()
+    {
         return $this->loggingEnabled;
     }
 
-    public function setLoggingEnabled($loggingEnabled) {
+    public function setLoggingEnabled($loggingEnabled)
+    {
         $this->loggingEnabled = $loggingEnabled;
     }
 
-    protected function log($txt) {
+    protected function log($txt)
+    {
         if ($this->loggingEnabled) {
             $this->logs .= $txt .= "\n\n";
         }
         return $txt;
     }
 
-    public function setExternalLogReference(&$extLogs) {
+    public function setExternalLogReference(&$extLogs)
+    {
         $this->logs = &$extLogs;
     }
 
-    public function getLogs() {
+    public function getLogs()
+    {
         return $this->logs;
     }
 
-    public function clearLogs() {
+    public function clearLogs()
+    {
         $this->logs = null;
     }
 }
 
-class HttpResponse {
+class HttpResponse
+{
     public $header;
     public $body;
 
-    public function __construct($curlResponse, $headerSize, $expectBinary) {
-        if ($expectBinary) {
-            $this->body = $curlResponse;
-        } else {
-            $this->header = substr($curlResponse, 0, $headerSize);
-            $this->body = substr($curlResponse, $headerSize);
-        }
+    public function __construct($curlResponse, $headerSize)
+    {
+        $this->header = substr($curlResponse, 0, $headerSize);
+        $this->body = substr($curlResponse, $headerSize);
     }
 }
+
 ?>

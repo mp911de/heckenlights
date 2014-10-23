@@ -17,6 +17,7 @@
     <link href="css/bootstrap-theme.css" rel="stylesheet">
     <link href="css/jquery.fileupload.css" rel="stylesheet">
 
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -78,9 +79,22 @@
                     </a>
                 </div>
 
-                <button id="reload" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+                <button id="reload" class="btn btn-default" style="display: none"><span
+                        class="glyphicon glyphicon-refresh"></span></button>
 
-                <span class="btn btn-success fileinput-button">
+                <div id="captchacontainer" style="text-align: left; display: hidden">
+                    <div id="recaptcha_div"></div>
+                    <div>
+                        You need to solve the captcha in order to upload Midifiles for Heckenlights.
+                    </div>
+                    <br/>
+                    <button id="submitcaptcha" class="btn btn-default">Submit</button>
+                    <br/>
+                    <br/>
+                    <div id="captchawarning" class="alert alert-warning" style="display: none" role="alert"></div>
+                </div>
+
+                <span id="uploadcontainer" class="btn btn-success fileinput-button" style="display: none">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>Upload Track (Midi-File)</span>
                     <!-- The file input field used as target for the file upload widget -->
@@ -89,11 +103,11 @@
                 <br>
                 <br>
                 <!-- The global progress bar -->
-                <div id="progress" class="progress">
+                <div id="uploadprogress" class="progress" style="display: none;">
                     <div class="progress-bar progress-bar-success"></div>
                 </div>
-                <div id="warning" class="alert alert-warning" style="display: none" role="alert"></div>
-                <div id="success" class="alert alert-success" style="display: none" role="alert"></div>
+                <div id="uploadwarning" class="alert alert-warning" style="display: none" role="alert"></div>
+                <div id="uploadsuccess" class="alert alert-success" style="display: none" role="alert"></div>
             </div>
         </div>
 

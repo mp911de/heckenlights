@@ -12,51 +12,67 @@ var heckenlights = (function () {
     instance.initialize = function () {
 
         $("#reload").click(function () {
-            preparePlaylistLoad()
+            loadPlaylist()
         });
 
-        preparePlaylistLoad();
+        loadPlaylist();
+        checkOrCreateRecaptcha();
 
-        $('#warning').click(function () {
-            $("#warning").fadeOut();
+
+        $('#uploadwarning').click(function () {
+            $("#uploadwarning").fadeOut();
         });
 
-        $('#success').click(function () {
-            $("#success").fadeOut();
+        $('#captchawarning').click(function () {
+            $("#captchawarning").fadeOut();
         });
+
+        $('#uploadsuccess').click(function () {
+            $("#uploadsuccess").fadeOut();
+        });
+
+        window.setInterval(function () {
+            //loadPlaylist()
+        }, 5000);
 
 
         $('#fileupload').fileupload({
-            url: "app/submit.php",
+            url: "api/v1/playlist/queue",
             dataType: 'json',
             done: function (e, data) {
                 if (data.jqXHR.responseJSON && data.jqXHR.responseJSON.enqueued) {
                     var enqueued = data.jqXHR.responseJSON.enqueued;
 
-                    $('#success').html("<strong>Enqeued!</strong> It will take some " + enqueued.durationToPlay + " seconds until the file is played.");
-                    $('#success').fadeIn();
+                    $('#uploadsuccess').html("<strong>Enqeued!</strong> It will take some " + enqueued.durationToPlay + " seconds until the file is played.");
+                    $('#uploadsuccess').fadeIn();
                     setTimeout(function () {
-                        $("#success").fadeOut()
+                        $("#uploadsuccess").fadeOut()
                     }, 5000);
                 }
             },
             fail: function (e, data) {
-                if (data.jqXHR.responseJSON && data.jqXHR.responseJSON.enqueued) {
-                    var enqueued = data.jqXHR.responseJSON.enqueued;
-                    $('#progress .progress-bar').removeClass('progress-bar-success');
-                    $('#progress .progress-bar').addClass('progress-bar-warning');
-                    $('#warning').html("<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM Midi-File.");
-                    $('#warning').fadeIn();
-                    setTimeout(function () {
-                        $("#warning").fadeOut();
-                    }, 5000);
+                $('#progress .progress-bar').removeClass('progress-bar-success');
+                $('#progress .progress-bar').addClass('progress-bar-warning');
+
+                if (data.jqXHR.status >= 400 && data.jqXHR.status <= 499) {
+                    $('#uploadwarning').html("<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM Midi-File.");
                 }
+
+                if (data.jqXHR.status >= 500 && data.jqXHR.status <= 599) {
+                    $('#uploadwarning').html("<strong>Aw, snap!</strong> There was an internal server error.");
+                }
+
+                $('#uploadwarning').fadeIn();
+                setTimeout(function () {
+                    $("#uploadwarning").fadeOut();
+                }, 5000);
             },
             start: function () {
                 $('#progress .progress-bar').addClass('progress-bar-success');
                 $('#progress .progress-bar').removeClass('progress-bar-warning');
-                $('#warning').hide();
-                $('#success').hide();
+                $('#uploadwarning').hide();
+                $('#uploadsuccess').hide();
+                $('#uploadprogress').show();
             },
             progressall: function (e, data) {
                 var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -70,9 +86,90 @@ var heckenlights = (function () {
 
     }
 
+    function checkOrCreateRecaptcha() {
+        var uri = "api/v1/settings";
+        $.ajax({
+                dataType: 'json',
+                accepts: {
+                    json: 'application/json'
+                },
+                url: uri
 
-    function preparePlaylistLoad() {
-        var uri = "app/playlist.php";
+            }
+        ).done(function (data) {
+
+                if (!data.humanOrMachine || data.humanOrMachine == 'machine') {
+                    $('#uploadcontainer').hide();
+                    Recaptcha.create(data.recaptchaPublicKey,
+                        "recaptcha_div",
+                        {
+                            theme: "white",
+                            callback: Recaptcha.focus_response_field
+                        }
+                    );
+
+                    $("#submitcaptcha").click(function () {
+                        submitCaptcha();
+                    });
+                }
+
+                if (data.humanOrMachine && data.humanOrMachine == 'human') {
+                    $('#captchacontainer').hide();
+                    $('#uploadcontainer').show();
+                }
+            });
+    }
+
+    function submitCaptcha() {
+
+        var captcha = $("#recaptcha_response_field").val();
+        var challenge = $("#recaptcha_challenge_field").val();
+        var uri = "api/v1/settings";
+        $.ajax({
+            dataType: 'json',
+            accepts: {
+                json: 'application/json'
+            },
+            url: uri,
+            type: 'POST',
+            data: {
+                recaptcha_response_field: captcha,
+                recaptcha_challenge_field: challenge
+            }
+        }).done(
+            function (data) {
+                if (!data.humanOrMachine || data.humanOrMachine == 'machine') {
+                    $('#captchawarning').html("Validation not successful. Please enter the displayed words/numbers. (" + data.challengeResponse + ")");
+
+                    $('#captchawarning').fadeIn();
+                    setTimeout(function () {
+                        $("#captchawarning").fadeOut();
+                    }, 5000);
+
+                    checkOrCreateRecaptcha();
+                    return;
+                }
+
+
+                if (data.humanOrMachine && data.humanOrMachine == 'human') {
+                    $('#captchacontainer').hide();
+                    $('#uploadcontainer').show();
+                    return;
+                }
+            }
+        ).fail(function () {
+                $('#captchawarning').html("There was an internal server error, could not validate your request.");
+
+                $('#captchawarning').fadeIn();
+                setTimeout(function () {
+                    $("#captchawarning").fadeOut();
+                }, 5000);
+            });
+    }
+
+
+    function loadPlaylist() {
+        var uri = "api/v1/playlist";
         $.ajax({
                 dataType: 'json',
                 accepts: {
@@ -101,9 +198,8 @@ var heckenlights = (function () {
                         if (playCommand.playing) {
 
                             var html = "<a href=\"#\" class=\"list-group-item active\">" +
-                                "<h4 class=\"list-group-item-heading\">" + trackName + "</h4>" +
-                                "<p class=\"list-group-item-text\">Duration: " + playCommand.duration + " Seconds</p>" +
-                                "<p class=\"list-group-item-text\">Remaining: " + playCommand.duration + " Seconds</p>" +
+                                "<h4 class=\"list-group-item-heading\"><span class=\"glyphicon glyphicon-play\"></span> " + trackName + "</h4>" +
+                                "<p class=\"list-group-item-text\">Remaining: " + playCommand.remaining + " Seconds</p>" +
                                 "</a>"
 
                             $("#playlist").append(html);

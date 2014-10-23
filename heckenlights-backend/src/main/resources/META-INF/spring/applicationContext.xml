@@ -30,11 +30,14 @@
 
     <context:component-scan base-package="de.paluch.heckenlights"/>
 
-    <!-- TODO: Timeouts -->
     <bean id="midiRelayClientProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="de.paluch.heckenlights.client.MidiRelayClient.MidiRelayClientProxy"/>
         <property name="baseUri" value="${midirelay.url}"/>
         <property name="clientExecutor" ref="apacheHttpClient4Executor"/>
+    </bean>
+
+    <bean id="populateQueue" class="de.paluch.heckenlights.application.PopulateQueue">
+        <property name="midiDirectory" value="${populateQueue.midiDirectory}"/>
     </bean>
 
     <bean id="apacheHttpClient4Executor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
@@ -42,15 +45,53 @@
     </bean>
 
     <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient">
+        <constructor-arg index="0" ref="clientConnManager"/>
         <property name="params" ref="httpParams"/>
     </bean>
 
-    <bean id="httpParams" class="org.apache.http.params.BasicHttpParams"/>
+    <bean id="clientConnManager" class="org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager">
+    </bean>
+
+    <bean id="httpParams" class="org.apache.http.params.BasicHttpParams">
+    </bean>
 
     <bean id="httpConnectionParams" class="org.apache.http.params.HttpConnectionParamBean">
         <constructor-arg ref="httpParams"/>
         <property name="connectionTimeout" value="${midirelay.connectTimeout}"/>
         <property name="soTimeout" value="${midirelay.readTimeout}"/>
+    </bean>
+
+
+    <bean name="playlistJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="de.paluch.heckenlights.application.ProcessQueueJob"/>
+        <property name="durability" value="true"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="processQueue" value-ref="processQueue"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="playlistTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="playlistJobDetail"/>
+        <property name="startDelay" value="1000"/>
+        <property name="repeatInterval" value="5000"/>
+    </bean>
+
+    <!-- *** Start Quartz engine *** -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="playlistTrigger"/>
+            </list>
+        </property>
+        <property name="quartzProperties">
+            <props>
+                <!-- ThreadPool -->
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">4</prop>
+            </props>
+        </property>
     </bean>
 
 

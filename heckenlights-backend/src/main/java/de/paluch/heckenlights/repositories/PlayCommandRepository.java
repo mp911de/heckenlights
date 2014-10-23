@@ -1,6 +1,7 @@
 package de.paluch.heckenlights.repositories;
 
 import de.paluch.heckenlights.model.PlayStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Date;
@@ -13,8 +14,9 @@ import java.util.List;
 public interface PlayCommandRepository extends CrudRepository<PlayCommandDocument, String>
 {
 
-    List<PlayCommandDocument> findByPlayStatusOrderByCreatedAsc(PlayStatus playStatus);
+    List<PlayCommandDocument> findByPlayStatusOrderByCreatedAsc(PlayStatus playStatus, Pageable pageable);
 
     List<PlayCommandDocument> findByCreatedBetweenOrderByCreatedAsc(Date from, Date to);
 
+	List<PlayCommandDocument> findByPlayStatusOrderByCreatedAsc(PlayStatus playStatus);
 }
