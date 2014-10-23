@@ -11,6 +11,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,24 +37,34 @@ public class HeckenlightsResource {
     private GetPlaylist getPlaylist;
 
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.POST)
-    public EnqueueResponseRepresentation uploadFile(
+    public ResponseEntity<EnqueueResponseRepresentation> uploadFile(
             @RequestHeader(value = "X-Submission-Host", required = false) String submissionHost,
             @RequestHeader(value = "X-External-SessionId", required = false) String sessionId,
             @RequestHeader(value = "X-Request-FileName", required = false) String fileName, @RequestBody byte[] input)
             throws IOException, InvalidMidiDataException, DurationExceededException {
 
         if (input == null || input.length == 0) {
-            return new EnqueueResponseRepresentation(PlayStatus.ERROR, "No data attached");
+            return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.ERROR, "No data attached"),
+                    HttpStatus.BAD_REQUEST);
         }
 
         try {
             EnqueueModel model = createModel(submissionHost, sessionId, fileName, input);
-            EnqueueResultModel enqueResult = enqueue.enqueue(model);
+            EnqueueResultModel enqueResult = enqueue.enqueueWithQuotaCheck(model);
 
             EnqueueResponseRepresentation result = toResult(enqueResult);
-            return result;
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidMidiDataException | IOException e) {
-            return new EnqueueResponseRepresentation(PlayStatus.ERROR, e.getMessage());
+            return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.ERROR, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+
+        } catch (DurationExceededException e) {
+            return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.DURATION_EXCEEDED, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+
+        } catch (QuotaExceededException e) {
+            return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.QUOTA, e.getMessage()),
+                    HttpStatus.TOO_MANY_REQUESTS);
 
         }
 

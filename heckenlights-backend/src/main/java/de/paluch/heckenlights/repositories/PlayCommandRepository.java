@@ -19,4 +19,6 @@ public interface PlayCommandRepository extends CrudRepository<PlayCommandDocumen
     List<PlayCommandDocument> findByCreatedBetweenOrderByCreatedAsc(Date from, Date to);
 
 	List<PlayCommandDocument> findByPlayStatusOrderByCreatedAsc(PlayStatus playStatus);
+
+	List<PlayCommandDocument> findByExternalSessionIdAndSubmissionHostAndCreatedGreaterThan(String externalSessionId, String submissionHost, Date date);
 }

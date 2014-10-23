@@ -8,12 +8,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import com.google.common.cache.Cache;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -119,7 +119,7 @@ public class PlayCommandService {
         PlayerStateRepresentation state = client.getState();
 
         if (state != null && state.getTrack() != null) {
-			timeToStart = appendCurrentTrack(result, timeToStart, state);
+            timeToStart = appendCurrentTrack(result, timeToStart, state);
         }
 
         for (PlayCommandDocument playCommandDocument : documents) {
@@ -146,20 +146,20 @@ public class PlayCommandService {
         return result;
     }
 
-	private int appendCurrentTrack(List<PlayCommandSummaryModel> result, int timeToStart, PlayerStateRepresentation state) {
-		PlayCommandDocument playCommandDocument = playCommandRepository.findOne(state.getTrack().getId());
-		if (playCommandDocument != null) {
-			PlayCommandSummaryModel currentTrack = toSummaryModel(playCommandDocument);
-			currentTrack.setPlayStatus(PlayStatus.PLAYING);
-			currentTrack.setTimeToStart(0);
-			currentTrack.setRemaining(state.getEstimatedSecondsToPlay());
-			timeToStart += state.getEstimatedSecondsToPlay();
-			result.add(currentTrack);
-		}
-		return timeToStart;
-	}
+    private int appendCurrentTrack(List<PlayCommandSummaryModel> result, int timeToStart, PlayerStateRepresentation state) {
+        PlayCommandDocument playCommandDocument = playCommandRepository.findOne(state.getTrack().getId());
+        if (playCommandDocument != null) {
+            PlayCommandSummaryModel currentTrack = toSummaryModel(playCommandDocument);
+            currentTrack.setPlayStatus(PlayStatus.PLAYING);
+            currentTrack.setTimeToStart(0);
+            currentTrack.setRemaining(state.getEstimatedSecondsToPlay());
+            timeToStart += state.getEstimatedSecondsToPlay();
+            result.add(currentTrack);
+        }
+        return timeToStart;
+    }
 
-	public TrackContentModel getTrackContent(String id) throws IOException {
+    public TrackContentModel getTrackContent(String id) throws IOException {
         PlayCommandDocument playCommandDocument = playCommandRepository.findOne(id);
         if (playCommandDocument == null) {
             return null;
@@ -223,7 +223,7 @@ public class PlayCommandService {
         }
 
         playCommandDocument.setPlayStatus(PlayStatus.EXECUTED);
-		playCommandRepository.save(playCommandDocument);
+        playCommandRepository.save(playCommandDocument);
 
     }
 
@@ -243,4 +243,14 @@ public class PlayCommandService {
         return result;
     }
 
+    public int getEnquedCommandCount(String externalSessionId, String submissionHost, long withinLastMinutes) {
+
+        Calendar instance = Calendar.getInstance();
+        instance.add(Calendar.MINUTE, (int) (withinLastMinutes * -1));
+        Date date = instance.getTime();
+
+        List<PlayCommandDocument> documents = playCommandRepository
+                .findByExternalSessionIdAndSubmissionHostAndCreatedGreaterThan(externalSessionId, submissionHost, date);
+        return documents.size();
+    }
 }

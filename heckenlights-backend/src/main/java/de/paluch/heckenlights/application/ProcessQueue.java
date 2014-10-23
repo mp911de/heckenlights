@@ -53,7 +53,8 @@ public class ProcessQueue {
         } else {
             PlayCommandSummaryModel playCommand = commands.get(0);
             TrackContentModel trackContent = playCommandService.getTrackContent(playCommand.getId());
-
+            log.info("Triggering play of " + trackContent.getFilename() + ", duration " + playCommand.getDuration()
+                    + " secs submitted by " + playCommand.getSubmissionHost());
             client.play(trackContent.getId(), trackContent.getFilename(), trackContent.getContent());
             playCommandService.setStateExecuted(trackContent.getId());
         }

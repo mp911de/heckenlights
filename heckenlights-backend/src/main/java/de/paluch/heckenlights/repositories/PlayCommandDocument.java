@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +17,8 @@ import de.paluch.heckenlights.model.PlayStatus;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:10
  */
+
+@CompoundIndexes({@CompoundIndex(name = "PlayCommand_session_host", def ="{externalSessionId: 1, submissionHost: 1, created: 1}")})
 @Document(collection = "PlayCommand")
 public class PlayCommandDocument
 {
@@ -26,6 +30,7 @@ public class PlayCommandDocument
 
     private String trackName;
 
+	@Indexed
     private PlayStatus playStatus;
 
     private ObjectId attachedFile;

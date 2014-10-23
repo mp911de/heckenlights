@@ -15,10 +15,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.io.Closer;
 
 import de.paluch.heckenlights.EnqueueS;
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueModel;
-import de.paluch.heckenlights.model.EnqueueResultModel;
-import de.paluch.heckenlights.model.PlayStatus;
+import de.paluch.heckenlights.model.*;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 
 /**
@@ -34,6 +31,21 @@ public class Enqueue {
 
     private final static int MINIMAL_DURATION_SEC = 10;
     private final static int MAXIMAL_DURATION_SEC = 300;
+    private final static int QUOTA = 10;
+    private final static int QUOTA_MINUTES = 30;
+
+    public EnqueueResultModel enqueueWithQuotaCheck(EnqueueModel enqueue) throws IOException, InvalidMidiDataException,
+            DurationExceededException, QuotaExceededException {
+
+        int count = playCommandService.getEnquedCommandCount(enqueue.getExternalSessionId(), enqueue.getSubmissionHost(),
+                QUOTA_MINUTES);
+        if (count > QUOTA) {
+            throw new QuotaExceededException("Quota limit of " + QUOTA + " for " + QUOTA_MINUTES + " exceeded by "
+                    + (count - QUOTA));
+        }
+
+        return enqueue(enqueue);
+    }
 
     public EnqueueResultModel enqueue(EnqueueModel enqueue) throws IOException, InvalidMidiDataException,
             DurationExceededException {

@@ -18,6 +18,8 @@
     <properties>
         <slf4j.version>1.7.5</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <resteasy.version>3.0.5.Final</resteasy.version>
+        <quartz.version>2.2.1</quartz.version>
     </properties>
 
     <build>
@@ -44,15 +46,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <dependentWarExcludes>
-                        **/jdbc.properties,**/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,WEB-INF/classes/META-INF/**
-                    </dependentWarExcludes>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.zeroturnaround</groupId>
@@ -69,7 +62,6 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -83,17 +75,6 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.1.0.v20131115</version>
-                <configuration>
-                    <httpConnector>
-                        <port>8090</port>
-                    </httpConnector>
                 </configuration>
             </plugin>
 
@@ -209,9 +190,8 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.5</version>
+            <version>${slf4j.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -219,7 +199,6 @@
             <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -229,32 +208,33 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
-            <version>3.0.5.Final</version>
+            <version>${resteasy.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson-provider</artifactId>
-            <version>3.0.5.Final</version>
+            <version>${resteasy.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-spring</artifactId>
-            <version>3.0.5.Final</version>
+            <version>${resteasy.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.2.1</version>
+            <version>${quartz.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz-jobs</artifactId>
-            <version>2.2.1</version>
+            <version>${quartz.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -278,6 +258,13 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>1.7.0</version>
             <scope>test</scope>
         </dependency>
 

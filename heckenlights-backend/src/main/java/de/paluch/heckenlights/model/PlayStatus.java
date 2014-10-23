@@ -6,5 +6,5 @@ package de.paluch.heckenlights.model;
  */
 public enum PlayStatus
 {
-    ENQUEUED, PLAYING, EXECUTED, ERROR;
+    ENQUEUED, PLAYING, EXECUTED, ERROR, DURATION_EXCEEDED, QUOTA;
 }
