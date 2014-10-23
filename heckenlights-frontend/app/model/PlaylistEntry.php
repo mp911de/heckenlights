@@ -128,5 +128,23 @@ class PlaylistEntry
         $this->remaining = $remaining;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSubmitStatus()
+    {
+        return $this->submitStatus;
+    }
+
+    /**
+     * @param mixed $submitStatus
+     */
+    public function setSubmitStatus($submitStatus)
+    {
+        $this->submitStatus = $submitStatus;
+    }
+
+
+
 
 }

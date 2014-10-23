@@ -3,3 +3,5 @@ heckenlights-backend/target
 *.iml
 atlassian-ide-plugin.xml
 settings-override.php
+heckenlights-frontend/node_modules
+archive.zip

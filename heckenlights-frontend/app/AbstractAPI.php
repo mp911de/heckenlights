@@ -155,6 +155,7 @@ abstract class AbstractAPI
             415 => 'Unsupported Media Type',
             416 => 'Requested Range Not Satisfiable',
             417 => 'Expectation Failed',
+            429 => 'Too Many Requests',
             500 => 'Internal Server Error',
             501 => 'Not Implemented',
             502 => 'Bad Gateway',
@@ -163,4 +164,14 @@ abstract class AbstractAPI
             505 => 'HTTP Version Not Supported');
         return ($status[$code]) ? $status[$code] : $status[500];
     }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+
 }

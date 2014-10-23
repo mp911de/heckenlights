@@ -11,7 +11,7 @@ $resourcePath = substr($urlPath, strpos($urlPath, $apiBase) + strlen($apiBase));
 
 $knownResources = [
     'playlist' => 'PlaylistAPI',
-    'settings' => 'SettingsAPI'
+    'authentication' => 'AuthenticationAPI'
 ];
 
 $validResource = false;
