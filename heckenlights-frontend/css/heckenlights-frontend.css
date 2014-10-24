@@ -38,12 +38,86 @@ body {
   height: 100%;
 }
 
+.navbar-nav li > div {
+  position: relative;
+  display: block;
+  padding: 15px 5px 10px 5px;
+}
+
+.navbar-inverse .navbar-nav > li a.btn-social {
+  height: 30px;
+  padding: 3px;
+  margin: 10px 5px;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-shadow: none;
+  border-radius: 3px;
+}
+
+.navbar-inverse .navbar-nav > li .btn-twitter {
+  color: #ffffff;
+  background: #00acee;
+  border: 1px solid #0075a2;
+}
+
+.navbar-inverse .navbar-nav > li .btn-twitter:link,
+.navbar-inverse .navbar-nav > li .btn-twitter:visited {
+  color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav > li .btn-twitter:active,
+.navbar-inverse .navbar-nav > li .btn-twitter:hover {
+  color: #ffffff;
+  background: #009ad5;
+}
+
+.navbar-inverse .navbar-nav > li .btn-facebook {
+  color: #ffffff;
+  background: #3b5998;
+  border: 1px solid #2d4373;
+}
+
+.navbar-inverse .navbar-nav > li .btn-facebook:link,
+.navbar-inverse .navbar-nav > li .btn-facebook:visited {
+  color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav > li .btn-facebook:active,
+.navbar-inverse .navbar-nav > li .btn-facebook:hover {
+  color: #ffffff;
+  background: #344e86;
+}
+
+.navbar-inverse .navbar-nav > li .btn-googleplus {
+  color: #ffffff;
+  background: #e93f2e;
+  border: 1px solid #a01e11;
+}
+
+.navbar-inverse .navbar-nav > li .btn-googleplus:link,
+.navbar-inverse .navbar-nav > li .btn-googleplus:visited {
+  color: #ffffff;
+}
+
+.navbar-inverse .navbar-nav > li .btn-googleplus:active,
+.navbar-inverse .navbar-nav > li .btn-googleplus:hover {
+  color: #ffffff;
+  background: #e52b18;
+}
+
 /* Footer */
 
-#landing h1,
-#landing h2,
-#landing h3,
-#landing h4 {
+#landing section h1,
+#landing section h2,
+#landing section h3,
+#landing section h4 {
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+#landing header h1,
+#landing header h2,
+#landing header h3,
+#landing header h4 {
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -78,7 +152,7 @@ body {
   display: table;
   width: 100%;
   height: 100%;
-  background: url(../images/11.jpg) no-repeat center center scroll;
+  background: url(../images/bg.jpg) no-repeat center center scroll;
   -webkit-background-size: cover;
      -moz-background-size: cover;
        -o-background-size: cover;
@@ -112,7 +186,7 @@ body {
 }
 
 #landing .about {
-  height: 400px;
+  padding: 5px;
   background-color: #599348;
 }
 
@@ -141,10 +215,13 @@ body {
   outline-offset: -2px;
 }
 
+#landing .navbar-inverse .navbar-primary a {
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
 #landing .navbar-inverse a {
   color: #fff;
   text-decoration: none;
-  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
 #landing .navbar-inverse a:hover,

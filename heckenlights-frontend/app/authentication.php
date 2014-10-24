@@ -1,6 +1,6 @@
 <?php
 
-require_once 'model/AuthenticationModel.php';
+require_once 'model/Authentication.php';
 require_once 'lib/RestApiClient.php';
 require_once 'lib/UploadHandler.php';
 require_once 'lib/recaptchalib.php';
@@ -15,7 +15,7 @@ define('HUMAN_OR_MACHINE_KEY', "humanOrMachine");
 
 function getAuthentication($session)
 {
-    $model = new AuthenticationModel();
+    $model = new Authentication();
     $model->setRecaptchaPublicKey(constant(RECAPTCHA_PUBLIC_KEY));
 
     if (array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {

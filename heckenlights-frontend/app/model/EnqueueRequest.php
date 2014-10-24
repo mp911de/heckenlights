@@ -6,7 +6,7 @@
  * Date: 23.10.14
  * Time: 13:39
  */
-class EnqueueModel
+class EnqueueRequest
 {
     public $enqueuedCommandId = '';
     public $trackName;

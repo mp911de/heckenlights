@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         },
 
         useminPrepare: {
-            html: ['index.html', 'landing.html']
+            html: ['index.html', 'landing.html.de.en']
         },
 
 
@@ -60,7 +60,7 @@ module.exports = function (grunt) {
                 },
                 files: [
                     {src: ['css/*', 'js/**', 'fonts/**', 'images/**']},
-                    {src: ['landing.html']}]
+                    {src: ['landing.html.de.en']}]
             }
         }
 

@@ -39,14 +39,82 @@ body {
   height: 100%;
 }
 
+.navbar-nav li > div {
+  position: relative;
+  display: block;
+  padding: 15px 5px 10px 5px;
+}
+
+.navbar-inverse .navbar-nav > li {
+
+  @twitter: #00acee;
+  @gplus: #e93f2e;
+  @fb: #3b5998;
+
+  a.btn-social {
+    height: 30px;
+    padding: 3px;
+    margin: 10px 5px;
+    border-radius: 3px;
+    text-shadow: none;
+    font-size: 0.8em;
+    font-weight: 700;
+  }
+
+  .btn-twitter {
+    background: @twitter;
+    border: 1px solid darken(@twitter, 15%);
+    color: #fff
+  }
+  .btn-twitter:link, .btn-twitter:visited {
+    color: #fff
+  }
+  .btn-twitter:active, .btn-twitter:hover {
+    background: darken(@twitter, 5%);
+    color: #fff
+  }
+  .btn-facebook {
+    background: @fb;
+    border: 1px solid darken(@fb, 10%);
+    color: #fff
+  }
+  .btn-facebook:link, .btn-facebook:visited {
+    color: #fff
+  }
+  .btn-facebook:active, .btn-facebook:hover {
+    background: darken(@fb, 5%);
+    color: #fff
+  }
+  .btn-googleplus {
+    background: @gplus;
+    border: 1px solid darken(@gplus, 20%);
+    color: #fff
+  }
+  .btn-googleplus:link, .btn-googleplus:visited {
+    color: #fff
+  }
+  .btn-googleplus:active, .btn-googleplus:hover {
+    background: darken(@gplus, 5%);
+    color: #fff
+  }
+}
+
 /* Footer */
 
 #landing {
 
   @linkbase: #333;
 
-  h1, h2, h3, h4 {
-    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  section {
+    h1, h2, h3, h4 {
+      text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  header {
+    h1, h2, h3, h4 {
+      text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+    }
   }
 
   a {
@@ -80,7 +148,7 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    background: url(../images/11.jpg) no-repeat center center scroll;
+    background: url(../images/bg.jpg) no-repeat center center scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -109,13 +177,13 @@ body {
     height: 10px;
   }
 
-  section .container{
+  section .container {
     padding: 50px 0;
   }
 
   .about {
-    height: 400px;
     background-color: #599348;
+    padding: 5px;
   }
 
   .how {
@@ -126,7 +194,7 @@ body {
   footer {
     background-color: #eee;
 
-    .container{
+    .container {
       padding: 100px 0;
     }
   }
@@ -144,10 +212,18 @@ body {
   }
 
   .navbar-inverse {
+    .navbar-primary {
+      a {
+        text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      a:hover,
+      a:focus {
+      }
+    }
     a {
       color: #fff;
       text-decoration: none;
-      text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
     }
 
     a:hover,

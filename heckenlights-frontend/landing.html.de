@@ -5,8 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-          content="Heckenlights is a christmas light installation controlled using MIDI that allows you to control it.">
+          content="Heckenlights ist eine Weihnachtsbeleuchtung, die mit MIDI gesteuert wird. Heckenlights erlaubt dir Kontrolle zu übernehmen.">
     <meta name="author" content="Mark Paluch">
+    <meta property="og:title " content="HECKENLIGHTS">
+    <meta property="og:site_name " content="HECKENLIGHTS">
+    <meta name="og:description"
+          content="Heckenlights ist eine Weihnachtsbeleuchtung, die mit MIDI gesteuert wird. Heckenlights erlaubt dir Kontrolle zu übernehmen.">
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:image"
+          content="images/icon.png" />
 
     <title>HECKENLIGHTS</title>
 
@@ -24,7 +32,8 @@
     <!--[if IE]>
     <link rel="shortcut icon" href="favicon.ico">
     <![endif]-->
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="images/icon.png">
+    <link rel="apple-touch-icon" href="images/icon.png">
 
 </head>
 
@@ -33,7 +42,7 @@
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">Navigation umschalten</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -41,10 +50,22 @@
             <a class="navbar-brand" href="#">Heckenlights</a>
         </div>
         <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-primary">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">Über</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a id="sharetwitter" href="#" title="Auf Twitter teilen" target="_blank" class="btn btn-twitter btn-social"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                <li>
+                    <a id="sharefb" href="#" title="Auf Facebook teilen" target="_blank" class="btn btn-facebook btn-social"><i class="fa fa-facebook"></i> Facebook</a>
+                </li>
+                <li>
+                    <a id="sharegplus" href="#" title="Auf Google+ teilen" target="_blank" class="btn btn-googleplus btn-social"><i class="fa fa-google-plus"></i> Google+</a>
+                </li>
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -56,9 +77,9 @@
     <div class="text-vertical-center">
         <h1>Heckenlights</h1>
 
-        <h3>Become a Christmas Light Master.</h3>
+        <h3>Übernimm' die Kontrolle über das Licht.</h3>
         <br>
-        <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
+        <a href="#about" class="btn btn-dark btn-lg">Mehr Erfahren</a>
     </div>
 </header>
 
@@ -71,24 +92,24 @@
 
                 <div class="shadow">
                     <div class="whitebox">
-                        <h2 class="wrapshadow">Take control.</h2>
+                        <h2 class="wrapshadow">Übernehme die Kontrolle.</h2>
 
-                        <p class="lead">Heckenlights is a christmas light installation controlled using <a
-                                href="http://en.wikipedia.org/wiki/General_MIDI"><span
-                                class="glyphicon glyphicon-music"></span> MIDI</a>. Heckenlights allows <span
-                                class="glyphicon glyphicon-hand-right"></span> you to take over control and watch it
-                            play. Become your self a program director using your christmas MIDI music.<br/><br/>
+                        <p class="lead">Heckenlights ist eine Weihnachtsbeleuchtung, die über <a
+                                href="http://de.wikipedia.org/wiki/General_MIDI"><span
+                                class="glyphicon glyphicon-music"></span> MIDI</a> gesteuert wird. Heckenlights gibt dir <span
+                                class="glyphicon glyphicon-hand-right"></span> die Kontrolle und zeigt dir, was gespielt wird.
+                            Werde zum Programmdirektor und nutze deine Weihnachtsmusik im MIDI-Format.<br/><br/>
 
-                            Heckenlights will start on Dec. 1st 2014 and will be available until Jan. 6th 2015. Since
-                            christmas lights are cool only at night Heckenlights will operate daily between <a
+                            Heckenlights startet am 1. Dezember 2014 und bleibt bis zum 6. Januar 2015 aktiv. Weihnachtsbeleuchtung wirkt nur
+                            bei Dunkelheit, deshalb ist Heckenlights zwischen <a
                                     href="http://www.timeanddate.com/worldclock/converted.html?iso=20141201T17&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248">17:00
-                                CET</a> to <a
+                                CET</a> bis <a
                                     href="http://www.timeanddate.com/worldclock/converted.html?iso=20141201T22&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248">22:00
-                                CET</a> and <a
+                                CET</a> und <a
                                     href="http://www.timeanddate.com/worldclock/converted.html?iso=20141201T05&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248">5:00
-                                CET</a> to <a
+                                CET</a> bis <a
                                     href="http://www.timeanddate.com/worldclock/converted.html?iso=20141201T08&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248">8:00
-                                CET</a>.</p>
+                                CET</a> aktiv.</p>
                     </div>
                 </div>
             </div>
@@ -97,6 +118,7 @@
     </div>
     <!-- /.container -->
 </section>
+
 
 <!-- Footer -->
 <footer>
@@ -133,6 +155,8 @@
 </footer>
 
 
+<div id="fb-root"></div>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -155,6 +179,11 @@
             }
         });
     });
+
+    $("#sharefb").attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + window.location);
+    $("#sharetwitter").attr('href', 'http://twitter.com/home?status=' + escape("Visit #heckenlights at " + window.location));
+    $("#sharegplus").attr('href', 'https://plus.google.com/share?url=' + window.location);
+
 </script>
 </body>
 </html>

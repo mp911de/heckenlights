@@ -16,8 +16,8 @@ define('SUBMIT_RESULT_QUOTA', 'QUOTA');
 define('POST', "POST");
 
 require_once 'model/PlaylistEntry.php';
-require_once 'model/PlaylistModel.php';
-require_once 'model/EnqueueModel.php';
+require_once 'model/Playlist.php';
+require_once 'model/EnqueueRequest.php';
 require_once 'lib/RestApiClient.php';
 require_once 'lib/UploadHandler.php';
 require_once 'authentication.php';
@@ -46,7 +46,7 @@ function submitMidiFile($api, $session)
             $header = implode($header);
         }
 
-        $enqueueResult = new EnqueueModel();
+        $enqueueResult = new EnqueueRequest();
 
         if (strlen(strstr($header, "HTTP/1.1 200")) > 0) {
             $enqueue = json_decode($rawResponse->body, true);

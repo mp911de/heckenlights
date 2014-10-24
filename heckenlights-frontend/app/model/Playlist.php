@@ -6,7 +6,7 @@
  * Time: 21:21
  */
 
-class PlaylistModel
+class Playlist
 {
     public $entries;
 

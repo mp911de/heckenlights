@@ -6,7 +6,7 @@
  * Date: 11.12.13
  * Time: 21:21
  */
-class AuthenticationModel
+class Authentication
 {
     public $recaptchaPublicKey;
     public $humanOrMachine = "machine";
