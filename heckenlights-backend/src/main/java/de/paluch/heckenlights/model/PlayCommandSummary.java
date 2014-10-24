@@ -8,7 +8,7 @@ import java.util.List;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 02.12.13 18:20
  */
-public class PlayCommandSummaryModel {
+public class PlayCommandSummary {
     private String id;
 
     private Date created;

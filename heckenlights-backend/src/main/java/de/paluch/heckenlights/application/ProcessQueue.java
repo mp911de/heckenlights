@@ -6,14 +6,14 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
 
+import de.paluch.heckenlights.model.PlayCommandSummary;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import de.paluch.heckenlights.client.MidiRelayClient;
 import de.paluch.heckenlights.client.PlayerStateRepresentation;
 import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.PlayCommandSummaryModel;
-import de.paluch.heckenlights.model.TrackContentModel;
+import de.paluch.heckenlights.model.TrackContent;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 
 /**
@@ -46,13 +46,13 @@ public class ProcessQueue {
             return;
         }
 
-        List<PlayCommandSummaryModel> commands = playCommandService.getEnquedCommands();
+        List<PlayCommandSummary> commands = playCommandService.getEnquedCommands();
 
         if (commands.isEmpty()) {
             populateQueue.populateQueue();
         } else {
-            PlayCommandSummaryModel playCommand = commands.get(0);
-            TrackContentModel trackContent = playCommandService.getTrackContent(playCommand.getId());
+            PlayCommandSummary playCommand = commands.get(0);
+            TrackContent trackContent = playCommandService.getTrackContent(playCommand.getId());
             log.info("Triggering play of " + trackContent.getFilename() + ", duration " + playCommand.getDuration()
                     + " secs submitted by " + playCommand.getSubmissionHost());
             client.play(trackContent.getId(), trackContent.getFilename(), trackContent.getContent());

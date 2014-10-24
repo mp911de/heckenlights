@@ -4,7 +4,7 @@ package de.paluch.heckenlights.model;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 01.12.13 21:08
  */
-public class EnqueueResultModel
+public class EnqueueResult
 {
 
     private String commandId;

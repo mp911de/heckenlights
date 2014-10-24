@@ -1,21 +1,18 @@
 package de.paluch.heckenlights.application;
 
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
-
+import com.google.common.io.Files;
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-
-import com.google.common.io.Files;
-
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueModel;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -28,7 +25,7 @@ public class PopulateQueue {
     private String midiDirectory;
 
     @Inject
-    private Enqueue enqueue;
+    private EnqueueTrack enqueueTrack;
 
     public void populateQueue() throws IOException, InvalidMidiDataException, DurationExceededException {
 
@@ -41,14 +38,14 @@ public class PopulateQueue {
             for (File file : files) {
                 byte[] bytes = Files.asByteSource(file).read();
 
-                EnqueueModel model = new EnqueueModel();
+                EnqueueRequest model = new EnqueueRequest();
                 model.setContent(bytes);
                 model.setExternalSessionId(getClass().getSimpleName());
                 model.setSubmissionHost(getClass().getSimpleName());
                 model.setFileName(FilenameUtils.getName(file.getName()));
 
                 model.setCreated(new Date());
-                enqueue.enqueue(model);
+                enqueueTrack.enqueue(model);
             }
         }
     }

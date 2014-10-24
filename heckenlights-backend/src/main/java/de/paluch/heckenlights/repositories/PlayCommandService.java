@@ -14,6 +14,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import de.paluch.heckenlights.model.EnqueueRequest;
+import de.paluch.heckenlights.model.PlayCommandSummary;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -31,10 +33,8 @@ import com.mongodb.gridfs.GridFSFile;
 
 import de.paluch.heckenlights.client.MidiRelayClient;
 import de.paluch.heckenlights.client.PlayerStateRepresentation;
-import de.paluch.heckenlights.model.EnqueueModel;
-import de.paluch.heckenlights.model.PlayCommandSummaryModel;
 import de.paluch.heckenlights.model.PlayStatus;
-import de.paluch.heckenlights.model.TrackContentModel;
+import de.paluch.heckenlights.model.TrackContent;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -82,7 +82,7 @@ public class PlayCommandService {
         return result;
     }
 
-    public void storeEnqueueRequest(EnqueueModel enqueue, ObjectId fileReference) {
+    public void storeEnqueueRequest(EnqueueRequest enqueue, ObjectId fileReference) {
 
         PlayCommandDocument command = new PlayCommandDocument();
 
@@ -98,22 +98,22 @@ public class PlayCommandService {
         playCommandRepository.save(command);
     }
 
-    public List<PlayCommandSummaryModel> getEnquedCommands() {
+    public List<PlayCommandSummary> getEnquedCommands() {
         List<PlayCommandDocument> documents = getPlayCommandDocuments(ImmutableList.of(PlayStatus.ENQUEUED), 100);
-        List<PlayCommandSummaryModel> result = Lists.newArrayList();
+        List<PlayCommandSummary> result = Lists.newArrayList();
 
         for (PlayCommandDocument playCommandDocument : documents) {
-            PlayCommandSummaryModel summaryModel = toSummaryModel(playCommandDocument);
+            PlayCommandSummary summaryModel = toSummaryModel(playCommandDocument);
 
             result.add(summaryModel);
         }
         return result;
     }
 
-    public List<PlayCommandSummaryModel> getListByPlayStatusOrderByCreated(List<PlayStatus> states, int limit) {
+    public List<PlayCommandSummary> getListByPlayStatusOrderByCreated(List<PlayStatus> states, int limit) {
 
         List<PlayCommandDocument> documents = getPlayCommandDocuments(states, limit);
-        List<PlayCommandSummaryModel> result = Lists.newArrayList();
+        List<PlayCommandSummary> result = Lists.newArrayList();
 
         int timeToStart = 0;
         PlayerStateRepresentation state = client.getState();
@@ -123,7 +123,7 @@ public class PlayCommandService {
         }
 
         for (PlayCommandDocument playCommandDocument : documents) {
-            PlayCommandSummaryModel summaryModel = toSummaryModel(playCommandDocument);
+            PlayCommandSummary summaryModel = toSummaryModel(playCommandDocument);
             int trackTimeToPlay = playCommandDocument.getDuration();
 
             summaryModel.setTimeToStart(timeToStart);
@@ -146,10 +146,10 @@ public class PlayCommandService {
         return result;
     }
 
-    private int appendCurrentTrack(List<PlayCommandSummaryModel> result, int timeToStart, PlayerStateRepresentation state) {
+    private int appendCurrentTrack(List<PlayCommandSummary> result, int timeToStart, PlayerStateRepresentation state) {
         PlayCommandDocument playCommandDocument = playCommandRepository.findOne(state.getTrack().getId());
         if (playCommandDocument != null) {
-            PlayCommandSummaryModel currentTrack = toSummaryModel(playCommandDocument);
+            PlayCommandSummary currentTrack = toSummaryModel(playCommandDocument);
             currentTrack.setPlayStatus(PlayStatus.PLAYING);
             currentTrack.setTimeToStart(0);
             currentTrack.setRemaining(state.getEstimatedSecondsToPlay());
@@ -159,7 +159,7 @@ public class PlayCommandService {
         return timeToStart;
     }
 
-    public TrackContentModel getTrackContent(String id) throws IOException {
+    public TrackContent getTrackContent(String id) throws IOException {
         PlayCommandDocument playCommandDocument = playCommandRepository.findOne(id);
         if (playCommandDocument == null) {
             return null;
@@ -170,7 +170,7 @@ public class PlayCommandService {
             throw new IllegalStateException("Cannot find file for playCommand " + id);
         }
 
-        TrackContentModel result = new TrackContentModel();
+        TrackContent result = new TrackContent();
         result.setId(id);
 
         try (ByteArrayOutputStream buffer = new ByteArrayOutputStream(); InputStream is = file.getInputStream()) {
@@ -193,10 +193,10 @@ public class PlayCommandService {
         return documents;
     }
 
-    public PlayCommandSummaryModel getPlayCommand(String id) {
+    public PlayCommandSummary getPlayCommand(String id) {
         PlayCommandDocument playCommandDocument = playCommandRepository.findOne(id);
         if (playCommandDocument != null) {
-            PlayCommandSummaryModel summaryModel = toSummaryModel(playCommandDocument);
+            PlayCommandSummary summaryModel = toSummaryModel(playCommandDocument);
             summaryModel.setCaptures(getDateOfFiles(playCommandDocument.getCaptures()));
             return summaryModel;
         }
@@ -227,8 +227,8 @@ public class PlayCommandService {
 
     }
 
-    private PlayCommandSummaryModel toSummaryModel(PlayCommandDocument from) {
-        PlayCommandSummaryModel result = new PlayCommandSummaryModel();
+    private PlayCommandSummary toSummaryModel(PlayCommandDocument from) {
+        PlayCommandSummary result = new PlayCommandSummary();
 
         result.setCreated(from.getCreated());
         result.setDuration(from.getDuration());

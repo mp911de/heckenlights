@@ -3,13 +3,13 @@ package de.paluch.heckenlights.model;
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
-public class TrackContentModel {
+public class TrackContent {
 
     private String id;
     private String filename;
     private byte[] content;
 
-    public TrackContentModel() {
+    public TrackContent() {
     }
 
     public String getId() {

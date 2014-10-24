@@ -1,30 +1,29 @@
 package de.paluch.heckenlights.application;
 
+import javax.inject.Inject;
+import javax.sound.midi.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.sound.midi.*;
-
-import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.springframework.stereotype.Component;
-
 import com.google.common.io.Closer;
-
 import de.paluch.heckenlights.EnqueueS;
 import de.paluch.heckenlights.model.*;
 import de.paluch.heckenlights.repositories.PlayCommandService;
+import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.springframework.stereotype.Component;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:47
  */
 @Component
-public class Enqueue {
-    private Logger log = Logger.getLogger(getClass());
+public class EnqueueTrack {
+
+	public static final String CONTENT_TYPE = "audio/midi";
+	private Logger log = Logger.getLogger(getClass());
 
     @Inject
     private PlayCommandService playCommandService;
@@ -34,7 +33,7 @@ public class Enqueue {
     private final static int QUOTA = 10;
     private final static int QUOTA_MINUTES = 30;
 
-    public EnqueueResultModel enqueueWithQuotaCheck(EnqueueModel enqueue) throws IOException, InvalidMidiDataException,
+    public EnqueueResult enqueueWithQuotaCheck(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
             DurationExceededException, QuotaExceededException {
 
         int count = playCommandService.getEnquedCommandCount(enqueue.getExternalSessionId(), enqueue.getSubmissionHost(),
@@ -47,7 +46,7 @@ public class Enqueue {
         return enqueue(enqueue);
     }
 
-    public EnqueueResultModel enqueue(EnqueueModel enqueue) throws IOException, InvalidMidiDataException,
+    public EnqueueResult enqueue(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
             DurationExceededException {
         Closer closer = Closer.create();
         try {
@@ -62,7 +61,7 @@ public class Enqueue {
 
             String id = UUID.randomUUID().toString();
             int timeToPlay = playCommandService.estimateTimeToPlayQueue();
-            ObjectId fileReference = playCommandService.createFile(enqueue.getFileName(), "audio/midi", enqueue.getContent(),
+            ObjectId fileReference = playCommandService.createFile(enqueue.getFileName(), CONTENT_TYPE, enqueue.getContent(),
                     id);
 
             enqueue.setTrackName(new EnqueueS().getSequenceName(sequence));
@@ -71,7 +70,7 @@ public class Enqueue {
 
             playCommandService.storeEnqueueRequest(enqueue, fileReference);
 
-            EnqueueResultModel result = new EnqueueResultModel();
+            EnqueueResult result = new EnqueueResult();
             result.setDurationToPlay(timeToPlay);
             result.setCommandId(enqueue.getCommandId());
             result.setTrackName(enqueue.getTrackName());

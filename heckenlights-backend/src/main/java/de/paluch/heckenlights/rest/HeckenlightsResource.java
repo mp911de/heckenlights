@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.google.common.collect.Lists;
 
-import de.paluch.heckenlights.application.Enqueue;
+import de.paluch.heckenlights.application.EnqueueTrack;
 import de.paluch.heckenlights.application.GetPlaylist;
 import de.paluch.heckenlights.model.*;
 
@@ -31,7 +31,7 @@ import de.paluch.heckenlights.model.*;
 public class HeckenlightsResource {
 
     @Inject
-    private Enqueue enqueue;
+    private EnqueueTrack enqueueTrack;
 
     @Inject
     private GetPlaylist getPlaylist;
@@ -49,8 +49,8 @@ public class HeckenlightsResource {
         }
 
         try {
-            EnqueueModel model = createModel(submissionHost, sessionId, fileName, input);
-            EnqueueResultModel enqueResult = enqueue.enqueueWithQuotaCheck(model);
+            EnqueueRequest model = createModel(submissionHost, sessionId, fileName, input);
+            EnqueueResult enqueResult = enqueueTrack.enqueueWithQuotaCheck(model);
 
             EnqueueResponseRepresentation result = toResult(enqueResult);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -72,10 +72,10 @@ public class HeckenlightsResource {
 
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
     public PlayCommandsRepresentation find(@QueryParam("playStatus") PlayStatus playStatus) {
-        List<PlayCommandSummaryModel> playlist = getPlaylist.getPlaylist(playStatus);
+        List<PlayCommandSummary> playlist = getPlaylist.getPlaylist(playStatus);
         PlayCommandsRepresentation result = new PlayCommandsRepresentation();
 
-        for (PlayCommandSummaryModel summaryModel : playlist) {
+        for (PlayCommandSummary summaryModel : playlist) {
             PlayCommandRepresentation playCommandRepresentation = new PlayCommandRepresentation();
 
             toPlayCommand(summaryModel, playCommandRepresentation);
@@ -85,7 +85,7 @@ public class HeckenlightsResource {
         return result;
     }
 
-    private void toPlayCommand(PlayCommandSummaryModel summaryModel, PlayCommandRepresentation playCommandRepresentation) {
+    private void toPlayCommand(PlayCommandSummary summaryModel, PlayCommandRepresentation playCommandRepresentation) {
         playCommandRepresentation.setCreated(summaryModel.getCreated());
         playCommandRepresentation.setDuration(summaryModel.getDuration());
         playCommandRepresentation.setException(summaryModel.getException());
@@ -114,7 +114,7 @@ public class HeckenlightsResource {
         return result;
     }
 
-    private EnqueueResponseRepresentation toResult(EnqueueResultModel model) {
+    private EnqueueResponseRepresentation toResult(EnqueueResult model) {
         EnqueueResponseRepresentation result = new EnqueueResponseRepresentation();
         result.setEnqueuedCommandId(model.getCommandId());
         result.setMessage(model.getException());
@@ -124,11 +124,11 @@ public class HeckenlightsResource {
         return result;
     }
 
-    private EnqueueModel createModel(String submissionHost, String sessionId, String fileName, byte[] input) {
+    private EnqueueRequest createModel(String submissionHost, String sessionId, String fileName, byte[] input) {
 
         byte[] bytes = input;
 
-        EnqueueModel model = new EnqueueModel();
+        EnqueueRequest model = new EnqueueRequest();
 
         model.setFileName(FilenameUtils.getName(fileName));
         model.setContent(bytes);
@@ -140,7 +140,7 @@ public class HeckenlightsResource {
 
     @RequestMapping(value = "{id}", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
     public PlayCommandRepresentation find(@PathVariable("id") String id) {
-        PlayCommandSummaryModel playCommand = getPlaylist.getPlayCommand(id);
+        PlayCommandSummary playCommand = getPlaylist.getPlayCommand(id);
         if (playCommand == null) {
             throw new NotFoundException("PlayCommand with id " + id + " not found");
         }

@@ -3,8 +3,8 @@ package de.paluch.heckenlights.application;
 import static org.mockito.Mockito.*;
 
 import com.google.common.collect.ImmutableList;
-import de.paluch.heckenlights.model.PlayCommandSummaryModel;
-import de.paluch.heckenlights.model.TrackContentModel;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.TrackContent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -64,20 +64,20 @@ public class ProcessQueueTest {
 
 		when(client.getState()).thenReturn(psr);
 
-		PlayCommandSummaryModel playCommandSummaryModel = new PlayCommandSummaryModel();
-		playCommandSummaryModel.setId("the-id");
+		PlayCommandSummary playCommandSummary = new PlayCommandSummary();
+		playCommandSummary.setId("the-id");
 
-		TrackContentModel trackContentModel = new TrackContentModel();
-		trackContentModel.setId(playCommandSummaryModel.getId());
-		trackContentModel.setFilename("the-file");
-		trackContentModel.setContent(new byte[]{1, 2, 3});
+		TrackContent trackContent = new TrackContent();
+		trackContent.setId(playCommandSummary.getId());
+		trackContent.setFilename("the-file");
+		trackContent.setContent(new byte[]{1, 2, 3});
 
-		when(playCommandService.getEnquedCommands()).thenReturn(ImmutableList.of(playCommandSummaryModel));
-		when(playCommandService.getTrackContent(playCommandSummaryModel.getId())).thenReturn(trackContentModel);
+		when(playCommandService.getEnquedCommands()).thenReturn(ImmutableList.of(playCommandSummary));
+		when(playCommandService.getTrackContent(playCommandSummary.getId())).thenReturn(trackContent);
 
         sut.processQueue();
 
-		verify(client).play(trackContentModel.getId(),trackContentModel.getFilename(), trackContentModel.getContent());
+		verify(client).play(trackContent.getId(), trackContent.getFilename(), trackContent.getContent());
 
     }
 

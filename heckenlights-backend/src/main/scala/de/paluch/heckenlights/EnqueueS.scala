@@ -5,6 +5,7 @@ import javax.sound.midi._
 import de.paluch.heckenlights.application.MidiMessageDetail
 
 /**
+ * This is mostly for fun reasons scala.
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 17.02.14 20:11
  */

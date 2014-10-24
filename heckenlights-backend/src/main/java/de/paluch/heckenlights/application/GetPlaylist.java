@@ -1,6 +1,6 @@
 package de.paluch.heckenlights.application;
 
-import de.paluch.heckenlights.model.PlayCommandSummaryModel;
+import de.paluch.heckenlights.model.PlayCommandSummary;
 import de.paluch.heckenlights.model.PlayStatus;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class GetPlaylist
     @Inject
     private PlayCommandService playCommandService;
 
-    public List<PlayCommandSummaryModel> getPlaylist(PlayStatus playStatus)
+    public List<PlayCommandSummary> getPlaylist(PlayStatus playStatus)
     {
         if (playStatus == null)
         {
@@ -31,7 +31,7 @@ public class GetPlaylist
         return playCommandService.getListByPlayStatusOrderByCreated(Arrays.asList(playStatus), 20);
     }
 
-    public PlayCommandSummaryModel getPlayCommand(String id)
+    public PlayCommandSummary getPlayCommand(String id)
     {
         return playCommandService.getPlayCommand(id);
     }

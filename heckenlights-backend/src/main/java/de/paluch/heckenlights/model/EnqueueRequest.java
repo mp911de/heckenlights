@@ -6,7 +6,7 @@ import java.util.Date;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:49
  */
-public class EnqueueModel
+public class EnqueueRequest
 {
 
     private String commandId;
