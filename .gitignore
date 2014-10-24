@@ -6,3 +6,5 @@ settings-override.php
 heckenlights-frontend/node_modules
 archive.zip
 application.properties
+*.html.de
+*.html.en
