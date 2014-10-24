@@ -59,8 +59,25 @@ module.exports = function (grunt) {
                     archive: 'archive.zip'
                 },
                 files: [
-                    {src: ['css/*', 'js/**', 'fonts/**', 'images/**']},
-                    {src: ['landing.html.de.en']}]
+                    {src: ['css/*', 'js/**', 'fonts/**', 'images/**', 'favicon.ico']},
+                    {src: ['landing.html.*']}]
+            }
+        },
+
+        mustache_render: {
+            de: {
+                files: [{
+                    data: "src/locales/de.json",
+                    template: "landing.html",
+                    dest: "landing.html.de"
+                }]
+            },
+            en: {
+                files: [{
+                    data: "src/locales/en.json",
+                    template: "landing.html",
+                    dest: "landing.html.en"
+                }]
             }
         }
 
@@ -69,6 +86,7 @@ module.exports = function (grunt) {
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('browserstack-runner');
+    grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-connect');
@@ -82,13 +100,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jekyll');
     grunt.loadNpmTasks('grunt-recess');
     grunt.loadNpmTasks('grunt-sed');
+    grunt.loadNpmTasks('grunt-mustache-render');
 
 
     // CSS distribution task.
     grunt.registerTask('dist-css', ['recess']);
 
     // Full distribution task.
-    grunt.registerTask('dist', ['clean', 'dist-css', 'compress']);
+    grunt.registerTask('dist', ['clean', 'dist-css', 'mustache_render', 'compress']);
 
     // Default task.
     grunt.registerTask('default', ['dist']);
