@@ -1,20 +1,19 @@
 package de.paluch.heckenlights.application;
 
-import java.io.IOException;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
-
-import de.paluch.heckenlights.model.PlayCommandSummary;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.util.List;
 
 import de.paluch.heckenlights.client.MidiRelayClient;
 import de.paluch.heckenlights.client.PlayerStateRepresentation;
 import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.TrackContent;
 import de.paluch.heckenlights.repositories.PlayCommandService;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -33,6 +32,9 @@ public class ProcessQueue {
 
     @Inject
     private PopulateQueue populateQueue;
+
+	@Inject
+	private RuleState ruleState;
 
     public void processQueue() throws IOException, InvalidMidiDataException, DurationExceededException {
 

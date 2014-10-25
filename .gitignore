@@ -1,5 +1,6 @@
 heckenlights-backend/logs
 heckenlights-backend/target
+heckenlights-backend/rules.xml
 *.iml
 atlassian-ide-plugin.xml
 settings-override.php

@@ -91,5 +91,7 @@
         </property>
     </bean>
 
+    <bean class="de.paluch.heckenlights.model.RuleState" scope="singleton"></bean>
+
 
 </beans>

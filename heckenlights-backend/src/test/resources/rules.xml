@@ -1,0 +1,33 @@
+<rules>
+    <timezone>Europe/Berlin</timezone>
+    <timeunit>MINUTES</timeunit>
+    <defaultAction>LIGHTS_OFF</defaultAction>
+
+    <rule>
+        <from>17:00</from>
+        <to>22:00</to>
+        <maxPlaylistPlayedDuration>10</maxPlaylistPlayedDuration>
+        <action>PLAYLIST_AUTO_ENQEUE</action>
+    </rule>
+
+    <rule>
+        <from>17:00</from>
+        <to>22:00</to>
+        <action>LIGHTS_ON</action>
+    </rule>
+
+    <rule>
+        <from>5:00</from>
+        <to>8:00</to>
+        <action>PLAYLIST</action>
+        <queueIsEmpty>false</queueIsEmpty>
+    </rule>
+
+    <rule>
+        <from>5:00</from>
+        <to>8:00</to>
+        <queueIsEmpty>true</queueIsEmpty>
+        <action>LIGHTS_ON</action>
+    </rule>
+
+</rules>
