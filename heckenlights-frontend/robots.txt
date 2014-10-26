@@ -1,0 +1,26 @@
+#Google Search Engine Robot
+User-agent: Googlebot
+Allow: /*
+Disallow: /app/*
+
+#Yahoo! Search Engine Robot
+User-Agent: Slurp
+Allow: /*
+Disallow: /app/*
+
+#Yandex Search Engine Robot
+User-agent: Yandex
+Allow: /*
+Disallow: /app/*
+
+#Microsoft Search Engine Robot
+User-Agent: msnbot
+Allow: /*
+Disallow: /app/*
+
+# Every bot that might possibly read and respect this file.
+User-agent: *
+Allow: /*
+Disallow: /app/*
+
+Crawl-delay: 1
