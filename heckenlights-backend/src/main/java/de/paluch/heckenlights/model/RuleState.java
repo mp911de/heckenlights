@@ -6,11 +6,19 @@ package de.paluch.heckenlights.model;
 public class RuleState {
 
     private long playlistPlayedTimeMs = 0;
-    private long staticOnTime = 0;
+    private long lightsOnTimeMs = 0;
     private Rule activeRule;
     private Rule.Action activeAction;
     private long ruleActiveSince = 0;
     private int playlistSize = 0;
+
+    public void addPlaylistPlayedTimeMs(long timeMs) {
+        playlistPlayedTimeMs += timeMs;
+    }
+
+    public void addLightsOnTimeMs(long timeMs) {
+        lightsOnTimeMs += timeMs;
+    }
 
     public long getPlaylistPlayedTimeMs() {
         return playlistPlayedTimeMs;
@@ -20,12 +28,12 @@ public class RuleState {
         this.playlistPlayedTimeMs = playlistPlayedTimeMs;
     }
 
-    public long getStaticOnTime() {
-        return staticOnTime;
+    public long getLightsOnTimeMs() {
+        return lightsOnTimeMs;
     }
 
-    public void setStaticOnTime(long staticOnTime) {
-        this.staticOnTime = staticOnTime;
+    public void setLightsOnTimeMs(long lightsOnTimeMs) {
+        this.lightsOnTimeMs = lightsOnTimeMs;
     }
 
     public Rule getActiveRule() {

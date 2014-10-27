@@ -23,8 +23,12 @@ public class Rule {
     private String to;
 
     private Long maxPlaylistPlayedDuration;
+    private Long minLightsOnDuration;
     private Boolean queueIsEmpty;
     private Action action;
+
+    @XmlElement(name = "reset")
+    private Set<Counter> reset = Sets.newHashSet();
 
     public Set<DayOfWeek> getDays() {
         return days;
@@ -90,7 +94,30 @@ public class Rule {
         this.action = action;
     }
 
+    public Long getMinLightsOnDuration() {
+        return minLightsOnDuration;
+    }
+
+    public void setMinLightsOnDuration(Long minLightsOnDuration) {
+        this.minLightsOnDuration = minLightsOnDuration;
+    }
+
+    public Set<Counter> getReset() {
+        return reset;
+    }
+
+    public void setReset(Set<Counter> reset) {
+        this.reset = reset;
+    }
+
     public static enum Action {
         OFFLINE, LIGHTS_ON, LIGHTS_OFF, PLAYLIST, PLAYLIST_AUTO_ENQEUE;
     }
+
+
+	public static enum Counter {
+        PlaylistPlayedDuration, LightsOnDuration;
+    }
+
+
 }

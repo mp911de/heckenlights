@@ -35,6 +35,7 @@ public class ResolveRule {
             boolean matchTo = false;
             boolean matchQueueSize = false;
             boolean matchPlayedDuration = false;
+            boolean matchLightsOnDuration = false;
 
             if (rule.getHourFrom() < hour || (rule.getHourFrom() == hour && rule.getMinuteFrom() >= minute)) {
                 matchFrom = true;
@@ -66,7 +67,17 @@ public class ResolveRule {
                 matchPlayedDuration = true;
             }
 
-            if (matchFrom && matchQueueSize && matchTo && matchPlayedDuration) {
+            if (rule.getMinLightsOnDuration() != null) {
+                long ms = rules.getTimeunit().toMillis(rule.getMinLightsOnDuration().longValue());
+                matchLightsOnDuration = false;
+                if (ruleState.getLightsOnTimeMs() >= ms) {
+                    matchLightsOnDuration = true;
+                }
+            } else {
+                matchLightsOnDuration = true;
+            }
+
+            if (matchFrom && matchQueueSize && matchTo && matchPlayedDuration && matchLightsOnDuration) {
                 return rule;
             }
 
@@ -75,10 +86,31 @@ public class ResolveRule {
         return new FallbackRule(rules.getDefaultAction());
     }
 
-    private class FallbackRule extends Rule {
+    public static class FallbackRule extends Rule {
 
-        private FallbackRule(Action action) {
+        public FallbackRule(Action action) {
             setAction(action);
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof Rule))
+                return false;
+
+            Rule rule = (Rule) o;
+
+            if (getAction() != rule.getAction())
+                return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return getAction() != null ? getAction().hashCode() : 0;
+        }
+
     }
 }

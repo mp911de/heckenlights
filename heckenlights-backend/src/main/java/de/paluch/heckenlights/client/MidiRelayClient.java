@@ -63,11 +63,27 @@ public class MidiRelayClient {
         clientProxy.play(id, fileName, body);
     }
 
+    public void switchOff() {
+        clientProxy.switchOff();
+    }
+
+    public void switchOn() {
+        clientProxy.switchOn();
+    }
+
     @Path("player")
     public interface MidiRelayClientProxy {
         @GET
         @Produces(MediaType.APPLICATION_JSON)
         PlayerStateRepresentation getState();
+
+        @GET
+        @Path("port/ON")
+        String switchOn();
+
+        @GET
+        @Path("port/OFF")
+        String switchOff();
 
         @PUT
         @Path("play")

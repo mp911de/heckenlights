@@ -1,7 +1,7 @@
 <rules>
     <timezone>Europe/Berlin</timezone>
     <timeunit>MINUTES</timeunit>
-    <defaultAction>LIGHTS_OFF</defaultAction>
+    <defaultAction>OFFLINE</defaultAction>
 
     <rule>
         <from>17:00</from>
@@ -13,8 +13,18 @@
     <rule>
         <from>17:00</from>
         <to>22:00</to>
+        <minLightsOnDuration>10</minLightsOnDuration>
+        <reset>PlaylistPlayedDuration</reset>
+        <reset>LightsOnDuration</reset>
         <action>LIGHTS_ON</action>
     </rule>
+
+    <rule>
+        <from>17:00</from>
+        <to>22:00</to>
+        <action>LIGHTS_ON</action>
+    </rule>
+
 
     <rule>
         <from>5:00</from>

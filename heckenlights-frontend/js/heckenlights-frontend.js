@@ -63,6 +63,13 @@ var heckenlights = (function () {
                     }
                 }
 
+                if (data.jqXHR.status == 423 && data.jqXHR.responseJSON) {
+                    var enqueued = data.jqXHR.responseJSON;
+                    if (enqueued.submitStatus == 'OFFLINE') {
+                        message = "<strong>Heckenlights is offline</strong> Please come back when it's open again.";
+                    }
+                }
+
                 if (data.jqXHR.status == 429 && data.jqXHR.responseJSON) {
                     var enqueued = data.jqXHR.responseJSON;
                     if (enqueued.submitStatus == 'QUOTA') {
@@ -200,16 +207,14 @@ var heckenlights = (function () {
             }
         ).done(function (data) {
 
-
                 var first = true;
-
                 $("#playlist").empty();
 
+                if (data && data.entries && data.entries.length) {
+                    var entries = data.entries;
+                    for (var index in entries) {
 
-                if (data && data.length) {
-                    for (var index in data) {
-
-                        var playCommand = data[index];
+                        var playCommand = entries[index];
                         var trackName = "No name";
                         if (playCommand.trackName && playCommand.trackName != '') {
                             trackName = playCommand.trackName;
@@ -234,7 +239,7 @@ var heckenlights = (function () {
 
                         if (index >= visiblePlaylistEntries) {
                             var html = "<a href=\"#\" class=\"list-group-item\">" +
-                                "<h4 class=\"list-group-item-heading\">and " + (data.length - index + 1) + " more...</h4>" +
+                                "<h4 class=\"list-group-item-heading\">and " + (entries.length - index + 1) + " more...</h4>" +
                                 "</a>"
 
                             $("#playlist").append(html);

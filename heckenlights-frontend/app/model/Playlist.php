@@ -9,6 +9,7 @@
 class Playlist
 {
     public $entries;
+    public $online;
 
     /**
      * @param mixed $entries
@@ -25,6 +26,24 @@ class Playlist
     {
         return $this->entries;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOnline()
+    {
+        return $this->online;
+    }
+
+    /**
+     * @param mixed $online
+     */
+    public function setOnline($online)
+    {
+        $this->online = $online;
+    }
+
+
 
 
 } 

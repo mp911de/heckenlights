@@ -7,12 +7,14 @@ define('DURATION_TO_PLAY', 'durationToPlay');
 define('PLAY_STATUS', 'playStatus');
 define('TRACK_NAME', 'trackName');
 define('PLAY_COMMANDS', 'playCommands');
+define('ONLINE', 'online');
 define('PLAYSTATUS_ERROR', 'ERROR');
 define('PLAYSTATUS_PLAYING', 'PLAYING');
 define('SUBMIT_RESULT_SUCCESS', 'SUCCESS');
 define('SUBMIT_RESULT_ERROR', 'ERROR');
 define('SUBMIT_RESULT_UNAUTHENTICATED', 'UNAUTHENTICATED');
 define('SUBMIT_RESULT_QUOTA', 'QUOTA');
+define('SUBMIT_RESULT_OFFLINE', 'OFFLINE');
 define('POST', "POST");
 
 require_once 'model/PlaylistEntry.php';
@@ -73,7 +75,10 @@ function submitMidiFile($api, $session)
         } else {
 
             $result->success = false;
-            if (strlen(strstr($header, "HTTP/1.1 429")) > 0) {
+            if (strlen(strstr($header, "HTTP/1.1 423")) > 0) {
+                $result->status = 423;
+                $enqueueResult->setSubmitStatus(SUBMIT_RESULT_OFFLINE);
+            } else if (strlen(strstr($header, "HTTP/1.1 429")) > 0) {
                 $result->status = 429;
                 $enqueueResult->setSubmitStatus(SUBMIT_RESULT_QUOTA);
             } else if (strlen(strstr($header, "HTTP/1.1 400")) > 0) {
@@ -122,9 +127,13 @@ function createPlaylistModel($jsonData)
 {
     $json = json_decode($jsonData, true);
     $result = array();
+    $playlist = new Playlist();
+    $playlist->setOnline(false);
 
     if (isset($json[PLAY_COMMANDS]) && is_array($json[PLAY_COMMANDS])) {
         $playcommands = $json[PLAY_COMMANDS];
+        $playlist->setOnline($json[ONLINE]);
+
         foreach ($playcommands as $playcommand) {
 
             $entry = new PlaylistEntry();
@@ -147,7 +156,8 @@ function createPlaylistModel($jsonData)
             $result[] = $entry;
         }
     }
-    return $result;
+    $playlist->setEntries($result);
+    return $playlist;
 }
 
 ?>

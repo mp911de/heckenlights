@@ -73,12 +73,41 @@ public class ResolveRuleTest {
         setTime("17:00");
         Rule result = sut.getRule();
         assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_ON);
+        assertThat(result.getReset()).isEmpty();
 
         ruleState.setPlaylistPlayedTimeMs(TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES));
 
         setTime("18:00");
         result = sut.getRule();
         assertThat(result.getAction()).isEqualTo(Rule.Action.PLAYLIST_AUTO_ENQEUE);
+
+    }
+
+    @Test
+    public void resetCounterRule() throws Exception {
+        ruleState.setPlaylistPlayedTimeMs(TimeUnit.MILLISECONDS.convert(11, TimeUnit.MINUTES));
+        ruleState.setLightsOnTimeMs(TimeUnit.MILLISECONDS.convert(11, TimeUnit.MINUTES));
+
+        setTime("17:00");
+        Rule result = sut.getRule();
+        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_ON);
+        assertThat(result.getReset()).contains(Rule.Counter.PlaylistPlayedDuration, Rule.Counter.LightsOnDuration);
+
+        ruleState.setPlaylistPlayedTimeMs(TimeUnit.MILLISECONDS.convert(11, TimeUnit.MINUTES));
+        ruleState.setLightsOnTimeMs(TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES));
+
+        setTime("18:00");
+        result = sut.getRule();
+        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_ON);
+        assertThat(result.getReset()).isEmpty();
+
+        ruleState.setPlaylistPlayedTimeMs(TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES));
+        ruleState.setLightsOnTimeMs(TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES));
+
+        setTime("18:00");
+        result = sut.getRule();
+        assertThat(result.getAction()).isEqualTo(Rule.Action.PLAYLIST_AUTO_ENQEUE);
+        assertThat(result.getReset()).isEmpty();
 
     }
 

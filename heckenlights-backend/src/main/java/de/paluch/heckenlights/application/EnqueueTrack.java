@@ -22,11 +22,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnqueueTrack {
 
-	public static final String CONTENT_TYPE = "audio/midi";
-	private Logger log = Logger.getLogger(getClass());
+    public static final String CONTENT_TYPE = "audio/midi";
+    private Logger log = Logger.getLogger(getClass());
 
     @Inject
     private PlayCommandService playCommandService;
+
+    @Inject
+    private RuleState ruleState;
 
     private final static int MINIMAL_DURATION_SEC = 10;
     private final static int MAXIMAL_DURATION_SEC = 300;
@@ -34,13 +37,17 @@ public class EnqueueTrack {
     private final static int QUOTA_MINUTES = 30;
 
     public EnqueueResult enqueueWithQuotaCheck(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
-            DurationExceededException, QuotaExceededException {
+            DurationExceededException, QuotaExceededException, OfflineException {
 
         int count = playCommandService.getEnquedCommandCount(enqueue.getExternalSessionId(), enqueue.getSubmissionHost(),
                 QUOTA_MINUTES);
         if (count > QUOTA) {
             throw new QuotaExceededException("Quota limit of " + QUOTA + " for " + QUOTA_MINUTES + " exceeded by "
                     + (count - QUOTA));
+        }
+
+        if (ruleState.getActiveAction() != null && ruleState.getActiveAction() == Rule.Action.OFFLINE) {
+            throw new OfflineException("System is offline");
         }
 
         return enqueue(enqueue);

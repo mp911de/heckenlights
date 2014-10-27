@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RulesFactoryBean extends AbstractFactoryBean<Rules> {
 
-    @Value("rules.location")
+    @Value("${rules.location}")
     private URL ruleLocation;
 
     @Override

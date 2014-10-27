@@ -1,26 +1,24 @@
 package de.paluch.heckenlights.rest;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
+import com.google.common.collect.Lists;
+import de.paluch.heckenlights.application.EnqueueTrack;
+import de.paluch.heckenlights.application.GetOnlineState;
+import de.paluch.heckenlights.application.GetPlaylist;
+import de.paluch.heckenlights.model.*;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
-import com.google.common.collect.Lists;
-
-import de.paluch.heckenlights.application.EnqueueTrack;
-import de.paluch.heckenlights.application.GetPlaylist;
-import de.paluch.heckenlights.model.*;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -35,6 +33,9 @@ public class HeckenlightsResource {
 
     @Inject
     private GetPlaylist getPlaylist;
+
+	@Inject
+	private GetOnlineState getOnlineState;
 
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.POST)
     public ResponseEntity<EnqueueResponseRepresentation> uploadFile(
@@ -66,6 +67,10 @@ public class HeckenlightsResource {
             return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.QUOTA, e.getMessage()),
                     HttpStatus.TOO_MANY_REQUESTS);
 
+        } catch (OfflineException e) {
+            return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.OFFLINE, e.getMessage()),
+                    HttpStatus.LOCKED);
+
         }
 
     }
@@ -73,7 +78,9 @@ public class HeckenlightsResource {
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
     public PlayCommandsRepresentation find(@QueryParam("playStatus") PlayStatus playStatus) {
         List<PlayCommandSummary> playlist = getPlaylist.getPlaylist(playStatus);
-        PlayCommandsRepresentation result = new PlayCommandsRepresentation();
+		boolean isOnline = getOnlineState.isOnline();
+		PlayCommandsRepresentation result = new PlayCommandsRepresentation();
+		result.setOnline(isOnline);
 
         for (PlayCommandSummary summaryModel : playlist) {
             PlayCommandRepresentation playCommandRepresentation = new PlayCommandRepresentation();

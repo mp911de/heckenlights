@@ -13,17 +13,26 @@ import java.util.List;
  */
 @XmlRootElement(name = "playCommands")
 @XmlAccessorType(XmlAccessType.NONE)
-public class PlayCommandsRepresentation
-{
+public class PlayCommandsRepresentation {
     @XmlElement(name = "playCommand")
     private List<PlayCommandRepresentation> playCommands = new ArrayList<>();
 
-    public List<PlayCommandRepresentation> getPlayCommands()
-    {
+    @XmlElement(name = "online")
+    private boolean online;
+
+    public List<PlayCommandRepresentation> getPlayCommands() {
         return playCommands;
     }
-    public void setPlayCommands(List<PlayCommandRepresentation> playCommands)
-    {
+
+    public void setPlayCommands(List<PlayCommandRepresentation> playCommands) {
         this.playCommands = playCommands;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 }
