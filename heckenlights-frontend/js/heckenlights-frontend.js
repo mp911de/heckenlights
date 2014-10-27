@@ -7,7 +7,7 @@ var heckenlights = (function () {
 
     var instance = {};
     var visiblePlaylistEntries = 5;
-
+    var loadPlaylistInterval;
 
     instance.initialize = function () {
 
@@ -31,7 +31,7 @@ var heckenlights = (function () {
             $("#uploadsuccess").fadeOut();
         });
 
-        window.setInterval(function () {
+        loadPlaylistInterval = window.setInterval(function () {
             loadPlaylist()
         }, 5000);
 
@@ -43,7 +43,7 @@ var heckenlights = (function () {
                 if (data.jqXHR.responseJSON) {
                     var enqueued = data.jqXHR.responseJSON;
 
-                    $('#uploadsuccess').html("<strong>Enqeued!</strong> It will take some " + enqueued.durationToPlay + " seconds until the file is played.");
+                    $('#uploadsuccess').html(i18n.t("enqueue_success", {count: enqueued.durationToPlay}));
                     $('#uploadsuccess').fadeIn();
                     setTimeout(function () {
                         $("#uploadsuccess").fadeOut()
@@ -58,7 +58,7 @@ var heckenlights = (function () {
                 if (data.jqXHR.status == 401 && data.jqXHR.responseJSON) {
                     var enqueued = data.jqXHR.responseJSON;
                     if (enqueued.submitStatus == 'UNAUTHENTICATED') {
-                        message = "<strong>Unauthenticated</strong> Please use the captcha to confirm that you are a hooooman.";
+                        message = i18n.t("enqueue_unauthenticated");
                         checkOrCreateRecaptcha();
                     }
                 }
@@ -66,24 +66,23 @@ var heckenlights = (function () {
                 if (data.jqXHR.status == 423 && data.jqXHR.responseJSON) {
                     var enqueued = data.jqXHR.responseJSON;
                     if (enqueued.submitStatus == 'OFFLINE') {
-                        message = "<strong>Heckenlights is offline</strong> Please come back when it's open again.";
+                        message = i18n.t("enqueue_offline");
                     }
                 }
 
                 if (data.jqXHR.status == 429 && data.jqXHR.responseJSON) {
                     var enqueued = data.jqXHR.responseJSON;
                     if (enqueued.submitStatus == 'QUOTA') {
-                        message = "<strong>Too many requests</strong> Please retry later.";
+                        message = i18n.t("enqueue_queue_error");
                     }
                 }
 
-
                 if (message == null && data.jqXHR.status >= 400 && data.jqXHR.status <= 499) {
-                    message = "<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM Midi-File.";
+                    message = i18n.t("enqueue_bad_request");
                 }
 
                 if (message == null && data.jqXHR.status >= 500 && data.jqXHR.status <= 599) {
-                    message = "<strong>Aw, snap!</strong> There was an internal server error.";
+                    message = i18n.t("enqueue_internal_server_error");
                 }
 
                 $('#uploadwarning').html(message);
@@ -112,6 +111,7 @@ var heckenlights = (function () {
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
     }
+
 
     function checkOrCreateRecaptcha() {
         var uri = "api/v1/authentication";
@@ -166,7 +166,7 @@ var heckenlights = (function () {
         }).done(
             function (data) {
                 if (!data.humanOrMachine || data.humanOrMachine == 'machine') {
-                    $('#captchawarning').html("Validation not successful. Please enter the displayed words/numbers. (" + data.challengeResponse + ")");
+                    $('#captchawarning').html(i18n.t("captcha_validation_error"));
 
                     $('#captchawarning').fadeIn();
                     setTimeout(function () {
@@ -177,7 +177,6 @@ var heckenlights = (function () {
                     return;
                 }
 
-
                 if (data.humanOrMachine && data.humanOrMachine == 'human') {
                     $('#captchacontainer').hide();
                     $('#uploadcontainer').show();
@@ -185,15 +184,25 @@ var heckenlights = (function () {
                 }
             }
         ).fail(function () {
-                $('#captchawarning').html("There was an internal server error, could not validate your request.");
-
+                $('#captchawarning').html(i18n.t("internal_server_error"));
                 $('#captchawarning').fadeIn();
+
                 setTimeout(function () {
                     $("#captchawarning").fadeOut();
                 }, 5000);
             });
     }
 
+
+    function siteClosed() {
+        $("#closed").show();
+        $("#closedsign").show();
+    }
+
+    function siteOpen() {
+        $("#closed").hide();
+        $("#closedsign").hide();
+    }
 
     function loadPlaylist() {
         var uri = "api/v1/playlist";
@@ -211,6 +220,14 @@ var heckenlights = (function () {
                 $("#playlist").empty();
 
                 if (data && data.entries && data.entries.length) {
+
+                    if (data.online) {
+                        siteOpen();
+                    }
+                    else {
+                        siteClosed();
+                    }
+
                     var entries = data.entries;
                     for (var index in entries) {
 
@@ -224,7 +241,7 @@ var heckenlights = (function () {
 
                             var html = "<a href=\"#\" class=\"list-group-item active\">" +
                                 "<h4 class=\"list-group-item-heading\"><span class=\"glyphicon glyphicon-play\"></span> " + trackName + "</h4>" +
-                                "<p class=\"list-group-item-text\">Remaining: " + playCommand.remaining + " Seconds</p>" +
+                                "<p class=\"list-group-item-text\">" + i18n.t("remaining_seconds", {count: playCommand.remaining}) + "</p>" +
                                 "</a>"
 
                             $("#playlist").append(html);
@@ -232,14 +249,14 @@ var heckenlights = (function () {
                         } else {
                             var html = "<a href=\"#\" class=\"list-group-item\">" +
                                 "<h4 class=\"list-group-item-heading\">" + trackName + "</h4>" +
-                                "<p class=\"list-group-item-text\">Duration: " + playCommand.duration + " Seconds</p></a>"
+                                "<p class=\"list-group-item-text\">" + i18n.t("duration_seconds", {count: playCommand.duration}) + "</p></a>"
 
                             $("#playlist").append(html);
                         }
 
                         if (index >= visiblePlaylistEntries) {
                             var html = "<a href=\"#\" class=\"list-group-item\">" +
-                                "<h4 class=\"list-group-item-heading\">and " + (entries.length - index + 1) + " more...</h4>" +
+                                "<h4 class=\"list-group-item-heading\">" + i18n.t("and_more", {count: (entries.length - index + 1)}) + "</h4>" +
                                 "</a>"
 
                             $("#playlist").append(html);
@@ -249,12 +266,21 @@ var heckenlights = (function () {
                 }
                 else {
                     var html = "<a href=\"#\" class=\"list-group-item\">" +
-                        "<h4 class=\"list-group-item-heading\">Empty Playlist</h4>" +
+                        "<h4 class=\"list-group-item-heading\">" + i18n.t("index_playlist_empty") + "</h4>" +
                         "<p class=\"list-group-item-text\">-</p></a>"
 
                     $("#playlist").append(html);
                 }
-            })
+            }).fail(function () {
+
+                $("#playlist").empty();
+                siteClosed();
+                if (loadPlaylistInterval) {
+                    window.clearInterval(loadPlaylistInterval);
+                    loadPlaylistInterval = null;
+                }
+
+            });
     }
 
     return instance;

@@ -6,26 +6,6 @@ h1 {
   color: #ddd;
 }
 
-.christmas-background-light:after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-image: url(../images/christmas-backgrounds.jpg);
-  background-repeat: no-repeat;
-  content: "";
-  opacity: 0.5;
-  -ms-filter: "FlipH";
-      filter: FlipH;
-  -webkit-transform: scaleX(-1);
-     -moz-transform: scaleX(-1);
-       -o-transform: scaleX(-1);
-          transform: scaleX(-1);
-}
-
 /* Custom Horizontal Rule */
 
 hr.small {
@@ -105,32 +85,30 @@ body {
   background: #e52b18;
 }
 
-/* Footer */
-
-#landing section h1,
-#landing section h2,
-#landing section h3,
-#landing section h4 {
+section h1,
+section h2,
+section h3,
+section h4 {
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
-#landing header h1,
-#landing header h2,
-#landing header h3,
-#landing header h4 {
+header h1,
+header h2,
+header h3,
+header h4 {
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
-#landing a {
+a {
   color: #333333;
   text-decoration: none;
 }
 
-#landing .wrapshadow {
+.wrapshadow {
   text-shadow: 1px 1px 0px white, 2px 2px 0px #CCC;
 }
 
-#landing .shadow {
+.shadow {
   padding: 20px;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.05);
@@ -139,7 +117,7 @@ body {
           box-shadow: inset 0 0px 10px 15px rgba(0, 0, 0, 0.04);
 }
 
-#landing .whitebox {
+.whitebox {
   position: relative;
   z-index: 1;
   padding: 20px;
@@ -147,90 +125,64 @@ body {
   background: #fff;
 }
 
-#landing .header {
-  position: relative;
-  display: table;
-  width: 100%;
-  height: 100%;
-  background: url(../images/bg.jpg) no-repeat center center scroll;
-  -webkit-background-size: cover;
-     -moz-background-size: cover;
-       -o-background-size: cover;
-          background-size: cover;
-}
-
-#landing .header h1 {
-  color: #eeeeee;
-}
-
-#landing .text-vertical-center {
+.text-vertical-center {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
 }
 
-#landing .text-vertical-center h1 {
+.text-vertical-center h1 {
   padding: 0;
   margin: 0;
   font-size: 4.5em;
   font-weight: 700;
 }
 
-#landing .sectiondivider {
+.sectiondivider {
   height: 10px;
   background: url(../images/section-div.png) repeat-x;
 }
 
-#landing section .container {
+section .container {
   padding: 50px 0;
 }
 
-#landing .about {
-  padding: 5px;
-  background-color: #599348;
-}
-
-#landing .how {
-  height: 400px;
-  background-color: #dc120a;
-}
-
-#landing footer {
+footer {
   background-color: #eee;
 }
 
-#landing footer .container {
+footer .container {
   padding: 100px 0;
 }
 
-#landing a:hover,
-#landing a:focus {
+a:hover,
+a:focus {
   color: #666666;
   text-decoration: underline;
 }
 
-#landing a:focus {
+a:focus {
   outline: thin dotted #333;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
 
-#landing .navbar-inverse .navbar-primary a {
+.navbar-inverse .navbar-primary a {
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 
-#landing .navbar-inverse a {
+.navbar-inverse a {
   color: #fff;
   text-decoration: none;
 }
 
-#landing .navbar-inverse a:hover,
-#landing .navbar-inverse a:focus {
+.navbar-inverse a:hover,
+.navbar-inverse a:focus {
   color: #ddd;
   text-decoration: underline;
 }
 
-#landing .btn-dark:before {
+.btn-dark:before {
   position: absolute;
   top: -7px;
   right: 0;
@@ -241,7 +193,7 @@ body {
   content: '';
 }
 
-#landing .btn-dark {
+.btn-dark {
   position: relative;
   display: inline-block;
   min-width: 100px;
@@ -266,17 +218,143 @@ body {
           transition: 500ms linear;
 }
 
-#landing a.btn-dark,
-#landing a.btn-dark:focus {
+a.btn-dark,
+a.btn-dark:focus {
   outline: none;
 }
 
-#landing a.btn-dark:hover,
-#landing a.btn-dark:focus,
-#landing a.btn-dark:active {
+a.btn-dark:hover,
+a.btn-dark:focus,
+a.btn-dark:active {
   color: #fff;
   text-decoration: none;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 0 40px #ffffff;
   background: #a61715;
   box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.25), /* highlight */ inset 0 0 6px #da3b2c, /* inner glow */ inset 0 80px 80px -40px #dd4330, /* gradient */ 1px 1px 3px rgba(0, 0, 0, 0.75);
+}
+
+/* Page specific */
+
+#landing .header {
+  position: relative;
+  display: table;
+  width: 100%;
+  height: 100%;
+  background: url(../images/bg.jpg) no-repeat center center scroll;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+#landing .header h1 {
+  color: #eeeeee;
+}
+
+#landing .about {
+  padding: 5px;
+  background-color: #599348;
+}
+
+#landing .how {
+  height: 400px;
+  background-color: #dc120a;
+}
+
+#main .header {
+  position: relative;
+  display: table;
+  width: 100%;
+  height: 100%;
+  background: url(../images/bg.jpg) no-repeat center center scroll;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
+}
+
+#main .header h1,
+#main .header p.lead {
+  color: #eeeeee;
+}
+
+#main .header p.lead {
+  text-shadow: 2px 2px 4px #000;
+}
+
+#controls {
+  min-height: 400px;
+  padding-top: 30px;
+  margin-top: 40px;
+}
+
+#controls .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  content: "";
+}
+
+#controls #closed {
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  opacity: .5;
+}
+
+#controls #closedsign {
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: url(../images/closed.png) no-repeat center center scroll;
+  -webkit-background-size: 70%;
+     -moz-background-size: 70%;
+       -o-background-size: 70%;
+          background-size: 70%;
+  opacity: 10;
+  -webkit-animation: closed-sign 5s ease infinite;
+     -moz-animation: closed-sign 5s ease infinite;
+          animation: closed-sign 5s ease infinite;
+  transform-origin: 50% 20%;
+}
+
+@-webkit-keyframes closed-sign {
+  0% {
+    -webkit-transform: rotate(3deg);
+  }
+  50% {
+    -webkit-transform: rotate(-4deg);
+  }
+  100% {
+    -webkit-transform: rotate(3deg);
+  }
+}
+
+@-moz-keyframes closed-sign {
+  0% {
+    -moz-transform: rotate(3deg);
+  }
+  50% {
+    -moz-transform: rotate(-4deg);
+  }
+  100% {
+    -moz-transform: rotate(3deg);
+  }
+}
+
+@keyframes closed-sign {
+  0% {
+    transform: rotate(3deg);
+  }
+  50% {
+    transform: rotate(-4deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
 }

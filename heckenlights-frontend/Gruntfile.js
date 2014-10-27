@@ -59,30 +59,43 @@ module.exports = function (grunt) {
                     archive: 'archive.zip'
                 },
                 files: [
-                    {src: ['css/*', 'js/**', 'fonts/**', 'images/**', 'favicon.ico']},
+                    {src: ['css/*', 'js/**', 'fonts/**', 'images/**', 'locales/**', 'favicon.ico']},
                     {src: ['landing.html.*']}]
             }
         },
 
         mustache_render: {
             de: {
-                files: [{
-                    data: "src/locales/de.json",
-                    template: "landing.html",
-                    dest: "landing.html.de"
-                }]
+                files: [
+                    {
+                        data: "locales/de.json",
+                        template: "landing.html",
+                        dest: "landing.html.de"
+                    },
+                    {
+                        data: "locales/de.json",
+                        template: "index.html",
+                        dest: "index.html.de"
+                    }
+                ]
             },
             en: {
-                files: [{
-                    data: "src/locales/en.json",
-                    template: "landing.html",
-                    dest: "landing.html.en"
-                }]
+                files: [
+                    {
+                        data: "locales/en.json",
+                        template: "landing.html",
+                        dest: "landing.html.en"
+                    },
+                    {
+                        data: "locales/en.json",
+                        template: "index.html",
+                        dest: "index.html.en"
+                    }
+                ]
             }
         }
 
     });
-
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('browserstack-runner');

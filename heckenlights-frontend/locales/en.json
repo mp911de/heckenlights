@@ -1,0 +1,45 @@
+{
+    "language": "en",
+    "og_locale": "en_US",
+    "og_locale_alternate": "de_DE",
+    "description": "Heckenlights is the christmas light installation in Heckenpfad, Weinheim Germany. Take control over Heckenlights using your MIDI files.",
+    "navbar_switch": "Navigation umschalten",
+    "navbar_home": "Home",
+    "navbar_about": "About",
+    "navbar_contact": "Contact",
+    "social_share_twitter": "Share on Twitter",
+    "social_share_fb": "Share on Facebook",
+    "social_share_gplus": "Share on Google+",
+    "top_claim": "Become a Christmas Light Master.",
+    "top_findout_more": "Find Out More",
+    "about_takecontrol": "Take control.",
+    "about_lead": "Heckenlights is the christmas light installation in Heckenpfad, Weinheim Germany controlled using <href=\"http://en.wikipedia.org/wiki/General_MIDI\"><span class=\"glyphicon glyphicon-music\"></span>MIDI</a>. Heckenlights allows <span class=\"glyphicon glyphicon-hand-right\"\u003e\u003c/span\u003e you to control and watch it play. Become your self a program director for Heckenlights using your christmas MIDI music.<br/><br/> Heckenlights start on Dec. 1st 2014 and will be available until Jan. 6th 2015. Since\r\n                            christmas lights are cool only at night Heckenlights will operate daily between \u003ca\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T17&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e17:00\r\n                                CET\u003c/a\u003e to \u003ca\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T22&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e22:00\r\n                                CET\u003c/a\u003e and \u003ca\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T05&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e5:00\r\n                                CET\u003c/a\u003e to \u003ca\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T08&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e8:00\r\n                                CET\u003c/a\u003e.",
+
+    "index_captcha": "You need to solve the captcha in order to upload Midifiles for Heckenlights.",
+    "index_upload": "Upload Track (Midi-File)",
+    "index_playlist": "Playlist",
+    "index_load_playlist": "Loading Playlist",
+    "index_playlist_empty": "Empty Playlist",
+    "index_submit": "Submit",
+
+    "duration_seconds": "Duration: __count__ second",
+    "duration_seconds_plural": "Duration: __count__ seconds",
+
+    "remaining_seconds": "Remaining: __count__ second",
+    "remaining_seconds_plural": "Remaining: __count__ seconds",
+
+    "and_more": "and __count__  more...",
+
+    "internal_server_error":"There was an internal server error, could not validate your request.",
+    "captcha_validation_error":"Validation not successful. Please enter the displayed words/numbers.",
+
+    "enqueue_internal_server_error":"<strong>Aw, snap!</strong> There was an internal server error.",
+    "enqueue_bad_request":"<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM Midi-File.",
+    "enqueue_queue_error":"<strong>Too many requests</strong> Please retry later.",
+    "enqueue_offline":"<strong>Heckenlights is offline</strong> Please come back when it's open again.",
+    "enqueue_unauthenticated":"<strong>Unauthenticated</strong> Please use the captcha to confirm that you are a hooooman.",
+
+    "enqueue_success":"<strong>Enqeued!</strong> It will take some __count__ second until the file is played.",
+    "enqueue_success_plural":"<strong>Enqeued!</strong> It will take some __count__ seconds until the file is played.",
+
+}

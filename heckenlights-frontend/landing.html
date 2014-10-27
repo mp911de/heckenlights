@@ -146,28 +146,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script>
-    // Scrolls to the selected menu item on the page
-    $(function () {
-        $('a[href*=#]:not([href=#])').click(function () {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
-
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                    return false;
-                }
-            }
-        });
-    });
-
-    $("#sharefb").attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + window.location);
-    $("#sharetwitter").attr('href', 'http://twitter.com/home?status=' + escape("Visit #heckenlights at " + window.location));
-    $("#sharegplus").attr('href', 'https://plus.google.com/share?url=' + window.location);
-
-</script>
+<script src="js/scroll.js" async defer></script>
+<script src="js/social.js" async defer></script>
 </body>
 </html>
