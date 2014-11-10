@@ -1,0 +1,3 @@
+[submodule "heckenlights-messagebox/emoji"]
+	path = heckenlights-messagebox/emoji
+	url = https://github.com/fenryxo/pidgin-emoji.git

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="midiRelayClientProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
+        <property name="serviceInterface" value="biz.paluch.heckenlights.messagebox.client.midirelay.MidiRelayClient.MidiRelayClientProxy"/>
+        <property name="baseUri" value="${midirelay.url}"/>
+        <property name="clientExecutor" ref="apacheHttpClient4Executor"/>
+    </bean>
+
+    <bean id="apacheHttpClient4Executor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
+        <constructor-arg index="0" ref="httpClient"/>
+    </bean>
+
+    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient">
+        <constructor-arg index="0" ref="clientConnManager"/>
+        <property name="params" ref="httpParams"/>
+    </bean>
+
+    <bean id="clientConnManager" class="org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager">
+    </bean>
+
+    <bean id="httpParams" class="org.apache.http.params.BasicHttpParams">
+    </bean>
+
+    <bean id="httpConnectionParams" class="org.apache.http.params.HttpConnectionParamBean">
+        <constructor-arg ref="httpParams"/>
+        <property name="connectionTimeout" value="${midirelay.connectTimeout}"/>
+        <property name="soTimeout" value="${midirelay.readTimeout}"/>
+    </bean>
+
+</beans>
