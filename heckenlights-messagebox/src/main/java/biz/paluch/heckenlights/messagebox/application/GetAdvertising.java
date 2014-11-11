@@ -16,7 +16,7 @@ public class GetAdvertising {
     public byte[] getAdvertising(String format) throws IOException {
 
         ParameterBlock parameterBlock = new ParameterBlock();
-        parameterBlock.add("advertising.png");
+        parameterBlock.add("assets/heckenlights-advertising.png");
         RenderedOp image = JAI.create("fileload", parameterBlock);
 
 		return ImageEncoder.encode(format, image);

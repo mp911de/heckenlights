@@ -46,13 +46,13 @@ public class MessageboxRessource {
         return buildResponse(uriComponentsBuilder, dispatchAction, "");
     }
 
-    @RequestMapping(value = "/dispatch.png", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    @RequestMapping(value = "/dispatch.png", method = RequestMethod.GET)
     public ResponseEntity<Void> dispatchPng(UriComponentsBuilder uriComponentsBuilder) {
         DispatchAction dispatchAction = dispatchNextRequest.getDispatchAction();
         return buildResponse(uriComponentsBuilder, dispatchAction, ".png");
     }
 
-    @RequestMapping(value = "/dispatch.ppm", method = RequestMethod.GET, produces = "image/ppm")
+    @RequestMapping(value = "/dispatch.ppm", method = RequestMethod.GET)
     public ResponseEntity<Void> dispatchPpm(UriComponentsBuilder uriComponentsBuilder) {
         DispatchAction dispatchAction = dispatchNextRequest.getDispatchAction();
         return buildResponse(uriComponentsBuilder, dispatchAction, ".ppm");
@@ -63,7 +63,7 @@ public class MessageboxRessource {
         return new ResponseEntity<>(getAdvertising.getAdvertising("png"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/advertising.ppm", method = RequestMethod.GET, produces = "image/ppm")
+    @RequestMapping(value = "/advertising.ppm", method = RequestMethod.GET)
     public ResponseEntity<byte[]> advertisingPpm() throws IOException {
         return new ResponseEntity<>(getAdvertising.getAdvertising("ppm"), HttpStatus.OK);
     }
@@ -81,32 +81,51 @@ public class MessageboxRessource {
 
     @RequestMapping(value = "/tweets/{tweetId}.png", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getTweetPng(@PathVariable long tweetId) throws IOException {
-		 byte[] bytes = getTweet.getTweetImage(tweetId, "png");
-		 if (bytes == null) {
+        byte[] bytes = getTweet.getTweetImage(tweetId, "png");
+        if (bytes == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(bytes, HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Content", getTweet.getTweetText(tweetId));
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/tweets/{tweetId}.ppm", method = RequestMethod.GET, produces = "image/ppm")
+    @RequestMapping(value = "/tweets/{tweetId}.ppm", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getTweetPpm(@PathVariable long tweetId) throws IOException {
         byte[] bytes = getTweet.getTweetImage(tweetId, "ppm");
-		 if (bytes == null) {
+        if (bytes == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Content", getTweet.getTweetText(tweetId));
 
-        return new ResponseEntity<>(bytes, HttpStatus.OK);
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/title/current", method = RequestMethod.GET, produces = { MediaType.TEXT_PLAIN_VALUE })
-    public ResponseEntity<String> getTweet() {
+    public ResponseEntity<String> getCurrentTitle() {
         String result = getCurrentTitle.getCurrentTitle();
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/title/current.png", method = RequestMethod.GET, produces = { MediaType.IMAGE_PNG_VALUE })
+    public ResponseEntity<byte[]> getCurrentTitlePng() throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Content", getCurrentTitle.getCurrentTitle());
+        return new ResponseEntity<>(getCurrentTitle.getCurrentTitleImage("png"), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/title/current.ppm", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getCurrentTitlePpm() throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("X-Content", getCurrentTitle.getCurrentTitle());
+        return new ResponseEntity<>(getCurrentTitle.getCurrentTitleImage("ppm"), headers, HttpStatus.OK);
     }
 
     private ResponseEntity<Void> buildResponse(UriComponentsBuilder uriComponentsBuilder, DispatchAction dispatchAction,

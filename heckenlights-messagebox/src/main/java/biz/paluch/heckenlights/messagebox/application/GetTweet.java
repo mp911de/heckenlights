@@ -1,22 +1,20 @@
 package biz.paluch.heckenlights.messagebox.application;
 
+import biz.paluch.heckenlights.messagebox.model.TweetSummary;
+import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
+import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.media.jai.RasterFactory;
+import javax.media.jai.TiledImage;
 import java.awt.*;
 import java.awt.image.DataBuffer;
 import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.TiledImage;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import biz.paluch.heckenlights.messagebox.model.TweetSummary;
-import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
-import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -27,16 +25,16 @@ public class GetTweet {
     @Inject
     private TweetRepository tweetRepository;
 
-    @Value("${twitter.image.height}")
+    @Value("${image.height}")
     private int height;
 
-    @Value("${twitter.image.width.min}")
+    @Value("${image.width.min}")
     private int minWidth;
 
-    @Value("${twitter.image.width.preroll:0}")
+    @Value("${image.width.preroll:0}")
     private int widthPreroll;
 
-    @Value("${twitter.image.width.postroll:}")
+    @Value("${image.width.postroll:}")
     private int widthPostroll;
 
     public TweetSummary getFirstUnprocessedTweet() {
@@ -61,6 +59,18 @@ public class GetTweet {
         tweetRepository.save(document);
 
         return toTweetSummary(document);
+    }
+
+    public String getTweetText(long id)
+    {
+        TweetDocument document = tweetRepository.findOne(id);
+        if (document == null) {
+            return null;
+        }
+
+        String result = document.getSender() + ": " + document.getMessage();
+        result = result.replace('\r', ' ').replace('\n', ' ').replace("  ", " ");
+        return result;
     }
 
     private TweetSummary toTweetSummary(TweetDocument tweetDocument) {
@@ -102,5 +112,6 @@ public class GetTweet {
 
         return ImageEncoder.encode(format, tiledImage);
     }
+
 
 }
