@@ -24,6 +24,12 @@ heckenlights-frontend is 'just' a HTML frontend using a small potion of PHP to c
 
 [[../blob/master/images/Heckenlights-Messagebox.png | width = 200px]] Last year, I noticed it would be also nice to know what is played. Watching Heckenlights play is amazing, but if you don't know the song it's sort of awkward. Here comes the heckenlights-messagebox: The Messagebox is a RaspberryPi with a [Medium 16x32 RGB LED matrix panel](http://www.adafruit.com/product/420) connected. It runs two things: heckenlights-messagebox-controller and rpi-rgb-led-matrix. The first one pulls data from heckenlights-messagebox (PPM images containing Tweets of #Heckenlights, the current title and some details of http://heckenlights.org). rpi-rgb-led-matrix takes care of scrolling the PPM images onto the LED Matrix Display using GPIO.
 
+Resources
+---------
+* [Controlling Christmas Lights using Midi](https://www.paluch.biz/blog/65-controlling-christmas-lights-using-midi.html)
+* [Controlling a relay via Midi](https://www.paluch.biz/blog/64-controlling-a-relay-via-midi.html)
+* [midi-relay](https://github.com/mp911de/midi-relay)
+
 
 License
 ---------
