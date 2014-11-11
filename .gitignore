@@ -12,3 +12,4 @@ archive.zip
 *.html.en
 heckenlights-messagebox/target
 heckenlights-messagebox/application.properties
+config.ini

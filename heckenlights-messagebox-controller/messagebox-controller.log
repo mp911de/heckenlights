@@ -1,0 +1,27 @@
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Width: 16
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Width: 16
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Width: 16
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Width: 16
+INFO:root:Requesting http://localhost:8080/dispatch.ppm
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): localhost
+INFO:root:Width: 16
