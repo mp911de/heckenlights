@@ -40,6 +40,6 @@
     "enqueue_unauthenticated":"<strong>Unauthenticated</strong> Please use the captcha to confirm that you are a hooooman.",
 
     "enqueue_success":"<strong>Enqeued!</strong> It will take some __count__ second until the file is played.",
-    "enqueue_success_plural":"<strong>Enqeued!</strong> It will take some __count__ seconds until the file is played.",
+    "enqueue_success_plural":"<strong>Enqeued!</strong> It will take some __count__ seconds until the file is played."
 
 }

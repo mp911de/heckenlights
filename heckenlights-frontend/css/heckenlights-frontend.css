@@ -252,7 +252,7 @@ a.btn-dark:active {
 }
 
 #landing .about {
-  padding: 5px;
+  padding: 0;
   background-color: #599348;
 }
 
@@ -280,6 +280,11 @@ a.btn-dark:active {
 
 #main .header p.lead {
   text-shadow: 2px 2px 4px #000;
+}
+
+#main .about {
+  padding: 0;
+  background-color: #599348;
 }
 
 #controls {
