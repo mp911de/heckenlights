@@ -1,4 +1,8 @@
-import os, requests, json, hashlib, logging, PIL.Image, time, glob, subprocess, sys, ConfigParser
+#!/usr/bin/env python
+
+import os, requests, json, hashlib, logging, PIL.Image, time, glob, subprocess, sys, ConfigParser, shlex
+import RPi.GPIO as GPIO
+
 
 __author__ = 'mark'
 
@@ -10,7 +14,8 @@ Config.read("config.ini")
 
 messagebox_url = Config.get("settings", "messagebox_url")
 tempdir = Config.get("settings", "tempdir")
-scrollspeed_ms_per_pixel = Config.get("settings", "scrollspeed_ms_per_pixel")
+scrollspeed_ms_per_pixel = Config.getfloat("settings", "scrollspeed_ms_per_pixel")
+led_matrix_executable = Config.get("settings", "led_matrix_executable")
 
 
 def get_display_content():
@@ -72,10 +77,12 @@ def main():
 
         if filename is not None:
             width = get_width(filename)
-            sleep_time = min(width, max(width - 10, 0)) * scrollspeed_ms_per_pixel
-
-            process = subprocess.Popen(("echo Hello World", filename), shell=True)
-            logging.info("Width: %d px, Sleep-Time %d sec" % (width, sleep_time))
+            sleep_time = min(width, max(width - 32, 0)) * scrollspeed_ms_per_pixel
+            command_line=  "%s -r 16 -m %d0.0 %s" % (led_matrix_executable, scrollspeed_ms_per_pixel * 100, filename)
+            print command_line
+            args = shlex.split(command_line)
+            process = subprocess.Popen(args)
+            logging.info("Width: %d px, Sleep-Time %d sec (org %d), File: %s" % (width, sleep_time, (width * scrollspeed_ms_per_pixel), filename))
 
             time.sleep(sleep_time)
             filename = get_display_content()
@@ -85,14 +92,26 @@ def main():
             time.sleep(10)
             filename = get_display_content()
 
-
+def cleanup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(1, GPIO.OUT)
+    GPIO.setup(2, GPIO.OUT)
+    GPIO.setup(3, GPIO.OUT)
+    GPIO.setup(4, GPIO.OUT)
+    GPIO.setup(5, GPIO.OUT)
+    GPIO.setup(6, GPIO.OUT)
+    GPIO.setup(7, GPIO.OUT)
+    GPIO.setup(8, GPIO.OUT)
+    GPIO.cleanup()
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
-    main()
-
-
-        
-
+    try:
+        main()
+    except KeyboardInterrupt:
+        cleanup()
+        raise
+    
 
 
