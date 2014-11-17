@@ -24,6 +24,10 @@ body {
   padding: 15px 5px 10px 5px;
 }
 
+.navbar-inverse .navbar-brand {
+  color: #eee;
+}
+
 .navbar-inverse .navbar-nav > li a.btn-social {
   height: 30px;
   padding: 3px;
@@ -249,7 +253,9 @@ a.btn-dark:active {
           background-size: cover;
 }
 
-#landing .header h1 {
+#landing .header h1,
+#landing .header h3,
+#landing .header #countdown {
   color: #eeeeee;
 }
 
@@ -293,6 +299,7 @@ a.btn-dark:active {
 }
 
 #main .header h1,
+#main .header h3,
 #main .header p.lead {
   color: #eeeeee;
 }
