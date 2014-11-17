@@ -8,16 +8,28 @@ var heckenlights = (function () {
     var instance = {};
     var visiblePlaylistEntries = 5;
     var loadPlaylistInterval;
+    var mockData = true;
+
+    var config = {
+        'fileupload': 'api/v1/playlist/queue',
+        'authentication': 'api/v1/authentication',
+        'playlist': 'api/v1/playlist'
+    }
+
 
     instance.initialize = function () {
 
-        $("#reload").click(function () {
+
+        if (mockData) {
+            config.playlist = 'js/demo-playlist.json';
+        }
+
+        $('#reload').click(function () {
             loadPlaylist()
         });
 
         loadPlaylist();
         checkOrCreateRecaptcha();
-
 
         $('#uploadwarning').click(function () {
             $("#uploadwarning").fadeOut();
@@ -37,7 +49,7 @@ var heckenlights = (function () {
 
 
         $('#fileupload').fileupload({
-            url: "api/v1/playlist/queue",
+            url: config.fileupload,
             dataType: 'json',
             done: function (e, data) {
                 if (data.jqXHR.responseJSON) {
@@ -114,7 +126,7 @@ var heckenlights = (function () {
 
 
     function checkOrCreateRecaptcha() {
-        var uri = "api/v1/authentication";
+        var uri = config.authentication;
         $.ajax({
                 dataType: 'json',
                 accepts: {
@@ -205,7 +217,7 @@ var heckenlights = (function () {
     }
 
     function loadPlaylist() {
-        var uri = "api/v1/playlist";
+        var uri = config.playlist;
         $.ajax({
                 dataType: 'json',
                 accepts: {

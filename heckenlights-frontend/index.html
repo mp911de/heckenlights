@@ -49,6 +49,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">{{navbar_home}}</a></li>
                 <li><a href="#about">{{navbar_about}}</a></li>
+                <li><a href="#about">{{navbar_legal}}</a></li>
                 <li><a href="#contact">{{navbar_contact}}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -79,26 +80,34 @@
 
                 <h1>Heckenlights</h1>
 
-                <p class="lead">Heckenlights is a small christmas light installation controlled using <span
-                        class="glyphicon glyphicon-music"></span> MIDI.
-                    You can submit a Midi file and watch it playing.</p>
+                <p id="intro" class="lead"> {{index_intro1}} <span
+                        class="glyphicon glyphicon-music"></span> MIDI {{index_intro2}}</p>
 
-                <div style="width: 400px; height: 400px; background-color: #000000;margin: auto">&nbsp;</div>
+                <p id="countdown" class="lead">{{index_countdown_a}} <span id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span id="countdowntext"></span> {{index_countdown_d}}</p>
+
+                <div style="width: 480px; height: 302px; background-color: #000000;margin: auto">
+                    <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
+                            frameborder="no" width="480" height="302"></iframe>
+                    <br/><a href="http://www.ustream.tv/"
+                            style="padding: 2px 0px 4px; width: 400px; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
+                            target="_blank">Live streaming video by Ustream</a></div>
             </div>
             <div id="controls" class="col-md-4">
                 <div id="closed" class="overlay" style="display: none"></div>
                 <div id="closedsign" class="overlay" style="display: none"></div>
-                <div id="playlist" class="list-group">
-                    <a id="loadingPlaylistBar" href="#" class="list-group-item active">
-                        <h3>{{index_playlist}}</h3>
+                <div class="list-group">
+                    <h3 class="light">{{index_playlist}}</h3>
 
-                        <div class="progress progress-striped active">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                 aria-valuemax="100" style="width: 100%">
-                                <span class="sr-only">{{index_loading_playlist}}</span>
+                    <div id="playlist">
+                        <a id="loadingPlaylistBar" href="#" class="list-group-item active">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">{{index_loading_playlist}}</span>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
 
                 <button id="reload" class="btn btn-default" style="display: none"><span
@@ -156,6 +165,36 @@
     <!-- /.container -->
 </section>
 
+
+<!-- Legal -->
+<section id="legal" class="legal">
+    <div class="sectiondivider"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+
+                <div class="shadow">
+                    <div class="whitebox">
+                        <h2 class="wrapshadow">{{index_legal}}</h2>
+
+                        <p class="lead">{{index_legal_oss}}</p>
+
+                        <p class="lead">
+                            {{index_legal_pd}}
+                        </p>
+
+                        <p class="lead">
+                            {{index_legal_contact}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>
+
 <!-- Footer -->
 <footer>
     <div class="sectiondivider"></div>
@@ -184,6 +223,12 @@
                     </li>
                 </ul>
                 <hr class="small">
+                <h4>Credits</h4>
+
+                <p>Background-Image: <a
+                        href="http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/">http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/</a>
+                </p>
+
                 <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014</p>
             </div>
         </div>
@@ -196,13 +241,18 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment-with-locales.min.js"></script>
+
+<script src="js/moment-timezone-with-data-2010-2020.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.5/moment-timezone-utils.min.js"></script>
 <script src="js/jquery.iframe-transport.js"></script>
 <script src="js/jquery.fileupload.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="js/heckenlights-frontend.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
 <script src="js/scroll.js" async defer></script>
 <script src="js/social.js" async defer></script>
-
+<script src="js/heckenlights-frontend.js"></script>
+<script src="js/heckenlights-countdown.js"></script>
 <script>
     var options = {
         // change path
@@ -216,9 +266,9 @@
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
             heckenlights().initialize();
+            countdown().initialize();
         });
     });
-
 
 </script>
 </body>

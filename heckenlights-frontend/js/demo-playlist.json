@@ -1,0 +1,22 @@
+{
+    "online": true,
+    "entries": [
+        {
+            "id": 1,
+            "trackName": "dummy",
+            "playStatus": "PLAYING",
+            "duration": 60,
+            "playing": true,
+            "remaining": 30
+        },
+        {
+            "id": 2,
+            "trackName": "dummy",
+            "playStatus": "ENQUEUED",
+            "duration": 60,
+            "timeToStart": 30,
+            "playing": false,
+            "remaining": 60
+        }
+    ]
+}

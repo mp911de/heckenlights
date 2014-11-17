@@ -1,8 +1,9 @@
 {
 	"language": "de",
 	"og_locale": "de_DE",
+	"moment_locale": "de-DE",
 	"og_locale_alternate": "en_US",
-	"description": "Heckenlights ist die Weihnachtsbeleuchtung im Heckenpfad, Weinheim. Sei Programmdirektur und kontrolliere Heckenlights mit deinen MIDI-Dateien.",
+	"description": "Heckenlights ist die Weihnachtsbeleuchtung im Heckenpfad, Weinheim. Sei Programmdirektor und kontrolliere Heckenlights mit deinen MIDI-Dateien.",
 	"navbar_switch": "Navigation umschalten",
 	"navbar_home": "Home",
 	"navbar_about": "Über",
@@ -12,6 +13,45 @@
 	"social_share_gplus": "Auf Google+ teilen",
 	"top_claim": "Übernimm' die Kontrolle über das Licht.",
 	"top_findout_more": "Mehr Erfahren",
-	"about_takecontrol": "Übernehme die Kontrolle.",
-	"about_lead": "Heckenlights ist die Weihnachtsbeleuchtung im Heckenpfad, Weinheim. Heckenlights werden über <a href=\"http://de.wikipedia.org/wiki/General_MIDI\"><span class=\"glyphicon glyphicon-music\"></span> MIDI</a> gesteuert. Du <span class=\"glyphicon glyphicon-hand-right\"></span> kannst Heckenlights steuern und dabei zuschauen. Werde zum Programmdirektor von Heckenlights und nutze deine Weihnachtsmusik im MIDI-Format.<br/><br/>\r\n\r\n                            Heckenlights startet am 1. Dezember 2014 und bleibt bis zum 6. Januar 2015 aktiv. Weihnachtsbeleuchtung wirkt nur\r\n                            bei Dunkelheit, deshalb ist Heckenlights zwischen <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T17&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">17:00\r\n                                CET</a> bis <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T22&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">22:00\r\n                                CET</a> und <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T05&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">5:00\r\n                                CET</a> bis <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T08&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">8:00\r\n                                CET</a> aktiv."
+	"about_takecontrol": "Erlebe. Spiel Musik. Übernimm' Kontrolle. Tweete #Heckenlights",
+	"about_lead": "Heckenlights ist die Weihnachtsbeleuchtung im Heckenpfad, Weinheim. Heckenlights spielen zu Weihnachtsmusik und werden über <a href=\"http://de.wikipedia.org/wiki/General_MIDI\"><span class=\"glyphicon glyphicon-music\"></span> MIDI</a> gesteuert. Du <span class=\"glyphicon glyphicon-hand-right\"></span> kannst Heckenlights sehen und steuern. Tweete #Heckenlights direkt auf die Heckenlights Messagebox. Werde zum Programmdirektor von Heckenlights und nutze deine Weihnachtsmusik im MIDI-Format.<br/><br/> Heckenlights beginnt am 1. Dezember 2014 um 17:00 Uhr und endet zum 6. Januar 2015. Weihnachtsbeleuchtung ist nur bei Dunkelheit toll, deshalb ist Heckenlights zwischen <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T17&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">17:00\r\n                                CET</a> bis <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T22&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">22:00\r\n                                CET</a> und <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T05&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">5:00\r\n                                CET</a> bis <a\r\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T08&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\">8:00\r\n                                CET</a> aktiv.",
+
+    "index_captcha": "Um Midi-Dateien hochzuladen musst du das Captcha-Rätsel lösen. Gib dafür die angezeigten Zahlen/Wörter ein.",
+    "index_upload": "Titel hochladen (Midi-Datei)",
+    "index_playlist": "Playlist",
+    "index_load_playlist": "Lade die Wiedergabeliste",
+    "index_playlist_empty": "Leere Wiedergabeliste",
+    "index_submit": "Senden",
+    "index_intro1": "Heckenlights ist die Weihnachtsbeleuchtung im Heckenpfad, Weinheim, die Weihnachtslieder auf Lämpchen spielt. Du kannst Heckenlights sehen und hören. Du kannst sogar deine eigene Weihnachtsmusik an Heckenlights senden und sehen, wie diese abgespielt wird. Heckenlights wird über ",
+    "index_intro2": " gesteuert.",
+
+    "index_legal": "Rechtliches",
+    "index_legal_oss": "Heckenlights ist ein freies, non-profit und Open Source Projekt. Heckenlights ist gemacht, um Freude in der Weihnachtszeit zu bereiten. Es ist gemacht für dich und mich.",
+    "index_legal_pd": "Weihnachtslieder (Musik) unterliegt, wie alle anderen künstlerisch geschaffenen Werke, dem Copyright oder ist gemeinfrei. Das ist von Titel zu Titel unterschiedlich. Ich möchte mit Heckenlights keine Rechte von Rechteinhabern verletzen. Wenn du dich entscheidest, Musik in Form von MIDI-Dateien hochzuladen, so stelle bitte sicher, dass die Werke entweder gemeinfrei sind oder du über die erforderlichen Rechte zur Aufführung verfügst. Als Musiker kannst du natürlich selbst Werke komponieren und bei Heckenlights an die Wiedergabeliste senden. Bist du dir nicht sicher? Schau mal bei <a href=\"https://songclearance.com/Christmas%20Music:%20Public%20Domain%20vs.%20Copyrighted%20Works\">https://songclearance.com</a> oder <a href=\"http://www.pdinfo.com/public-domain-music-list.php\">PDInfo</a> nach. Die Seiten liefern eine gute Auskunft, welche Titel frei verwendet werden dürfen.",
+    "index_legal_contact": "Hechenlights hat ein Werk gespielt, dessen Rechteinhaber du bist, jedoch hast du keine Aufführungsrechte genehmigt? Bitte kontaktiere mich: <a href=\"mailto:legal@heckenlights.org\">legal@heckenlights.org</a>",
+    "index_countdown_a": "Heckenlights beginnt am",
+    "index_countdown_b": "1. Dez. um 17:00 Uhr",
+    "index_countdown_c": "Also noch",
+    "index_countdown_d": "lang warten.",
+
+    "duration_seconds": "Dauer: __count__ Sekunde",
+    "duration_seconds_plural": "Dauer: __count__ Sekunden",
+
+    "remaining_seconds": "Verbleibend: __count__ Sekunde",
+    "remaining_seconds_plural": "Verbleibend: __count__ Sekunden",
+
+    "and_more": "und __count__  weitere...",
+
+    "internal_server_error":"There was an internal server error, could not validate your request.",
+    "captcha_validation_error":"Validation not successful. Please enter the displayed words/numbers.",
+
+    "enqueue_internal_server_error":"<strong>Aw, snap!</strong> There was an internal server error.",
+    "enqueue_bad_request":"<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM Midi-File.",
+    "enqueue_queue_error":"<strong>Too many requests</strong> Please retry later.",
+    "enqueue_offline":"<strong>Heckenlights is offline</strong> Please come back when it's open again.",
+    "enqueue_unauthenticated":"<strong>Unauthenticated</strong> Please use the captcha to confirm that you are a hooooman.",
+
+    "enqueue_success":"<strong>Enqeued!</strong> It will take some __count__ second until the file is played.",
+    "enqueue_success_plural":"<strong>Enqeued!</strong> It will take some __count__ seconds until the file is played."
+
 }

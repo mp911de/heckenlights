@@ -140,7 +140,9 @@ a {
 
 .sectiondivider {
   height: 10px;
-  background: url(../images/section-div.png) repeat-x;
+  background: url(../images/section-div-2x.png);
+  background-repeat: repeat-x;
+  background-size: 102px 10px;
 }
 
 section .container {
@@ -259,6 +261,23 @@ a.btn-dark:active {
 #landing .how {
   height: 400px;
   background-color: #dc120a;
+}
+
+.light {
+  color: #eeeeee;
+}
+
+#intro {
+  padding: 10px;
+  background: rgba(140, 3, 0, 0.59);
+  border-radius: 10px;
+}
+
+#countdown {
+  padding: 10px;
+  background: rgba(140, 3, 0, 0.59);
+  border: 1px solid #dc120a;
+  border-radius: 10px;
 }
 
 #main .header {

@@ -3,8 +3,18 @@
 module.exports = function (grunt) {
     "use strict";
 
-    RegExp.quote = require('regexp-quote')
-    var btoa = require('btoa')
+    // Load grunt tasks automatically
+    require('load-grunt-tasks')(grunt);
+
+    // Time how long tasks take. Can help when optimizing build times
+    require('time-grunt')(grunt);
+
+    // Configurable paths for the application
+    var appConfig = {
+        app: './',
+        dist: 'dist'
+    };
+
     // Project configuration.
     grunt.initConfig({
 
@@ -14,7 +24,8 @@ module.exports = function (grunt) {
         // Task configuration.
         clean: {
             dist: ['dist'],
-            compress: ['archive.zip']
+            compress: ['archive.zip'],
+            server: '.tmp'
         },
 
         jshint: {
@@ -48,8 +59,56 @@ module.exports = function (grunt) {
 
         watch: {
             recess: {
-                files: 'less/*.less',
+                files: ['less/*.less'],
                 tasks: ['recess']
+            },
+            js: {
+                files: ['scripts/{,*/}*.js'],
+                tasks: ['newer:jshint:all'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                }
+            },
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: [
+                    '{,*/}*.html',
+                    '.tmp/styles/{,*/}*.css',
+                    'styles/{,*/}*.css',
+                    'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
+            }
+        },
+
+        connect: {
+            options: {
+                port: 9000,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            livereload: {
+                options: {
+                    open: true,
+                    base: './',
+                    middleware: function (connect) {
+                        return [
+                            connect.static('.tmp'),
+                            connect.static(require('path').resolve('.'))
+                        ];
+                    }
+                }
+            },
+            dist: {
+                options: {
+                    open: true,
+                    base: './'
+                }
             }
         },
 
@@ -115,12 +174,32 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sed');
     grunt.loadNpmTasks('grunt-mustache-render');
 
+    grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'clean:server',
+            'connect:livereload',
+            'watch'
+        ]);
+    });
+
+    grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run(['serve:' + target]);
+    });
+
 
     // CSS distribution task.
     grunt.registerTask('dist-css', ['recess']);
 
     // Full distribution task.
-    grunt.registerTask('dist', ['clean', 'dist-css', 'mustache_render', 'compress']);
+    grunt.registerTask('build', ['clean', 'dist-css', 'mustache_render', 'compress']);
+
+    grunt.registerTask('dist', ['build']);
+
 
     // Default task.
     grunt.registerTask('default', ['dist']);
