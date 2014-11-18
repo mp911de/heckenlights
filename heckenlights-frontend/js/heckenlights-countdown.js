@@ -1,6 +1,9 @@
 var countdown = (function () {
 
     var instance = {};
+    var moment_string = '2014-12-01 17:00';
+    var moment_tz = 'Europe/Berlin';
+    var moment_locale_fmt_except = 'de-DE';
 
     function preciseHumanize(m, withSuffix) {
         var isFuture = m._milliseconds < 0,
@@ -30,7 +33,7 @@ var countdown = (function () {
         addRelative(duration.seconds, 's', false);
 
         output.push(output[output.length - 1]);
-        output[output.length - 2] = ' and ';
+        output[output.length - 2] = ' ' + $.i18n.t('term_and') + ' ';
 
         output = output.join('');
 
@@ -58,7 +61,7 @@ var countdown = (function () {
         var locale = $.i18n.t('moment_locale');
         moment.locale(locale);
 
-        var starting = moment.tz('2014-12-01 17:00', 'Europe/Berlin');
+        var starting = moment.tz(moment_string, moment_tz);
         var duration = moment.duration(starting.diff(new Date()));
 
         var tz = jstz.determine();
@@ -67,7 +70,7 @@ var countdown = (function () {
                 var zoned = starting.clone().tz(tz.name());
 
                 var text = zoned.format('lll');
-                if (locale != 'de-DE') {
+                if (locale != moment_locale_fmt_except) {
                     text += ' (' + zoned.format('z') + ')';
                 }
                 $('#localizedstart').text(text);

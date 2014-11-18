@@ -50,7 +50,7 @@ public class GetCurrentTitle {
     private MidiRelayClient midiRelayClient;
 
     public String getCurrentTitle() {
-
+                    if(true) return "demo (1:1)";
         try {
             PlayerStateRepresentation state = midiRelayClient.getState();
 
@@ -93,7 +93,7 @@ public class GetCurrentTitle {
         List<String> parts = new ArrayList<>();
         parts.add(title);
 
-        Renderer renderer = new Renderer(Color.white);
+        Renderer renderer = new Renderer(new Color(200,200,200));
 
         int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 24;
 

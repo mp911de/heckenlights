@@ -1,6 +1,8 @@
 package biz.paluch.heckenlights.messagebox.client.twitter;
 
+import java.io.IOException;
 import java.util.Collections;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -94,5 +96,12 @@ public class StreamingSupervisor {
         if (stream != null) {
             stream.close();
         }
+    }
+
+    public static void main(String[] args) throws IOException
+    {
+        Properties p = new Properties();
+        p.setProperty("k", "اليمن_البحرين");
+        p.store(System.out, "");
     }
 }

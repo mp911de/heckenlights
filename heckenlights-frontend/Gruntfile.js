@@ -48,6 +48,17 @@ module.exports = function (grunt) {
                 src: 'less/site.less',
                 dest: '<%= appConfig.dist %>/css/<%= pkg.name %>.css'
             },
+            compileBootstrap: {
+                options: {
+                    strictMath: false,
+                    sourceMap: true,
+                    outputSourceFiles: true,
+                    sourceMapURL: 'bootstrap.css.map',
+                    sourceMapFilename: '<%= appConfig.dist %>/css/bootstrap.css.map'
+                },
+                src: 'less/bootstrap.less',
+                dest: '<%= appConfig.dist %>/css/bootstrap.css'
+            },
             compileTheme: {
                 options: {
                     strictMath: false,
@@ -71,6 +82,10 @@ module.exports = function (grunt) {
                 src: '<%= appConfig.dist %>/css/<%= pkg.name %>.css',
                 dest: '<%= appConfig.dist %>/css/<%= pkg.name %>.min.css'
             },
+            minifyBootstrap: {
+                src: '<%= appConfig.dist %>/css/bootstrap.css',
+                dest: '<%= appConfig.dist %>/css/bootstrap.min.css'
+            },
             minifyTheme: {
                 src: '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.css',
                 dest: '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.min.css'
@@ -82,8 +97,7 @@ module.exports = function (grunt) {
                 csslintrc: 'less/.csslintrc'
             },
             dist: [
-                '<%= appConfig.dist %>/css/<%= pkg.name %>.css',
-                '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.css'
+                '<%= appConfig.dist %>/css/<%= pkg.name %>.css'
             ]
         },
 
@@ -210,11 +224,17 @@ module.exports = function (grunt) {
         watch: {
             less: {
                 files: 'less/**/*.less',
-                tasks: ['less-compile', 'copy-html']
+                tasks: ['less-compile', 'copy:html'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                }
             },
             html: {
                 files: '*.html',
-                tasks: ['mustache_render', 'copy:html']
+                tasks: ['mustache_render', 'copy:html'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                }
             },
             js: {
                 files: ['scripts/{,*/}*.js'],
@@ -252,7 +272,6 @@ module.exports = function (grunt) {
                     base: './',
                     middleware: function (connect) {
                         return [
-                            connect.static('.tmp'),
                             connect().use(function(req, res, next) {
                                 if(req.url.indexOf('.html.') > -1){
                                     res.setHeader("Content-Type", "text/html");
@@ -261,6 +280,8 @@ module.exports = function (grunt) {
                             }),
                             connect().use('/locales', connect.static('./locales')),
                             connect().use('/images', connect.static('./images')),
+                            connect().use('/css', connect.static('./dist/css')),
+                            connect.static('.tmp'),
                             connect.static(require('path').resolve('.'))
                         ];
                     }
@@ -343,13 +364,13 @@ module.exports = function (grunt) {
         grunt.task.run(['serve:' + target]);
     });
 
-    grunt.registerTask('less-compile', ['less:compileCore', 'less:compileTheme']);
+    grunt.registerTask('less-compile', ['less']);
 
     // CSS distribution task.
-    grunt.registerTask('dist-css', ['less-compile', 'cssmin:minifyCore', 'cssmin:minifyTheme']);
+    grunt.registerTask('dist-css', ['less-compile', 'cssmin']);
 
     // Full distribution task.
-    grunt.registerTask('build', ['clean', 'mustache_render', 'copy:html', 'wiredep', 'useminPrepare', 'autoprefixer', 'concat', 'dist-css', 'cssmin', 'uglify', 'filerev', 'usemin', 'copy:resources']);
+    grunt.registerTask('build', ['clean', 'mustache_render', 'copy:html', 'wiredep', 'useminPrepare', 'autoprefixer', 'concat', 'dist-css', 'uglify', 'filerev', 'usemin', 'copy:resources']);
 
     grunt.registerTask('dist', ['build', 'compress']);
 
