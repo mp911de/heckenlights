@@ -18,6 +18,8 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
 
+        appConfig: appConfig,
+
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
 
@@ -34,33 +36,185 @@ module.exports = function (grunt) {
             }
         },
 
-        useminPrepare: {
-            html: ['index.html', 'landing.html.de.en']
-        },
-
-
-        recess: {
-            options: {
-                compile: true
-            },
-            site: {
-                src: ['less/site.less'],
-                dest: 'css/<%= pkg.name %>.css'
-            },
-            min: {
+        less: {
+            compileCore: {
                 options: {
-                    compress: true
+                    strictMath: false,
+                    sourceMap: true,
+                    outputSourceFiles: true,
+                    sourceMapURL: '<%= pkg.name %>.css.map',
+                    sourceMapFilename: '<%= appConfig.dist %>/css/<%= pkg.name %>.css.map'
                 },
-                src: ['less/site.less'],
-                dest: 'css/<%= pkg.name %>.min.css'
+                src: 'less/site.less',
+                dest: '<%= appConfig.dist %>/css/<%= pkg.name %>.css'
+            },
+            compileTheme: {
+                options: {
+                    strictMath: false,
+                    sourceMap: true,
+                    outputSourceFiles: true,
+                    sourceMapURL: '<%= pkg.name %>-theme.css.map',
+                    sourceMapFilename: '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.css.map'
+                },
+                src: 'less/theme.less',
+                dest: '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.css'
             }
         },
 
+        cssmin: {
+            options: {
+                compatibility: 'ie8',
+                keepSpecialComments: '*',
+                noAdvanced: true
+            },
+            minifyCore: {
+                src: '<%= appConfig.dist %>/css/<%= pkg.name %>.css',
+                dest: '<%= appConfig.dist %>/css/<%= pkg.name %>.min.css'
+            },
+            minifyTheme: {
+                src: '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.css',
+                dest: '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.min.css'
+            }
+        },
+
+        csslint: {
+            options: {
+                csslintrc: 'less/.csslintrc'
+            },
+            dist: [
+                '<%= appConfig.dist %>/css/<%= pkg.name %>.css',
+                '<%= appConfig.dist %>/css/<%= pkg.name %>-theme.css'
+            ]
+        },
+
+        // Renames files for browser caching purposes
+        filerev: {
+            dist: {
+                src: [
+                    '<%= appConfig.dist %>/js/{,*/}*.js',
+                    '<%= appConfig.dist %>/css/{,*/}*.css',
+                    '<%= appConfig.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
+            }
+        },
+
+        // Add vendor prefixed styles
+        autoprefixer: {
+            options: {
+                browsers: ['last 1 version']
+            },
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '.tmp/styles/',
+                        src: '{,*/}*.css',
+                        dest: '.tmp/styles/'
+                    }
+                ]
+            }
+        },
+
+        // Automatically inject Bower components into the app
+        wiredep: {
+            app: {
+                src: ['*.html.*'],
+                ignorePath: /\.\.\//
+            }
+        },
+
+        // Reads HTML for usemin blocks to enable smart builds that automatically
+        // concat, minify and revision files. Creates configurations in memory so
+        // additional tasks can operate on them
+        useminPrepare: {
+            html: '*.html.*',
+            options: {
+                dest: '<%= appConfig.dist %>',
+                flow: {
+                    html: {
+                        steps: {
+                            js: ['concat', 'uglifyjs'],
+                            css: ['cssmin']
+                        },
+                        post: {}
+                    }
+                }
+            }
+        },
+
+        // Performs rewrites based on filerev and the useminPrepare configuration
+        usemin: {
+            html: ['<%= appConfig.dist %>/*.html.*'],
+            css: ['<%= appConfig.dist %>/css/*.css'],
+            options: {
+                assetsDirs: ['./', '<%= appConfig.dist %>', '<%= appConfig.dist %>/js', '<%= appConfig.dist %>/images']
+            }
+        },
+
+        copy: {
+            html: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: './',
+                        dest: '<%= appConfig.dist %>',
+                        src: [
+                            '*.html.*'
+                        ]
+                    }
+                ]
+            },
+            connect: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: './',
+                        dest: '.tmp',
+                        src: [
+                            '*.html.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= appConfig.dist %>/css',
+                        dest: '.tmp',
+                        src: [
+                            '*.css'
+                        ]
+                    }
+                ]
+            },
+            resources: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: './',
+                        dest: '<%= appConfig.dist %>',
+                        src: [
+                            'favicon.ico',
+                            'robots.txt',
+                            'humans.txt',
+                            '.htaccess',
+                            'images/*',
+                            'app/*',
+                        ]
+                    }
+                ]
+            }
+        },
 
         watch: {
-            recess: {
-                files: ['less/*.less'],
-                tasks: ['recess']
+            less: {
+                files: 'less/**/*.less',
+                tasks: ['less-compile', 'copy-html']
+            },
+            html: {
+                files: '*.html',
+                tasks: ['mustache_render', 'copy:html']
             },
             js: {
                 files: ['scripts/{,*/}*.js'],
@@ -99,6 +253,14 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             connect.static('.tmp'),
+                            connect().use(function(req, res, next) {
+                                if(req.url.indexOf('.html.') > -1){
+                                    res.setHeader("Content-Type", "text/html");
+                                }
+                                next();
+                            }),
+                            connect().use('/locales', connect.static('./locales')),
+                            connect().use('/images', connect.static('./images')),
                             connect.static(require('path').resolve('.'))
                         ];
                     }
@@ -118,8 +280,12 @@ module.exports = function (grunt) {
                     archive: 'archive.zip'
                 },
                 files: [
-                    {src: ['css/*', 'js/**', 'fonts/**', 'images/**', 'locales/**', 'favicon.ico']},
-                    {src: ['landing.html.*']}]
+                    {
+                        expand: true,
+                        cwd: '<%= appConfig.dist %>',
+                        src: ['**']
+                    }
+                ]
             }
         },
 
@@ -156,24 +322,6 @@ module.exports = function (grunt) {
 
     });
 
-    // These plugins provide necessary tasks.
-    grunt.loadNpmTasks('browserstack-runner');
-    grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.loadNpmTasks('grunt-html-validation');
-    grunt.loadNpmTasks('grunt-jekyll');
-    grunt.loadNpmTasks('grunt-recess');
-    grunt.loadNpmTasks('grunt-sed');
-    grunt.loadNpmTasks('grunt-mustache-render');
-
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -181,6 +329,10 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'autoprefixer',
+            'less-compile',
+            'copy:html',
+            'autoprefixer',
             'connect:livereload',
             'watch'
         ]);
@@ -191,17 +343,20 @@ module.exports = function (grunt) {
         grunt.task.run(['serve:' + target]);
     });
 
+    grunt.registerTask('less-compile', ['less:compileCore', 'less:compileTheme']);
 
     // CSS distribution task.
-    grunt.registerTask('dist-css', ['recess']);
+    grunt.registerTask('dist-css', ['less-compile', 'cssmin:minifyCore', 'cssmin:minifyTheme']);
 
     // Full distribution task.
-    grunt.registerTask('build', ['clean', 'dist-css', 'mustache_render', 'compress']);
+    grunt.registerTask('build', ['clean', 'mustache_render', 'copy:html', 'wiredep', 'useminPrepare', 'autoprefixer', 'concat', 'dist-css', 'cssmin', 'uglify', 'filerev', 'usemin', 'copy:resources']);
 
-    grunt.registerTask('dist', ['build']);
-
+    grunt.registerTask('dist', ['build', 'compress']);
 
     // Default task.
     grunt.registerTask('default', ['dist']);
+    grunt.registerTask('config', 'Config', function () {
+        grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
+    });
 
 };

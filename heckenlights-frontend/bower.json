@@ -1,0 +1,13 @@
+{
+  "name": "heckenlights-frontend",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mp911de/heckenlights",
+  "authors": [
+    "Mark Paluch <mpaluch@paluch.biz>"
+  ],
+  "license": "Apache",
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.1",
+    "bootstrap": "~3.3.1"
+  }
+}

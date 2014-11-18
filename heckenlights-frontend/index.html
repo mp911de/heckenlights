@@ -17,13 +17,18 @@
 
     <title>HECKENLIGHTS</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/jquery.fileupload.css" rel="stylesheet">
 
     <script src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="css/heckenlights-frontend.min.css" rel="stylesheet">
+
+    <!-- build:css(dist) css/heckenlights-frontend-theme.css -->
+    <link href="css/heckenlights-frontend-theme.css" rel="stylesheet">
+    <!-- endbuild -->
+
+    <!-- build:css(dist) css/heckenlights-frontend.css -->
+    <link href="css/heckenlights-frontend.css" rel="stylesheet">
+    <!-- endbuild -->
 
     <!--[if lt IE 9]>
     <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -243,23 +248,44 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment-with-locales.min.js"></script>
 
+<!-- build:js js/moment-timezone-with-data-2010-2020.js -->
 <script src="js/moment-timezone-with-data-2010-2020.js"></script>
+<!-- endbuild -->
+
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.5/moment-timezone-utils.min.js"></script>
-<script src="js/jquery.iframe-transport.js"></script>
+
+<!-- build:js js/utils-index.js -->
+<script src="js/jquery.ui.widget.js"></script>
 <script src="js/jquery.fileupload.js"></script>
+<script src="js/jquery.iframe-transport.js"></script>
+<script src="js/scroll.js"></script>
+<script src="js/social.js"></script>
+<!-- endbuild -->
+
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
-<script src="js/scroll.js" async defer></script>
-<script src="js/social.js" async defer></script>
+
+<!-- build:js js/heckenlights-frontend.js -->
 <script src="js/heckenlights-frontend.js"></script>
+<!-- endbuild -->
+
+<!-- build:js js/heckenlights-countdown.js -->
 <script src="js/heckenlights-countdown.js"></script>
+<!-- endbuild -->
+
 <script>
+
+    var language = '{{language}}';
+    if(language.len != 2){
+        language = 'de';
+    }
+
     var options = {
         // change path
         resPostPath: 'locales/__lng__.json',
         resGetPath: 'locales/__lng__.json',
-        lng: 'en',
-        useCookie: false
+        useCookie: false,
+        lng: language
     }
 
     $.i18n.init(options, function () {
