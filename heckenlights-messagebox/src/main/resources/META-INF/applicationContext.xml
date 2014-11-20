@@ -26,8 +26,8 @@
 
     <bean id="httpConnectionParams" class="org.apache.http.params.HttpConnectionParamBean">
         <constructor-arg ref="httpParams"/>
-        <property name="connectionTimeout" value="${midirelay.connectTimeout}"/>
-        <property name="soTimeout" value="${midirelay.readTimeout}"/>
+        <property name="connectionTimeout" value="${midirelay.connectTimeout:500}" />
+        <property name="soTimeout" value="${midirelay.readTimeout:500}" />
     </bean>
 
 </beans>
