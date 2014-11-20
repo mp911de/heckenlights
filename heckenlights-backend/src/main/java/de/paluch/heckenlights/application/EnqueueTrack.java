@@ -1,19 +1,36 @@
 package de.paluch.heckenlights.application;
 
-import javax.inject.Inject;
-import javax.sound.midi.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.UUID;
-
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closer;
 import de.paluch.heckenlights.EnqueueS;
-import de.paluch.heckenlights.model.*;
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
+import de.paluch.heckenlights.model.EnqueueResult;
+import de.paluch.heckenlights.model.OfflineException;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.PlayStatus;
+import de.paluch.heckenlights.model.QuotaExceededException;
+import de.paluch.heckenlights.model.Rule;
+import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -34,6 +51,7 @@ public class EnqueueTrack {
     private final static int MINIMAL_DURATION_SEC = 10;
     private final static int MAXIMAL_DURATION_SEC = 300;
     private final static int QUOTA = 10;
+    private final static int LIMIT_ENEUQUED = 20;
     private final static int QUOTA_MINUTES = 30;
 
     public EnqueueResult enqueueWithQuotaCheck(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
@@ -44,6 +62,12 @@ public class EnqueueTrack {
         if (count > QUOTA) {
             throw new QuotaExceededException("Quota limit of " + QUOTA + " for " + QUOTA_MINUTES + " exceeded by "
                     + (count - QUOTA));
+        }
+
+        List<PlayCommandSummary> enqueuedCommands = playCommandService.getListByPlayStatusOrderByCreated(
+                ImmutableList.of(PlayStatus.ENQUEUED), 100);
+        if (enqueuedCommands.size() > LIMIT_ENEUQUED) {
+            throw new QuotaExceededException("Queue limit of " + LIMIT_ENEUQUED + " exceeded by " + (count - LIMIT_ENEUQUED));
         }
 
         if (ruleState.getActiveAction() != null && ruleState.getActiveAction() == Rule.Action.OFFLINE) {
