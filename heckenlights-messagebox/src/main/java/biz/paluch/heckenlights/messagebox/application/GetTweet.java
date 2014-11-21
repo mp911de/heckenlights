@@ -3,6 +3,8 @@ package biz.paluch.heckenlights.messagebox.application;
 import biz.paluch.heckenlights.messagebox.model.TweetSummary;
 import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
 import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ public class GetTweet {
 
     @Inject
     private TweetRepository tweetRepository;
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${image.height}")
     private int height;
@@ -58,6 +62,8 @@ public class GetTweet {
         if (document == null) {
             return null;
         }
+        logger.info("Retrieving Tweet " + document.getSender() + ": " + document.getMessage());
+
         document.setProcessed(true);
         tweetRepository.save(document);
 

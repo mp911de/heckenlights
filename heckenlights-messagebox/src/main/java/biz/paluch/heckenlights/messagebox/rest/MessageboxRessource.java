@@ -7,6 +7,8 @@ import biz.paluch.heckenlights.messagebox.application.GetTweet;
 import biz.paluch.heckenlights.messagebox.model.DispatchAction;
 import biz.paluch.heckenlights.messagebox.model.TweetSummary;
 import org.jboss.resteasy.util.HttpHeaderNames;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +41,8 @@ public class MessageboxRessource {
 
     @Inject
     private GetCurrentTitle getCurrentTitle;
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/dispatch", method = RequestMethod.GET)
     public ResponseEntity<Void> dispatch(UriComponentsBuilder uriComponentsBuilder) {
@@ -132,6 +136,7 @@ public class MessageboxRessource {
             String typeSuffix) {
         HttpHeaders headers = new HttpHeaders();
 
+        logger.info("Dispatching to " + dispatchAction);
         if (dispatchAction == DispatchAction.Tweet) {
 
             TweetSummary firstUnprocessedTweet = getTweet.getFirstUnprocessedTweet();

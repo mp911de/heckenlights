@@ -55,34 +55,41 @@ public class GetCurrentTitle {
             PlayerStateRepresentation state = midiRelayClient.getState();
 
             if (state != null && state.isRunning() && state.getTrack() != null) {
-                PlayerStateTrackRepresentation track = state.getTrack();
-
-                String suffix = "";
-                if (state.getEstimatedSecondsToPlay() > 0) {
-                    Duration duration = new Duration(TimeUnit.SECONDS.toMillis(state.getEstimatedSecondsToPlay())); // in
-                                                                                                                    // milliseconds
-                    PeriodFormatter formatter = new PeriodFormatterBuilder().minimumPrintedDigits(1).printZeroAlways()
-                            .appendMinutes().appendLiteral(":").minimumPrintedDigits(2).printZeroAlways().appendSeconds()
-                            .toFormatter();
-                    suffix = " (" + formatter.print(duration.toPeriod()) + ")";
-                }
-
-                if (StringUtils.hasText(track.getFileName()) && StringUtils.hasText(track.getSequenceName())) {
-                    return track.getFileName().trim() + "/" + track.getSequenceName() + suffix;
-                }
-
-                if (StringUtils.hasText(track.getFileName())) {
-                    return track.getFileName().trim() + suffix;
-                }
-
-                if (StringUtils.hasText(track.getSequenceName())) {
-                    return track.getSequenceName().trim() + suffix;
-                }
+                String currentTitle = getCurrentTitle(state);
+                logger.info("Current title: " + currentTitle);
+                return currentTitle;
             }
 
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
+        return null;
+    }
+
+    private String getCurrentTitle(PlayerStateRepresentation state) {
+        PlayerStateTrackRepresentation track = state.getTrack();
+
+        String suffix = "";
+        if (state.getEstimatedSecondsToPlay() > 0) {
+            Duration duration = new Duration(TimeUnit.SECONDS.toMillis(state.getEstimatedSecondsToPlay())); // in
+                                                                                                            // milliseconds
+            PeriodFormatter formatter = new PeriodFormatterBuilder().minimumPrintedDigits(1).printZeroAlways().appendMinutes()
+                    .appendLiteral(":").minimumPrintedDigits(2).printZeroAlways().appendSeconds().toFormatter();
+            suffix = " (" + formatter.print(duration.toPeriod()) + ")";
+        }
+
+        if (StringUtils.hasText(track.getFileName()) && StringUtils.hasText(track.getSequenceName())) {
+            return track.getFileName().trim() + "/" + track.getSequenceName() + suffix;
+        }
+
+        if (StringUtils.hasText(track.getFileName())) {
+            return track.getFileName().trim() + suffix;
+        }
+
+        if (StringUtils.hasText(track.getSequenceName())) {
+            return track.getSequenceName().trim() + suffix;
+        }
+
         return null;
     }
 
@@ -93,7 +100,7 @@ public class GetCurrentTitle {
         List<String> parts = new ArrayList<>();
         parts.add(title);
 
-        Renderer renderer = new Renderer(new Color(200,200,200));
+        Renderer renderer = new Renderer(new Color(200, 200, 200));
 
         int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 24;
 
