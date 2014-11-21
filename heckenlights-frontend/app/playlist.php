@@ -8,6 +8,7 @@ define('PLAY_STATUS', 'playStatus');
 define('TRACK_NAME', 'trackName');
 define('PLAY_COMMANDS', 'playCommands');
 define('ONLINE', 'online');
+define('QUEUE_OPEN', 'queueOpen');
 define('PLAYSTATUS_ERROR', 'ERROR');
 define('PLAYSTATUS_PLAYING', 'PLAYING');
 define('SUBMIT_RESULT_SUCCESS', 'SUCCESS');
@@ -133,6 +134,7 @@ function createPlaylistModel($jsonData)
     if (isset($json[PLAY_COMMANDS]) && is_array($json[PLAY_COMMANDS])) {
         $playcommands = $json[PLAY_COMMANDS];
         $playlist->setOnline($json[ONLINE]);
+        $playlist->setQueueOpen($json[QUEUE_OPEN]);
 
         foreach ($playcommands as $playcommand) {
 

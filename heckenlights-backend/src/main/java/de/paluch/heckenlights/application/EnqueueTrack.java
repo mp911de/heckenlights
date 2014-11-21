@@ -10,7 +10,6 @@ import de.paluch.heckenlights.model.OfflineException;
 import de.paluch.heckenlights.model.PlayCommandSummary;
 import de.paluch.heckenlights.model.PlayStatus;
 import de.paluch.heckenlights.model.QuotaExceededException;
-import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import org.apache.log4j.Logger;
@@ -48,6 +47,12 @@ public class EnqueueTrack {
     @Inject
     private RuleState ruleState;
 
+    @Inject
+    private IsQueueOpen isQueueOpen;
+
+    @Inject
+    private GetOnlineState getOnlineState;
+
     private final static int MINIMAL_DURATION_SEC = 10;
     private final static int MAXIMAL_DURATION_SEC = 300;
     private final static int QUOTA = 10;
@@ -70,7 +75,11 @@ public class EnqueueTrack {
             throw new QuotaExceededException("Queue limit of " + LIMIT_ENEUQUED + " exceeded by " + (count - LIMIT_ENEUQUED));
         }
 
-        if (ruleState.getActiveAction() != null && ruleState.getActiveAction() == Rule.Action.OFFLINE) {
+        if (!isQueueOpen.isQueueOpen()) {
+            throw new OfflineException("Queue closed");
+        }
+
+        if (!getOnlineState.isOnline()) {
             throw new OfflineException("System is offline");
         }
 

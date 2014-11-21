@@ -1,14 +1,6 @@
 package de.paluch.heckenlights.application;
 
-import static org.assertj.core.api.Assertions.*;
-
-import javax.xml.bind.JAXB;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import com.google.common.io.Resources;
 import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
@@ -16,6 +8,13 @@ import de.paluch.heckenlights.model.Rules;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.xml.bind.JAXB;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class ResolveRuleTest {
 
@@ -35,19 +34,19 @@ public class ResolveRuleTest {
     public void lightsOffDuringTheDay() throws Exception {
         setTime("10:10");
         Rule result = sut.getRule();
-        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_OFF);
+        assertThat(result.getAction()).isEqualTo(Rule.Action.OFFLINE);
 
         setTime("22:00");
         result = sut.getRule();
-        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_OFF);
+        assertThat(result.getAction()).isEqualTo(Rule.Action.OFFLINE);
 
         setTime("23:00");
         result = sut.getRule();
-        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_OFF);
+        assertThat(result.getAction()).isEqualTo(Rule.Action.OFFLINE);
 
         setTime("00:00");
         result = sut.getRule();
-        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_OFF);
+        assertThat(result.getAction()).isEqualTo(Rule.Action.OFFLINE);
     }
 
     @Test

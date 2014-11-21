@@ -1,12 +1,13 @@
 package de.paluch.heckenlights.application;
 
-import javax.inject.Inject;
-import java.util.Set;
-
 import com.google.common.collect.ImmutableSet;
 import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.repositories.StateService;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -20,7 +21,15 @@ public class GetOnlineState {
     @Inject
     private RuleState ruleState;
 
+    @Inject
+    private StateService stateService;
+
     public boolean isOnline() {
+
+        if (!stateService.isOnline()) {
+            return false;
+        }
+
         if (ruleState.getActiveAction() != null && ONLINE_ACTIONS.contains(ruleState.getActiveAction())) {
             return true;
         }

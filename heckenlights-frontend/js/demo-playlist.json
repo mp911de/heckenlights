@@ -1,5 +1,6 @@
 {
     "online": true,
+    "queueOpen": true,
     "entries": [
         {
             "id": 1,

@@ -20,6 +20,9 @@ public class PlayCommandsRepresentation {
     @XmlElement(name = "online")
     private boolean online;
 
+    @XmlElement(name = "queueOpen")
+    private boolean queueOpen;
+
     public List<PlayCommandRepresentation> getPlayCommands() {
         return playCommands;
     }
@@ -34,5 +37,13 @@ public class PlayCommandsRepresentation {
 
     public void setOnline(boolean online) {
         this.online = online;
+    }
+
+    public boolean isQueueOpen() {
+        return queueOpen;
+    }
+
+    public void setQueueOpen(boolean queueOpen) {
+        this.queueOpen = queueOpen;
     }
 }

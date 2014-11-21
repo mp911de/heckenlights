@@ -1,18 +1,23 @@
 package de.paluch.heckenlights.application;
 
+import de.paluch.heckenlights.client.MidiRelayClient;
+import de.paluch.heckenlights.client.PlayerStateRepresentation;
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.Rule;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.model.TrackContent;
+import de.paluch.heckenlights.repositories.PlayCommandService;
+import de.paluch.heckenlights.repositories.StateService;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
 import java.io.IOException;
 import java.time.Clock;
 import java.util.List;
 import java.util.Set;
-
-import de.paluch.heckenlights.client.MidiRelayClient;
-import de.paluch.heckenlights.client.PlayerStateRepresentation;
-import de.paluch.heckenlights.model.*;
-import de.paluch.heckenlights.repositories.PlayCommandService;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -39,6 +44,9 @@ public class ProcessQueue {
     private ResolveRule resolveRule;
 
     @Inject
+    private StateService stateService;
+
+    @Inject
     private Clock clock;
 
     private long lastScanMs = -1;
@@ -46,6 +54,10 @@ public class ProcessQueue {
     public void processQueue() throws IOException, InvalidMidiDataException, DurationExceededException {
 
         updateLastScan();
+
+        if (!stateService.isQueueProcessorActive()) {
+            return;
+        }
 
         Rule rule = resolveRule.getRule();
         PlayerStateRepresentation state = client.getState();
@@ -81,7 +93,7 @@ public class ProcessQueue {
         }
 
         if (ruleSwitched || actionSwitched) {
-            log.info("Switched to Rule with action " + ruleState.getActiveAction());
+            log.info("Switched to Rule with action " + ruleState.getActiveAction() + "(" + rule + ")");
         }
 
         if (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON) {

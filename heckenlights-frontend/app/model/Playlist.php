@@ -9,7 +9,8 @@
 class Playlist
 {
     public $entries;
-    public $online;
+    public $online = false;
+    public $queueOpen = false;
 
     /**
      * @param mixed $entries
@@ -28,7 +29,7 @@ class Playlist
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getOnline()
     {
@@ -36,12 +37,30 @@ class Playlist
     }
 
     /**
-     * @param mixed $online
+     * @param boolean $online
      */
     public function setOnline($online)
     {
         $this->online = $online;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getQueueOpen()
+    {
+        return $this->queueOpen;
+    }
+
+    /**
+     * @param boolean $queueOpen
+     */
+    public function setQueueOpen($queueOpen)
+    {
+        $this->queueOpen = $queueOpen;
+    }
+
+
 
 
 

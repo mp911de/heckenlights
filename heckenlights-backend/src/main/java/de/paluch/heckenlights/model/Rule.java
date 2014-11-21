@@ -1,13 +1,13 @@
 package de.paluch.heckenlights.model;
 
+import com.google.common.collect.Sets;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.time.DayOfWeek;
 import java.util.Set;
-
-import com.google.common.collect.Sets;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -119,5 +119,14 @@ public class Rule {
         PlaylistPlayedDuration, LightsOnDuration;
     }
 
-
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [action=").append(action);
+        sb.append(", from='").append(from).append('\'');
+        sb.append(", to='").append(to).append('\'');
+        sb.append(']');
+        return sb.toString();
+    }
 }

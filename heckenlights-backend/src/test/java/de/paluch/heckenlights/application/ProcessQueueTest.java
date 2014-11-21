@@ -1,13 +1,20 @@
 package de.paluch.heckenlights.application;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.TimeZone;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import com.google.common.collect.ImmutableList;
+import de.paluch.heckenlights.client.MidiRelayClient;
+import de.paluch.heckenlights.client.PlayerStateRepresentation;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.Rule;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.model.TrackContent;
+import de.paluch.heckenlights.repositories.PlayCommandService;
+import de.paluch.heckenlights.repositories.StateService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,15 +23,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.google.common.collect.ImmutableList;
-
-import de.paluch.heckenlights.client.MidiRelayClient;
-import de.paluch.heckenlights.client.PlayerStateRepresentation;
-import de.paluch.heckenlights.model.PlayCommandSummary;
-import de.paluch.heckenlights.model.Rule;
-import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.model.TrackContent;
-import de.paluch.heckenlights.repositories.PlayCommandService;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.TimeZone;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessQueueTest {
@@ -41,6 +43,9 @@ public class ProcessQueueTest {
     @Mock
     private ResolveRule resolveRule;
 
+    @Mock
+    private StateService stateService;
+
     @InjectMocks
     private ProcessQueue sut = new ProcessQueue();
 
@@ -50,6 +55,7 @@ public class ProcessQueueTest {
     public void before() throws Exception {
         ReflectionTestUtils.setField(sut, "ruleState", ruleState);
         ReflectionTestUtils.setField(sut, "clock", Clock.systemDefaultZone());
+        when(stateService.isQueueProcessorActive()).thenReturn(true);
     }
 
     @Test
