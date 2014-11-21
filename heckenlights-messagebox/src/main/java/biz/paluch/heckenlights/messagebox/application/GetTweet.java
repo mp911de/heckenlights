@@ -6,12 +6,15 @@ import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.SampleModel;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +110,11 @@ public class GetTweet {
         graphics.setPaint(Color.black);
         graphics.fillRect(0, 0, width, height);
 
-        renderer.runGraphics(widthPreroll, parts, graphics);
+        BufferedImage image = ImageIO.read(new File("assets/twitter-bird.png"));
+
+        graphics.drawImage(image, (int) (widthPreroll + 1), 0, null);
+
+        renderer.runGraphics(widthPreroll + 24, parts, graphics);
         graphics.dispose();
 
         return ImageEncoder.encode(format, tiledImage);
