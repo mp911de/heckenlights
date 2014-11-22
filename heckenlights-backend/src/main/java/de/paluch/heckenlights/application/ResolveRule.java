@@ -1,13 +1,13 @@
 package de.paluch.heckenlights.application;
 
-import javax.inject.Inject;
-import java.time.Clock;
-import java.time.LocalTime;
-
 import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.Rules;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.time.Clock;
+import java.time.LocalTime;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -37,11 +37,11 @@ public class ResolveRule {
             boolean matchPlayedDuration = false;
             boolean matchLightsOnDuration = false;
 
-            if (rule.getHourFrom() < hour || (rule.getHourFrom() == hour && rule.getMinuteFrom() >= minute)) {
+            if (rule.getHourFrom() < hour || (rule.getHourFrom() == hour && rule.getMinuteFrom() <= minute)) {
                 matchFrom = true;
             }
 
-            if (rule.getHourTo() > hour || (rule.getHourTo() == hour && rule.getMinuteTo() < minute)) {
+            if (rule.getHourTo() > hour || (rule.getHourTo() == hour && rule.getMinuteTo() >= minute)) {
                 matchTo = true;
             }
 
