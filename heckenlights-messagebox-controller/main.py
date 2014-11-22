@@ -89,7 +89,7 @@ def main():
             if width is not None:
                 sleep_time = min(width, max(width - 32, 0)) * scrollspeed_ms_per_pixel
                 command_line=  "%s -r 16 -m %d0.0 %s" % (led_matrix_executable, scrollspeed_ms_per_pixel * 100, filename)
-                print command_line
+                logging.debug("Command Line: " + command_line)
                 args = shlex.split(command_line)
                 process = subprocess.Popen(args)
                 logging.info("Width: %d px, Sleep-Time %d sec (org %d), File: %s" % (width, sleep_time, (width * scrollspeed_ms_per_pixel), filename))
