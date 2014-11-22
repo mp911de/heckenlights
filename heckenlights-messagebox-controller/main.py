@@ -19,11 +19,18 @@ led_matrix_executable = Config.get("settings", "led_matrix_executable")
 
 
 def get_display_content():
+    for fl in glob.glob("%s/*.ppm" % tempdir):
+        os.remove(fl)
+
     logging.info("Requesting %s" % messagebox_url)
 
     try:
         r = requests.get(messagebox_url)
         logging.debug("Status %d" % r.status_code)
+
+        if r.status_code >= 400:
+            logging.info("Cannot load image, status %d" % r.status_code)
+            return None
 
         if r.status_code >= 300 and r.status_code <= 399:
             logging.info("Redirect/Requesting %s" % r.headers['Location'])
@@ -56,16 +63,17 @@ def get_display_content():
 
 
 def get_width(filename):
-    image = PIL.Image.open(filename)
-    return image.size[0]
+    try:
+        image = PIL.Image.open(filename)
+        return image.size[0]
+    except BaseException as e:
+        logging.warning("Cannot read image data {0}: {1}".format(filename, e.message))
 
+    return None
 
 def main():
     if not (os.path.exists(tempdir)):
         os.mkdir(tempdir)
-
-    for fl in glob.glob("%s/*.ppm" % tempdir):
-        os.remove(fl)
 
     filename = get_display_content()
 
@@ -77,14 +85,19 @@ def main():
 
         if filename is not None:
             width = get_width(filename)
-            sleep_time = min(width, max(width - 32, 0)) * scrollspeed_ms_per_pixel
-            command_line=  "%s -r 16 -m %d0.0 %s" % (led_matrix_executable, scrollspeed_ms_per_pixel * 100, filename)
-            print command_line
-            args = shlex.split(command_line)
-            process = subprocess.Popen(args)
-            logging.info("Width: %d px, Sleep-Time %d sec (org %d), File: %s" % (width, sleep_time, (width * scrollspeed_ms_per_pixel), filename))
 
-            time.sleep(sleep_time)
+            if width is not None:
+                sleep_time = min(width, max(width - 32, 0)) * scrollspeed_ms_per_pixel
+                command_line=  "%s -r 16 -m %d0.0 %s" % (led_matrix_executable, scrollspeed_ms_per_pixel * 100, filename)
+                print command_line
+                args = shlex.split(command_line)
+                process = subprocess.Popen(args)
+                logging.info("Width: %d px, Sleep-Time %d sec (org %d), File: %s" % (width, sleep_time, (width * scrollspeed_ms_per_pixel), filename))
+
+                time.sleep(sleep_time)
+            else:
+                time.sleep(10)
+
             filename = get_display_content()
 
             process.wait()
