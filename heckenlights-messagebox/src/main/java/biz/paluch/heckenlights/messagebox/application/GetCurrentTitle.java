@@ -43,7 +43,7 @@ public class GetCurrentTitle {
     @Value("${image.width.preroll:0}")
     private int widthPreroll;
 
-    @Value("${image.width.postroll:}")
+    @Value("${image.width.postroll:0}")
     private int widthPostroll;
 
     @Inject

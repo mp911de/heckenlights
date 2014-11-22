@@ -41,7 +41,7 @@ public class GetTweet {
     @Value("${image.width.preroll:0}")
     private int widthPreroll;
 
-    @Value("${image.width.postroll:}")
+    @Value("${image.width.postroll:0}")
     private int widthPostroll;
 
     public TweetSummary getFirstUnprocessedTweet() {
@@ -106,7 +106,7 @@ public class GetTweet {
 
         Renderer renderer = new Renderer(Color.cyan);
 
-        int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll;
+        int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 28;
 
         // We need a sample model for color images where the pixels are bytes, with three bands.
         SampleModel sampleModel = RasterFactory.createBandedSampleModel(DataBuffer.TYPE_BYTE, width, height, 3);
@@ -118,9 +118,9 @@ public class GetTweet {
 
         BufferedImage image = ImageIO.read(new File("assets/twitter-bird.png"));
 
-        graphics.drawImage(image, (int) (widthPreroll + 1), 0, null);
+        graphics.drawImage(image, (int) (widthPreroll), 0, null);
 
-        renderer.runGraphics(widthPreroll + 24, parts, graphics);
+        renderer.runGraphics(widthPreroll + 28, parts, graphics);
         graphics.dispose();
 
         return ImageEncoder.encode(format, tiledImage);
