@@ -36,15 +36,6 @@ public class DispatchNextRequest {
         double ratioAdvertising = advertising / ratio.getAdvertising();
         double ratioTitle = title / ratio.getTitle();
 
-        if (ratioTweets < ratioAdvertising || ratioTweets < ratioTitle) {
-            TweetSummary firstUnprocessedTweet = getTweet.getFirstUnprocessedTweet();
-            if (firstUnprocessedTweet != null) {
-                displayCount.setTweets(displayCount.getTweets() + 1);
-                getDisplayCount.update(displayCount);
-                return DispatchAction.Tweet;
-            }
-        }
-
         if (ratioTitle < ratioAdvertising || ratioTitle < ratioTweets) {
             String titleText = getCurrentTitle.getCurrentTitle();
 
@@ -54,6 +45,16 @@ public class DispatchNextRequest {
                 return DispatchAction.Title;
             }
         }
+
+        if (ratioTweets < ratioAdvertising || ratioTweets < ratioTitle) {
+            TweetSummary firstUnprocessedTweet = getTweet.getFirstUnprocessedTweet();
+            if (firstUnprocessedTweet != null) {
+                displayCount.setTweets(displayCount.getTweets() + 1);
+                getDisplayCount.update(displayCount);
+                return DispatchAction.Tweet;
+            }
+        }
+
 
         displayCount.setAdvertising(displayCount.getAdvertising() + 1);
         getDisplayCount.update(displayCount);

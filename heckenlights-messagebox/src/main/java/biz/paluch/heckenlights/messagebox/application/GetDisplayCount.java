@@ -8,6 +8,9 @@ import biz.paluch.heckenlights.messagebox.model.DisplayCount;
 import biz.paluch.heckenlights.messagebox.repository.DisplayCountDocument;
 import biz.paluch.heckenlights.messagebox.repository.DisplayCountRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
@@ -16,8 +19,12 @@ public class GetDisplayCount {
 
     public static final String COUNT = "COUNT";
     public static final String RATIO = "RATIO";
+
+    public static final String COUNT_FORMAT = "yyyy-MM-dd_HH";
+
     @Inject
     private DisplayCountRepository displayCountRepository;
+
 
     public DisplayCount getDisplayCount() {
 
@@ -28,10 +35,14 @@ public class GetDisplayCount {
     }
 
     private DisplayCountDocument getCountDocument() {
-        DisplayCountDocument count = displayCountRepository.findOne(COUNT);
+
+        SimpleDateFormat format = new SimpleDateFormat(COUNT_FORMAT);
+        String key = COUNT + "_" + format.format(new Date());
+        DisplayCountDocument count = displayCountRepository.findOne(key);
+
         if (count == null) {
             count = new DisplayCountDocument();
-            count.setId(COUNT);
+            count.setId(key);
             displayCountRepository.save(count);
         }
         return count;
