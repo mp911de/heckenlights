@@ -23,6 +23,9 @@ public class PlayCommandsRepresentation {
     @XmlElement(name = "queueOpen")
     private boolean queueOpen;
 
+    @XmlElement(name = "processingPlayback")
+    private boolean processingPlayback;
+
     public List<PlayCommandRepresentation> getPlayCommands() {
         return playCommands;
     }
@@ -45,5 +48,13 @@ public class PlayCommandsRepresentation {
 
     public void setQueueOpen(boolean queueOpen) {
         this.queueOpen = queueOpen;
+    }
+
+    public boolean isProcessingPlayback() {
+        return processingPlayback;
+    }
+
+    public void setProcessingPlayback(boolean processingPlayback) {
+        this.processingPlayback = processingPlayback;
     }
 }

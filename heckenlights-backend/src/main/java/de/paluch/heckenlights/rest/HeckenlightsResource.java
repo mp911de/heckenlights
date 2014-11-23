@@ -1,6 +1,5 @@
 package de.paluch.heckenlights.rest;
 
-import com.google.common.collect.Lists;
 import de.paluch.heckenlights.application.EnqueueTrack;
 import de.paluch.heckenlights.application.GetOnlineState;
 import de.paluch.heckenlights.application.GetPlaylist;
@@ -12,7 +11,6 @@ import de.paluch.heckenlights.model.OfflineException;
 import de.paluch.heckenlights.model.PlayCommandSummary;
 import de.paluch.heckenlights.model.PlayStatus;
 import de.paluch.heckenlights.model.QuotaExceededException;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -29,7 +27,6 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,8 +43,8 @@ public class HeckenlightsResource {
     @Inject
     private GetPlaylist getPlaylist;
 
-	@Inject
-	private GetOnlineState getOnlineState;
+    @Inject
+    private GetOnlineState getOnlineState;
 
     @Inject
     private IsQueueOpen isQueueOpen;
@@ -66,10 +63,10 @@ public class HeckenlightsResource {
 
         try {
 
-            EnqueueRequest model = createModel(submissionHost, sessionId, fileName, input);
+            EnqueueRequest model = Mapper.createModel(submissionHost, sessionId, fileName, input);
             EnqueueResult enqueResult = enqueueTrack.enqueueWithQuotaCheck(model);
 
-            EnqueueResponseRepresentation result = toResult(enqueResult);
+            EnqueueResponseRepresentation result = Mapper.toResult(enqueResult);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (InvalidMidiDataException | IOException e) {
             return new ResponseEntity<>(new EnqueueResponseRepresentation(PlayStatus.ERROR, e.getMessage()),
@@ -94,72 +91,21 @@ public class HeckenlightsResource {
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
     public PlayCommandsRepresentation find(@QueryParam("playStatus") PlayStatus playStatus) {
         List<PlayCommandSummary> playlist = getPlaylist.getPlaylist(playStatus);
-		boolean isOnline = getOnlineState.isOnline();
-		PlayCommandsRepresentation result = new PlayCommandsRepresentation();
-		result.setOnline(isOnline);
+        boolean isOnline = getOnlineState.isOnline();
+
+        PlayCommandsRepresentation result = new PlayCommandsRepresentation();
+        result.setOnline(isOnline);
         result.setQueueOpen(isQueueOpen.isQueueOpen());
+        result.setProcessingPlayback(getOnlineState.isProcessingPlayback());
 
         for (PlayCommandSummary summaryModel : playlist) {
             PlayCommandRepresentation playCommandRepresentation = new PlayCommandRepresentation();
 
-            toPlayCommand(summaryModel, playCommandRepresentation);
+            Mapper.toPlayCommand(summaryModel, playCommandRepresentation);
             result.getPlayCommands().add(playCommandRepresentation);
         }
 
         return result;
-    }
-
-    private void toPlayCommand(PlayCommandSummary summaryModel, PlayCommandRepresentation playCommandRepresentation) {
-        playCommandRepresentation.setCreated(summaryModel.getCreated());
-        playCommandRepresentation.setDuration(summaryModel.getDuration());
-        playCommandRepresentation.setException(summaryModel.getException());
-        playCommandRepresentation.setExternalSessionId(summaryModel.getExternalSessionId());
-        playCommandRepresentation.setId(summaryModel.getId());
-        playCommandRepresentation.setPlayStatus(summaryModel.getPlayStatus());
-        playCommandRepresentation.setSubmissionHost(summaryModel.getSubmissionHost());
-        playCommandRepresentation.setTrackName(summaryModel.getTrackName());
-        playCommandRepresentation.setCaptures(toCaptures(summaryModel.getCaptures()));
-        playCommandRepresentation.setTimeToStart(summaryModel.getTimeToStart());
-        playCommandRepresentation.setRemaining(summaryModel.getRemaining());
-    }
-
-    private List<PlayCaptureRepresentation> toCaptures(List<Date> dates) {
-        List<PlayCaptureRepresentation> result = Lists.newArrayList();
-
-        for (Date captureDate : dates) {
-            PlayCaptureRepresentation captureRepresentation = new PlayCaptureRepresentation();
-            captureRepresentation.setId(result.size());
-            captureRepresentation.setCreated(captureDate);
-
-            result.add(captureRepresentation);
-
-        }
-
-        return result;
-    }
-
-    private EnqueueResponseRepresentation toResult(EnqueueResult model) {
-        EnqueueResponseRepresentation result = new EnqueueResponseRepresentation();
-        result.setEnqueuedCommandId(model.getCommandId());
-        result.setMessage(model.getException());
-        result.setDurationToPlay(model.getDurationToPlay());
-        result.setTrackName(model.getTrackName());
-        result.setPlayStatus(PlayStatus.ENQUEUED);
-        return result;
-    }
-
-    private EnqueueRequest createModel(String submissionHost, String sessionId, String fileName, byte[] input) {
-
-        byte[] bytes = input;
-
-        EnqueueRequest model = new EnqueueRequest();
-
-        model.setFileName(FilenameUtils.getName(fileName));
-        model.setContent(bytes);
-        model.setCreated(new Date());
-        model.setExternalSessionId(sessionId);
-        model.setSubmissionHost(submissionHost);
-        return model;
     }
 
     @RequestMapping(value = "{id}", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
@@ -171,7 +117,7 @@ public class HeckenlightsResource {
 
         PlayCommandRepresentation result = new PlayCommandRepresentation();
 
-        toPlayCommand(playCommand, result);
+        Mapper.toPlayCommand(playCommand, result);
         return result;
 
     }
