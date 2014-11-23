@@ -106,23 +106,19 @@ public class ProcessQueue {
 
     private void resetCounters(Rule rule) {
 
-        boolean performReset = false;
         boolean resetAll = false;
 
-        if (rule.getMinLightsOnDuration() != null && rule.getMinLightsOnDuration() > ruleState.getLightsOnTimeMs()) {
-            performReset = true;
-        }
 
         if (rule.getAction() == Rule.Action.LIGHTS_OFF || rule.getAction() == Rule.Action.OFFLINE) {
             resetAll = true;
         }
 
-        if (resetAll || performReset || rule.getReset().contains(Rule.Counter.LightsOnDuration)) {
+        if (resetAll || rule.getReset().contains(Rule.Counter.LightsOnDuration)) {
             log.info("Reset " + Rule.Counter.LightsOnDuration);
             ruleState.setLightsOnTimeMs(0);
         }
 
-        if (resetAll || performReset || rule.getReset().contains(Rule.Counter.PlaylistPlayedDuration)) {
+        if (resetAll || rule.getReset().contains(Rule.Counter.PlaylistPlayedDuration)) {
             log.info("Reset " + Rule.Counter.PlaylistPlayedDuration);
             ruleState.setPlaylistPlayedTimeMs(0);
         }
@@ -183,7 +179,7 @@ public class ProcessQueue {
 
             if (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON) {
                 long played = clock.millis() - lastScanMs;
-                ruleState.setLightsOnTimeMs(played);
+                ruleState.addLightsOnTimeMs(played);
             }
         }
 

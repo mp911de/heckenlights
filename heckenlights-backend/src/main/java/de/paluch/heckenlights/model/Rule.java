@@ -114,8 +114,7 @@ public class Rule {
         OFFLINE, LIGHTS_ON, LIGHTS_OFF, PLAYLIST, PLAYLIST_AUTO_ENQEUE;
     }
 
-
-	public static enum Counter {
+    public static enum Counter {
         PlaylistPlayedDuration, LightsOnDuration;
     }
 
@@ -123,9 +122,13 @@ public class Rule {
     public String toString() {
         final StringBuffer sb = new StringBuffer();
         sb.append(getClass().getSimpleName());
-        sb.append(" [action=").append(action);
-        sb.append(", from='").append(from).append('\'');
+        sb.append(" [from='").append(from).append('\'');
         sb.append(", to='").append(to).append('\'');
+        sb.append(", maxPlaylistPlayedDuration=").append(maxPlaylistPlayedDuration);
+        sb.append(", minLightsOnDuration=").append(minLightsOnDuration);
+        sb.append(", reset=").append(reset);
+        sb.append(", action=").append(action);
+        sb.append(", queueIsEmpty=").append(queueIsEmpty);
         sb.append(']');
         return sb.toString();
     }
