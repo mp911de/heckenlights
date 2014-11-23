@@ -11,9 +11,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.bind.JAXB;
 import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.TimeZone;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
 public class ResolveRuleTest {
@@ -36,7 +35,7 @@ public class ResolveRuleTest {
         Rule result = sut.getRule();
         assertThat(result.getAction()).isEqualTo(Rule.Action.OFFLINE);
 
-        setTime("22:00");
+        setTime("22:01");
         result = sut.getRule();
         assertThat(result.getAction()).isEqualTo(Rule.Action.OFFLINE);
 
@@ -79,6 +78,18 @@ public class ResolveRuleTest {
         setTime("18:00");
         result = sut.getRule();
         assertThat(result.getAction()).isEqualTo(Rule.Action.PLAYLIST_AUTO_ENQEUE);
+
+    }
+
+    @Test
+    public void lightsOnAfterPlayAndLightsOn() throws Exception {
+        ruleState.setPlaylistPlayedTimeMs(TimeUnit.MILLISECONDS.convert(11, TimeUnit.MINUTES));
+        ruleState.setLightsOnTimeMs(TimeUnit.MILLISECONDS.convert(11, TimeUnit.MINUTES));
+
+        setTime("17:20");
+        Rule result = sut.getRule();
+        assertThat(result.getAction()).isEqualTo(Rule.Action.LIGHTS_ON);
+        assertThat(result.getReset()).isNotEmpty();
 
     }
 
@@ -135,9 +146,9 @@ public class ResolveRuleTest {
 
     public void setTime(String time) {
 
-        LocalDateTime lt = LocalDateTime.parse("2007-12-03T" + time + ":30.00");
+        ZonedDateTime lt = ZonedDateTime.parse("2007-12-03T" + time + ":30.00+01:00[Europe/Berlin]");
 
-        Clock clock = Clock.fixed(lt.toInstant(ZoneOffset.UTC), TimeZone.getTimeZone("Europe/Berlin").toZoneId());
+        Clock clock = Clock.fixed(lt.toInstant(), ZoneId.of("Europe/Berlin"));
 
         ReflectionTestUtils.setField(sut, "clock", clock);
 

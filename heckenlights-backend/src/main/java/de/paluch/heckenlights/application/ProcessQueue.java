@@ -1,5 +1,15 @@
 package de.paluch.heckenlights.application;
 
+import java.io.IOException;
+import java.time.Clock;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
 import de.paluch.heckenlights.client.MidiRelayClient;
 import de.paluch.heckenlights.client.PlayerStateRepresentation;
 import de.paluch.heckenlights.model.DurationExceededException;
@@ -9,15 +19,6 @@ import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.TrackContent;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import de.paluch.heckenlights.repositories.StateService;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
-import java.io.IOException;
-import java.time.Clock;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -84,7 +85,7 @@ public class ProcessQueue {
         }
 
         if (!rule.getReset().isEmpty()) {
-            resetCounters(rule.getReset());
+            resetCounters(rule);
         }
 
         if (ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE
@@ -105,12 +106,24 @@ public class ProcessQueue {
         }
     }
 
-    private void resetCounters(Set<Rule.Counter> reset) {
-        if (reset.contains(Rule.Counter.LightsOnDuration)) {
+    private void resetCounters(Rule rule) {
+
+        boolean performReset = false;
+        boolean resetAll = false;
+
+        if (rule.getMinLightsOnDuration() != null && rule.getMinLightsOnDuration() > ruleState.getLightsOnTimeMs()) {
+            performReset = true;
+        }
+
+        if (rule.getAction() == Rule.Action.LIGHTS_OFF || rule.getAction() == Rule.Action.OFFLINE) {
+            resetAll = true;
+        }
+
+        if (resetAll || rule.getReset().contains(Rule.Counter.LightsOnDuration)) {
             ruleState.setLightsOnTimeMs(0);
         }
 
-        if (reset.contains(Rule.Counter.PlaylistPlayedDuration)) {
+        if (resetAll || rule.getReset().contains(Rule.Counter.PlaylistPlayedDuration)) {
             ruleState.setPlaylistPlayedTimeMs(0);
         }
     }
