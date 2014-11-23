@@ -54,16 +54,16 @@ function submitMidiFile($api, $session)
         if (strlen(strstr($header, "HTTP/1.1 200")) > 0) {
             $enqueue = json_decode($rawResponse->body, true);
 
-            if (array_key_exists(DURATION_TO_PLAY, $enqueue)) {
-                $enqueueResult->setDurationToPlay($enqueue[DURATION_TO_PLAY]);
+            if (array_key_exists('durationToPlay', $enqueue)) {
+                $enqueueResult->setDurationToPlay($enqueue['durationToPlay']);
             }
 
-            if (array_key_exists(TRACK_NAME, $enqueue)) {
-                $enqueueResult->setTrackName($enqueue[TRACK_NAME]);
+            if (array_key_exists('trackName', $enqueue)) {
+                $enqueueResult->setTrackName($enqueue['trackName']);
             }
 
-            if (array_key_exists(MESSAGE, $enqueue)) {
-                $enqueueResult->setTrackName($enqueue[MESSAGE]);
+            if (array_key_exists('message', $enqueue)) {
+                $enqueueResult->setMessage($enqueue['message']);
             }
 
             if (isset($enqueue) && isset($enqueue->playStatus)) {
@@ -87,8 +87,8 @@ function submitMidiFile($api, $session)
                 $enqueue = json_decode($rawResponse->body, true);
 
                 if (is_array($enqueue)) {
-                    if (array_key_exists(MESSAGE, $enqueue)) {
-                        $enqueueResult->setTrackName($enqueue[MESSAGE]);
+                    if (array_key_exists('message', $enqueue)) {
+                        $enqueueResult->setMessage($enqueue['message']);
                     }
 
                     if (isset($enqueue) && isset($enqueue->playStatus)) {
@@ -147,8 +147,8 @@ function createPlaylistModel($jsonData)
                 $entry->setPlaying(true);
             }
 
-            if (array_key_exists(TRACK_NAME, $playcommand)) {
-                $entry->setTrackName($playcommand[TRACK_NAME]);
+            if (array_key_exists('trackName', $playcommand)) {
+                $entry->setTrackName($playcommand['trackName']);
             }
 
             if (array_key_exists(REMAINING, $playcommand)) {

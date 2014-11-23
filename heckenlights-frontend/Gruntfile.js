@@ -174,7 +174,7 @@ module.exports = function (grunt) {
                         cwd: './',
                         dest: '<%= appConfig.dist %>',
                         src: [
-                            '*.html.*'
+                            '*.html.*', 'fonts/*.*', 'locales/*.*', '.htaccess', 'app/**'
                         ]
                     }
                 ]
@@ -272,8 +272,8 @@ module.exports = function (grunt) {
                     base: './',
                     middleware: function (connect) {
                         return [
-                            connect().use(function(req, res, next) {
-                                if(req.url.indexOf('.html.') > -1){
+                            connect().use(function (req, res, next) {
+                                if (req.url.indexOf('.html.') > -1) {
                                     res.setHeader("Content-Type", "text/html");
                                 }
                                 next();
