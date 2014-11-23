@@ -1,15 +1,5 @@
 package de.paluch.heckenlights.application;
 
-import java.io.IOException;
-import java.time.Clock;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-
 import de.paluch.heckenlights.client.MidiRelayClient;
 import de.paluch.heckenlights.client.PlayerStateRepresentation;
 import de.paluch.heckenlights.model.DurationExceededException;
@@ -19,6 +9,14 @@ import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.TrackContent;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import de.paluch.heckenlights.repositories.StateService;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
+import java.io.IOException;
+import java.time.Clock;
+import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -94,7 +92,7 @@ public class ProcessQueue {
         }
 
         if (ruleSwitched || actionSwitched) {
-            log.info("Switched to Rule with action " + ruleState.getActiveAction() + "(" + rule + ")");
+            log.info("Switched to Rule with action " + ruleState.getActiveAction() + " (" + rule + ")");
         }
 
         if (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON) {
@@ -119,11 +117,13 @@ public class ProcessQueue {
             resetAll = true;
         }
 
-        if (resetAll || rule.getReset().contains(Rule.Counter.LightsOnDuration)) {
+        if (resetAll || performReset || rule.getReset().contains(Rule.Counter.LightsOnDuration)) {
+            log.info("Reset " + Rule.Counter.LightsOnDuration);
             ruleState.setLightsOnTimeMs(0);
         }
 
-        if (resetAll || rule.getReset().contains(Rule.Counter.PlaylistPlayedDuration)) {
+        if (resetAll || performReset || rule.getReset().contains(Rule.Counter.PlaylistPlayedDuration)) {
+            log.info("Reset " + Rule.Counter.PlaylistPlayedDuration);
             ruleState.setPlaylistPlayedTimeMs(0);
         }
     }
