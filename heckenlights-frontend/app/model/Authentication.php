@@ -11,6 +11,7 @@ class Authentication
     public $recaptchaPublicKey;
     public $humanOrMachine = "machine";
     public $challengeResponse = "";
+    public $presetSubmitted = false;
 
     /**
      * @return mixed
@@ -60,5 +61,20 @@ class Authentication
         $this->challengeResponse = $challengeResponse;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isPresetSubmitted()
+    {
+        return $this->presetSubmitted;
+    }
+
+    /**
+     * @param boolean $presetSubmitted
+     */
+    public function setPresetSubmitted($presetSubmitted)
+    {
+        $this->presetSubmitted = $presetSubmitted;
+    }
 
 } 

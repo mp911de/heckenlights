@@ -1,5 +1,6 @@
 <?php
 require_once 'settings.php';
+require_once 'lib/requestId.php';
 
 if (!array_key_exists('HTTP_ORIGIN', $_SERVER)) {
     $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];

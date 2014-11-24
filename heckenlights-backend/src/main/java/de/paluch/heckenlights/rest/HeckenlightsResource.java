@@ -1,24 +1,5 @@
 package de.paluch.heckenlights.rest;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import de.paluch.heckenlights.application.EnqueueTrack;
 import de.paluch.heckenlights.application.GetOnlineState;
 import de.paluch.heckenlights.application.GetPlaylist;
@@ -30,6 +11,23 @@ import de.paluch.heckenlights.model.OfflineException;
 import de.paluch.heckenlights.model.PlayCommandSummary;
 import de.paluch.heckenlights.model.PlayStatus;
 import de.paluch.heckenlights.model.QuotaExceededException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -51,7 +49,7 @@ public class HeckenlightsResource {
     @Inject
     private IsQueueOpen isQueueOpen;
 
-    @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.POST)
+    @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON}, method = RequestMethod.POST)
     public ResponseEntity<EnqueueResponseRepresentation> uploadFile(
             @RequestHeader(value = "X-Submission-Host", required = false) String submissionHost,
             @RequestHeader(value = "X-External-SessionId", required = false) String sessionId,

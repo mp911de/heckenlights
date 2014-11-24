@@ -14,6 +14,7 @@ define('PLAYSTATUS_PLAYING', 'PLAYING');
 define('SUBMIT_RESULT_SUCCESS', 'SUCCESS');
 define('SUBMIT_RESULT_ERROR', 'ERROR');
 define('SUBMIT_RESULT_UNAUTHENTICATED', 'UNAUTHENTICATED');
+define('SUBMIT_RESULT_NOT_FOUND', 'NOT_FOUND');
 define('SUBMIT_RESULT_QUOTA', 'QUOTA');
 define('SUBMIT_RESULT_OFFLINE', 'OFFLINE');
 define('POST', "POST");
@@ -24,6 +25,7 @@ require_once 'model/EnqueueRequest.php';
 require_once 'lib/RestApiClient.php';
 require_once 'lib/UploadHandler.php';
 require_once 'authentication.php';
+
 
 function submitMidiFile($api, $session)
 {
@@ -44,63 +46,7 @@ function submitMidiFile($api, $session)
         $rawResponse = $client->send(POST, "/", $headers, $file->contents);
         $result->encode = false;
 
-        $header = $rawResponse->header;
-        if (is_array($header)) {
-            $header = implode($header);
-        }
-
-        $enqueueResult = new EnqueueRequest();
-
-        if (strlen(strstr($header, "HTTP/1.1 200")) > 0) {
-            $enqueue = json_decode($rawResponse->body, true);
-
-            if (array_key_exists('durationToPlay', $enqueue)) {
-                $enqueueResult->setDurationToPlay($enqueue['durationToPlay']);
-            }
-
-            if (array_key_exists('trackName', $enqueue)) {
-                $enqueueResult->setTrackName($enqueue['trackName']);
-            }
-
-            if (array_key_exists('message', $enqueue)) {
-                $enqueueResult->setMessage($enqueue['message']);
-            }
-
-            if (isset($enqueue) && isset($enqueue->playStatus)) {
-                $enqueueResult->setPlayStatus($enqueue->playStatus);
-
-                if ($enqueue->playStatus == PLAYSTATUS_ERROR) {
-                    $result->success = false;
-                }
-            }
-        } else {
-
-            $result->success = false;
-            if (strlen(strstr($header, "HTTP/1.1 423")) > 0) {
-                $result->status = 423;
-                $enqueueResult->setSubmitStatus(SUBMIT_RESULT_OFFLINE);
-            } else if (strlen(strstr($header, "HTTP/1.1 429")) > 0) {
-                $result->status = 429;
-                $enqueueResult->setSubmitStatus(SUBMIT_RESULT_QUOTA);
-            } else if (strlen(strstr($header, "HTTP/1.1 400")) > 0) {
-                $result->status = 400;
-                $enqueue = json_decode($rawResponse->body, true);
-
-                if (is_array($enqueue)) {
-                    if (array_key_exists('message', $enqueue)) {
-                        $enqueueResult->setMessage($enqueue['message']);
-                    }
-
-                    if (isset($enqueue) && isset($enqueue->playStatus)) {
-                        $enqueueResult->setPlayStatus($enqueue->playStatus);
-                    }
-                    $enqueueResult->setSubmitStatus(SUBMIT_RESULT_ERROR);
-                }
-            } else {
-                $result->status = 500;
-            }
-        }
-
+        $enqueueResult = createResult($result, $rawResponse);
 
         $result->response = $enqueueResult;
     };
@@ -110,6 +56,159 @@ function submitMidiFile($api, $session)
     $api->setStatus($upload_handler->status);
 
     return $upload_handler->get_response();
+}
+
+function submitPreset($api, $presetfile, $session)
+{
+    global $presets;
+
+    if (!isAuthenticated($session)) {
+        $enqueueResult = new PlaylistEntry();
+        $enqueueResult->setSubmitStatus(SUBMIT_RESULT_UNAUTHENTICATED);
+        $api->setStatus(401);
+        return $enqueueResult;
+    }
+
+    if (!wasPresetSubmitted($session)) {
+        $enqueueResult = new PlaylistEntry();
+        $enqueueResult->setSubmitStatus(SUBMIT_RESULT_QUOTA);
+        $api->setStatus(429);
+        return $enqueueResult;
+    }
+
+    if (!array_key_exists($presetfile, $presets)) {
+        $enqueueResult = new PlaylistEntry();
+        $enqueueResult->setSubmitStatus(SUBMIT_RESULT_NOT_FOUND);
+        $enqueueResult->setTrackName($presetfile);
+        $api->setStatus(400);
+        return $enqueueResult;
+    }
+
+    $content = readFile($presetfile);
+    if ($content == null) {
+        $enqueueResult = new PlaylistEntry();
+        $enqueueResult->setSubmitStatus(SUBMIT_RESULT_NOT_FOUND);
+        $enqueueResult->setTrackName($presetfile);
+        $api->setStatus(404);
+        return $enqueueResult;
+    }
+
+    $result = new \stdClass();
+    $result->response = null;
+    $result->success = true;
+    $result->encode = true;
+    $result->status = 200;
+
+    $client = new RestApiClient(constant('backend'), '');
+
+    $headers = ["Content-Type: application/octet-stream", "Accept: application/json", "X-Submission-Host: " . $_SERVER['REMOTE_ADDR'],
+        "X-External-SessionId: " . session_id(), "X-Request-FileName: " . $presetfile];
+
+    $rawResponse = $client->send(POST, "/", $headers, $content);
+
+    $enqueueResult = createResult($result, $rawResponse);
+
+    if($result->success === true){
+        setPresetSubmittedFlag($session);
+    }
+
+    if ($result->status === 200) {
+        $result->status = 400;
+    }
+
+    $api->setStatus($result->status);
+
+    return $enqueueResult;
+}
+
+function readFile($filename)
+{
+    $fullname = constant('presetFileBase') . $filename;
+    if (file_exists($fullname)) {
+
+        $handle = fopen($fullname, "rb");
+        $contents = '';
+        while (!feof($handle)) {
+            $contents .= fread($handle, 8192);
+        }
+        fclose($handle);
+        return $contents;
+    }
+
+    return null;
+}
+
+/**
+ * @param $result
+ * @param $rawResponse
+ * @return EnqueueRequest
+ */
+function createResult($result, $rawResponse)
+{
+    $header = $rawResponse->header;
+    if (is_array($header)) {
+        $header = implode($header);
+    }
+    $enqueueResult = new EnqueueRequest();
+
+    if (strlen(strstr($header, "HTTP/1.1 200")) > 0) {
+        $result->success = true;
+        $enqueue = json_decode($rawResponse->body, true);
+
+        if (array_key_exists('durationToPlay', $enqueue)) {
+            $enqueueResult->setDurationToPlay($enqueue['durationToPlay']);
+        }
+
+        if (array_key_exists('trackName', $enqueue)) {
+            $enqueueResult->setTrackName($enqueue['trackName']);
+        }
+
+        if (array_key_exists('message', $enqueue)) {
+            $enqueueResult->setMessage($enqueue['message']);
+        }
+
+        if (isset($enqueue) && isset($enqueue->playStatus)) {
+            $enqueueResult->setPlayStatus($enqueue->playStatus);
+
+            if ($enqueue->playStatus == PLAYSTATUS_ERROR) {
+                $result->success = false;
+                return $enqueueResult;
+            }
+            return $enqueueResult;
+        }
+        return $enqueueResult;
+    } else {
+
+        $result->success = false;
+        if (strlen(strstr($header, "HTTP/1.1 423")) > 0) {
+            $result->status = 423;
+            $enqueueResult->setSubmitStatus(SUBMIT_RESULT_OFFLINE);
+            return $enqueueResult;
+        } else if (strlen(strstr($header, "HTTP/1.1 429")) > 0) {
+            $result->status = 429;
+            $enqueueResult->setSubmitStatus(SUBMIT_RESULT_QUOTA);
+            return $enqueueResult;
+        } else if (strlen(strstr($header, "HTTP/1.1 400")) > 0) {
+            $result->status = 400;
+            $enqueue = json_decode($rawResponse->body, true);
+
+            if (is_array($enqueue)) {
+                if (array_key_exists('message', $enqueue)) {
+                    $enqueueResult->setMessage($enqueue['message']);
+                }
+
+                if (isset($enqueue) && isset($enqueue->playStatus)) {
+                    $enqueueResult->setPlayStatus($enqueue->playStatus);
+                }
+                $enqueueResult->setSubmitStatus(SUBMIT_RESULT_ERROR);
+                return $enqueueResult;
+            }
+            return $enqueueResult;
+        } else {
+            $result->status = 500;
+            return $enqueueResult;
+        }
+    }
 }
 
 function getPlaylist()

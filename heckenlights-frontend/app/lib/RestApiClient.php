@@ -64,6 +64,8 @@ class RestApiClient
 
     public function send($method, $path, $additionalHeaders, $data)
     {
+
+        global $requestId;
         if (strpos($path, "/") !== 0) {
             throw new Exception("Path must start with /");
         }
@@ -74,6 +76,9 @@ class RestApiClient
 
         $httpHeaders = array(
             "User-Agent: " . $this->userAgent,
+            "X-Tracking.SessionId: " . session_id(),
+            "X-Tracking.RequestId: " . $requestId,
+            "X-Tracking.UserId: " . $_SERVER['REMOTE_HOST']
         );
 
         if (isset($additionalHeaders) && is_array($additionalHeaders)) {
@@ -126,7 +131,7 @@ class RestApiClient
         }
 
         if ($this->compressionEnabled) {
-            curl_setopt($ch, CURLOPT_ENCODING, "gzip");   //TODO: add  outbound compression support
+            curl_setopt($ch, CURLOPT_ENCODING, "gzip");
         }
 
         $cookies = array();

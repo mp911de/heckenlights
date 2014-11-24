@@ -12,6 +12,7 @@ define('RECAPTCHA_PRIVATE_KEY', 'recaptchaPrivateKey');
 define('RECAPTCHA_CHALLENGE_FIELD', "recaptcha_challenge_field");
 define('RECAPTCHA_RESPONSE_FIELD', "recaptcha_response_field");
 define('HUMAN_OR_MACHINE_KEY', "humanOrMachine");
+define('PRESET_SUBMITTED', "presetSubmitted");
 
 function getAuthentication($session)
 {
@@ -33,6 +34,22 @@ function isAuthenticated($session)
     }
 
     return false;
+}
+
+function wasPresetSubmitted($session)
+{
+    if (array_key_exists(PRESET_SUBMITTED, $session)) {
+        if ($session[PRESET_SUBMITTED] === true) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function setPresetSubmittedFlag($session)
+{
+    $session[PRESET_SUBMITTED] = true;
 }
 
 function authenticate($post, &$session, $remoteAddr)

@@ -1,3 +1,8 @@
+@twitter: #00acee;
+@gplus: #e93f2e;
+@fb: #3b5998;
+@linkbase: #333;
+
 body {
   padding-top: 50px;
 }
@@ -49,10 +54,6 @@ body {
 
   .navbar-nav > li {
 
-    @twitter: #00acee;
-    @gplus: #e93f2e;
-    @fb: #3b5998;
-
     a.btn-social {
       height: 30px;
       padding: 3px;
@@ -61,48 +62,33 @@ body {
       text-shadow: none;
       font-size: 0.8em;
       font-weight: 700;
+      color: #fff
     }
 
     .btn-twitter {
       background: @twitter;
       border: 1px solid darken(@twitter, 15%);
-      color: #fff
-    }
-    .btn-twitter:link, .btn-twitter:visited {
-      color: #fff
     }
     .btn-twitter:active, .btn-twitter:hover {
       background: darken(@twitter, 5%);
-      color: #fff
     }
     .btn-facebook {
       background: @fb;
       border: 1px solid darken(@fb, 10%);
-      color: #fff
-    }
-    .btn-facebook:link, .btn-facebook:visited {
-      color: #fff
     }
     .btn-facebook:active, .btn-facebook:hover {
       background: darken(@fb, 5%);
-      color: #fff
     }
     .btn-googleplus {
       background: @gplus;
       border: 1px solid darken(@gplus, 20%);
-      color: #fff
-    }
-    .btn-googleplus:link, .btn-googleplus:visited {
-      color: #fff
     }
     .btn-googleplus:active, .btn-googleplus:hover {
       background: darken(@gplus, 5%);
-      color: #fff
     }
+
   }
 }
-
-@linkbase: #333;
 
 section {
   h1, h2, h3, h4 {
@@ -338,6 +324,41 @@ a.btn-dark:active {
   .about {
     background-color: #599348;
     padding: 0px;
+  }
+
+  .alert {
+    a.btn-social {
+      height: 30px;
+      padding: 5px 4px 0px 4px;
+      margin-top: 5px;
+      border-radius: 3px;
+      text-shadow: none;
+      font-size: 0.8em;
+      font-weight: 700;
+      color: #fff
+    }
+
+    .btn-twitter {
+      background: @twitter;
+      border: 1px solid darken(@twitter, 15%);
+    }
+    .btn-twitter:active, .btn-twitter:hover {
+      background: darken(@twitter, 5%);
+    }
+    .btn-facebook {
+      background: @fb;
+      border: 1px solid darken(@fb, 10%);
+    }
+    .btn-facebook:active, .btn-facebook:hover {
+      background: darken(@fb, 5%);
+    }
+    .btn-googleplus {
+      background: @gplus;
+      border: 1px solid darken(@gplus, 20%);
+    }
+    .btn-googleplus:active, .btn-googleplus:hover {
+      background: darken(@gplus, 5%);
+    }
   }
 }
 

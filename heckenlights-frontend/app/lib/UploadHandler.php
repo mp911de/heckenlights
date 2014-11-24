@@ -45,22 +45,6 @@ class UploadHandler
             // Set the following option to 'POST', if your server does not support
             // DELETE requests. This is a parameter sent to the client:
             'delete_type' => 'DELETE',
-            'access_control_allow_origin' => '*',
-            'access_control_allow_credentials' => false,
-            'access_control_allow_methods' => array(
-                'OPTIONS',
-                'HEAD',
-                'GET',
-                'POST',
-                'PUT',
-                'PATCH',
-                'DELETE'
-            ),
-            'access_control_allow_headers' => array(
-                'Content-Type',
-                'Content-Range',
-                'Content-Disposition'
-            ),
 
             // Read files in chunks to avoid memory limits when download_via_php
             // is enabled, set to 0 to disable chunked reading of files:
@@ -400,17 +384,6 @@ class UploadHandler
         $this->header('Content-type: application/json');
     }
 
-    protected function send_access_control_headers()
-    {
-        $this->header('Access-Control-Allow-Origin: ' . $this->options['access_control_allow_origin']);
-        $this->header('Access-Control-Allow-Credentials: '
-            . ($this->options['access_control_allow_credentials'] ? 'true' : 'false'));
-        $this->header('Access-Control-Allow-Methods: '
-            . implode(', ', $this->options['access_control_allow_methods']));
-        $this->header('Access-Control-Allow-Headers: '
-            . implode(', ', $this->options['access_control_allow_headers']));
-    }
-
     public function generate_response($content)
     {
         $this->response = $content;
@@ -438,9 +411,6 @@ class UploadHandler
         $this->header('Pragma: no-cache');
         $this->header('Cache-Control: no-store, no-cache, must-revalidate');
         $this->header('X-Content-Type-Options: nosniff');
-        if ($this->options['access_control_allow_origin']) {
-            $this->send_access_control_headers();
-        }
         $this->send_content_type_header();
     }
 

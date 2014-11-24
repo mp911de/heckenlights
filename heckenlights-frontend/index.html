@@ -147,20 +147,36 @@
 
                 <div class="list-group">
                     <div id="uploadgroup" style="text-align: left;" class="list-group-item">
-                <span id="uploadcontainer" class="btn btn-success fileinput-button" style="adisplay: none">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>{{index_upload}}</span>
-                    <!-- The file input field used as target for the file upload widget -->
-                    <input id="fileupload" type="file" name="files[]" accept="audio/sp-midi">
-                </span>
-                        <br>
-                        <br>
+                        <span id="uploadcontainer" class="btn btn-success fileinput-button" style="adisplay: none">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <span>{{index_upload}}</span>
+                            <!-- The file input field used as target for the file upload widget -->
+                            <input id="fileupload" type="file" name="files[]" accept="audio/sp-midi">
+                        </span>
+                        <br/>
+                        <br/>
+
+                        <p>{{index_upload_info}}</p>
                         <!-- The global progress bar -->
                         <div id="uploadprogress" class="progress" style="display: none;">
                             <div class="progress-bar progress-bar-success"></div>
                         </div>
                         <div id="uploadwarning" class="alert alert-warning" style="display: none" role="alert"></div>
-                        <div id="uploadsuccess" class="alert alert-success" style="display: none" role="alert"></div>
+                        <div id="uploadsuccess" class="alert alert-success" style="display: none" role="alert">
+                            <span id="uploadsuccesstext"></span>
+                            <br/>
+                            <a id="tweetsuccess" href="#" title="{{social_share_twitter}}" target="_blank"
+                               class="btn btn-twitter btn-social"><i class="fa fa-twitter"></i> Twitter</a>
+                        </div>
+                    </div>
+
+                    <div id="predefined" style="text-align: left;" class="list-group-item">
+                        Hast du gerade keine MIDI Datei zur Hand? Dann wähle doch einen Titel aus der Liste die ich für dich vorbereitet habe.
+                        <a href="#"  target="_blank" style="width: 300px; text-align: left"
+                           class="btn btn-default" onmouseover="$(this).removeClass('btn-default').addClass('btn-success');"
+                        onmouseout="$(this).removeClass('btn-success').addClass('btn-default');"><i class="fa fa-music"></i> Twitter</a>
+                        <br/>
+
                     </div>
                 </div>
             </div>
@@ -296,7 +312,7 @@
 <script>
 
     var language = '{{language}}';
-    if (language.len != 2) {
+    if (language.length != 2) {
         language = 'de';
     }
 
@@ -305,7 +321,8 @@
         resPostPath: 'locales/__lng__.json',
         resGetPath: 'locales/__lng__.json',
         useCookie: false,
-        lng: language
+        lng: language,
+        fallbackLng: 'de'
     }
 
     $.i18n.init(options, function () {

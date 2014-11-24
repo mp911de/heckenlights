@@ -9,6 +9,7 @@ var heckenlights = (function () {
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
         var mockData = true;
+        var siteIsOpen = false;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -22,6 +23,7 @@ var heckenlights = (function () {
 
             if (mockData) {
                 config.playlist = 'js/demo-playlist.json';
+                config.fileupload = 'js/demo-upload.json';
             }
 
             $('#reload').click(function () {
@@ -39,10 +41,6 @@ var heckenlights = (function () {
                 $("#captchawarning").fadeOut();
             });
 
-            $('#uploadsuccess').click(function () {
-                $("#uploadsuccess").fadeOut();
-            });
-
             loadPlaylistInterval = window.setInterval(function () {
                 loadPlaylist()
             }, 5000);
@@ -54,15 +52,22 @@ var heckenlights = (function () {
                 done: function (e, data) {
                     if (data.jqXHR.responseJSON) {
                         var enqueued = data.jqXHR.responseJSON;
+                        var key = "enqueue_success_plural";
+                        if(enqueued.durationToPlay && enqueued.durationToPlay == 1){
+                            key = "enqueue_success"
+                        }
 
-                        $('#uploadsuccess').html(i18n.t("enqueue_success", {count: enqueued.durationToPlay}));
+                        $('#uploadsuccesstext').html(i18n.t(key, {track: enqueued.trackName, count: enqueued.durationToPlay}));
+                        var tweet = i18n.t("enqueue_tweet", {track: enqueued.trackName, count: enqueued.durationToPlay});
+                        $("#sharetwitter").attr('href', 'http://twitter.com/home?status=' + escape(tweet));
                         $('#uploadsuccess').fadeIn();
                         setTimeout(function () {
                             $("#uploadsuccess").fadeOut()
-                        }, 5000);
+                        }, 30000);
                     }
                 },
                 fail: function (e, data) {
+
                     $('#progress .progress-bar').removeClass('progress-bar-success');
                     $('#progress .progress-bar').addClass('progress-bar-warning');
 
@@ -127,7 +132,14 @@ var heckenlights = (function () {
 
 
         function checkOrCreateRecaptcha() {
+
+            if (mockData) {
+                config.authentication = 'js/demo-authentication.json';
+            }
+
             var uri = config.authentication;
+
+
             $.ajax({
                     dataType: 'json',
                     accepts: {
@@ -211,6 +223,7 @@ var heckenlights = (function () {
 
 
         function siteClosed() {
+            siteIsOpen = false;
             $("#playlist").empty();
             $("#closed").show();
             $("#closedsign").show();
@@ -224,6 +237,7 @@ var heckenlights = (function () {
         }
 
         function siteOpen() {
+            siteIsOpen = true;
             $("#closed").hide();
             $("#closedsign").hide();
             checkOrCreateRecaptcha();
@@ -249,10 +263,14 @@ var heckenlights = (function () {
                     }
 
                     if (data.online) {
-                        siteOpen();
+                        if (!siteIsOpen) {
+                            siteOpen();
+                        }
                     }
                     else {
-                        siteClosed();
+                        if (siteIsOpen) {
+                            siteClosed();
+                        }
                     }
 
                     if (!data.queueOpen) {

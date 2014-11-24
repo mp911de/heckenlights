@@ -25,6 +25,7 @@ class PlaylistAPI extends AbstractAPI
 
     /**
      * POST /playlist/queue
+     * POST /playlist/preset
      */
     protected function post()
     {
@@ -32,8 +33,18 @@ class PlaylistAPI extends AbstractAPI
         if (sizeof($this->args) == 1 && $this->args[0] == 'queue') {
             return submitMidiFile($this, $_SESSION);
         }
+
+        if (sizeof($this->args) == 1 && $this->args[0] == 'preset') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            if (is_array($input) && array_key_exists('preset', $input)) {
+                $result = submitPreset($this, $input['preset'], $_SESSION);
+                session_commit();
+                return $result;
+            }
+        }
         throw new InvalidArgumentException();
     }
+
 
 }
 
