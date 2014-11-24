@@ -146,6 +146,7 @@ public class EnqueueTrack {
             sequencer.setSequence(sequence);
 
             int durationInSecs = (int) (sequencer.getMicrosecondLength() / 1000000.0);
+            sequencer.close();
             return durationInSecs;
 
         } catch (MidiUnavailableException e) {

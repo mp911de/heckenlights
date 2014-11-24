@@ -17,6 +17,33 @@ public class PersistentAttributeHttpServletRequestWrapper extends HttpServletReq
     }
 
     @Override
+    public String getHeader(String name) {
+        String value = super.getHeader(name);
+        if (value == null) {
+            value = super.getHeader(name.toLowerCase());
+        }
+        return value;
+    }
+
+    @Override
+    public long getDateHeader(String name) {
+        long value = super.getDateHeader(name);
+        if (value == 0) {
+            value = super.getDateHeader(name.toLowerCase());
+        }
+        return value;
+    }
+
+    @Override
+    public int getIntHeader(String name) {
+        int value = super.getIntHeader(name);
+        if (value == 0) {
+            value = super.getIntHeader(name.toLowerCase());
+        }
+        return value;
+    }
+
+    @Override
     public Object getAttribute(String name) {
         Object o = super.getAttribute(name);
         if (o == null) {
