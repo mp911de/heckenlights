@@ -1,13 +1,14 @@
 package de.paluch.heckenlights.model;
 
-import com.google.common.collect.Sets;
+import java.time.DayOfWeek;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import java.time.DayOfWeek;
-import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>

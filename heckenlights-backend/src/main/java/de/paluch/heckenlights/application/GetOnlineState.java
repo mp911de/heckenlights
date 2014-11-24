@@ -1,13 +1,16 @@
 package de.paluch.heckenlights.application;
 
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Component;
+
 import com.google.common.collect.ImmutableSet;
+
 import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.repositories.StateService;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -41,7 +44,6 @@ public class GetOnlineState {
     }
 
     public boolean isProcessingPlayback() {
-
 
         if (ruleState.getActiveAction() != null && PLAYBACK_ACTIONS.contains(ruleState.getActiveAction())) {
             return true;

@@ -1,15 +1,14 @@
 package de.paluch.heckenlights.client;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 30.11.13 19:27
  */
-public class PlayerStateRepresentation
-{
+public class PlayerStateRepresentation {
 
     private boolean running;
 
@@ -21,44 +20,43 @@ public class PlayerStateRepresentation
 
     private PlayerStateTrackRepresentation track;
 
-    public boolean isRunning()
-    {
+    public boolean isRunning() {
         return running;
     }
-    public void setRunning(boolean running)
-    {
+
+    public void setRunning(boolean running) {
         this.running = running;
     }
-    public Date getStarted()
-    {
+
+    public Date getStarted() {
         return started;
     }
-    public void setStarted(Date started)
-    {
+
+    public void setStarted(Date started) {
         this.started = started;
     }
-    public Date getEstimatedEnd()
-    {
+
+    public Date getEstimatedEnd() {
         return estimatedEnd;
     }
-    public void setEstimatedEnd(Date estimatedEnd)
-    {
+
+    public void setEstimatedEnd(Date estimatedEnd) {
         this.estimatedEnd = estimatedEnd;
     }
-    public int getEstimatedSecondsToPlay()
-    {
+
+    public int getEstimatedSecondsToPlay() {
         return estimatedSecondsToPlay;
     }
-    public void setEstimatedSecondsToPlay(int estimatedSecondsToPlay)
-    {
+
+    public void setEstimatedSecondsToPlay(int estimatedSecondsToPlay) {
         this.estimatedSecondsToPlay = estimatedSecondsToPlay;
     }
-    public PlayerStateTrackRepresentation getTrack()
-    {
+
+    public PlayerStateTrackRepresentation getTrack() {
         return track;
     }
-    public void setTrack(PlayerStateTrackRepresentation track)
-    {
+
+    public void setTrack(PlayerStateTrackRepresentation track) {
         this.track = track;
     }
 }

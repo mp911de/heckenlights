@@ -35,6 +35,8 @@
     "index_countdown_b": "Dec. 1st on 17:00 CET",
     "index_countdown_c": "So",
     "index_countdown_d": "to go.",
+    "index_watch_on_ustream":"Watch on ustream.tv",
+    "index_hint_delay":"Live stream is delayed by 10 to 20 seconds.",
 
     "duration_seconds": "Duration: __count__ second",
     "duration_seconds_plural": "Duration: __count__ seconds",

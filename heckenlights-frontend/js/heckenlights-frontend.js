@@ -8,7 +8,7 @@ var heckenlights = (function () {
         var instance = {};
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
-        var mockData = false;
+        var mockData = true;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -138,7 +138,7 @@ var heckenlights = (function () {
                 }
             ).done(function (data) {
 
-                    if (!data.humanOrMachine || data.humanOrMachine == 'machine') {
+                    if (!data || !data.humanOrMachine || data.humanOrMachine == 'machine') {
                         //$('#uploadcontainer').hide();
                         Recaptcha.create(data.recaptchaPublicKey,
                             "recaptcha_div",
@@ -148,6 +148,7 @@ var heckenlights = (function () {
                             }
                         );
 
+                        $('#uploadgroup').hide();
                         $("#submitcaptcha").click(function () {
                             submitCaptcha();
                         });
@@ -155,8 +156,10 @@ var heckenlights = (function () {
 
                     if (data.humanOrMachine && data.humanOrMachine == 'human') {
                         $('#captchacontainer').hide();
-                        $('#uploadcontainer').show();
+                        $('#uploadgroup').show();
                     }
+                }).fail(function (data) {
+                    $('#uploadgroup').hide();
                 });
         }
 
@@ -212,14 +215,12 @@ var heckenlights = (function () {
             $("#closed").show();
             $("#closedsign").show();
             $("#captchacontainer").hide();
-            $("#uploadcontainer").hide();
-            $("#uploadprogress").hide();
+            $("#uploadgroup").hide();
         }
 
         function queueClosed() {
             $("#captchacontainer").hide();
-            $("#uploadcontainer").hide();
-            $("#uploadprogress").hide();
+            $("#uploadgroup").hide();
         }
 
         function siteOpen() {

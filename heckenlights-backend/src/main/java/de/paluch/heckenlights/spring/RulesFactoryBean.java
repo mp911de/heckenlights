@@ -1,12 +1,14 @@
 package de.paluch.heckenlights.spring;
 
-import javax.xml.bind.JAXB;
 import java.net.URL;
 
-import de.paluch.heckenlights.model.Rules;
+import javax.xml.bind.JAXB;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.stereotype.Component;
+
+import de.paluch.heckenlights.model.Rules;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>

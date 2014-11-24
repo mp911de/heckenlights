@@ -6,8 +6,7 @@ import java.util.Date;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:49
  */
-public class EnqueueRequest
-{
+public class EnqueueRequest {
 
     private String commandId;
 
@@ -27,76 +26,75 @@ public class EnqueueRequest
 
     private int duration;
 
-    public String getCommandId()
-    {
+    public String getCommandId() {
         return commandId;
     }
-    public void setCommandId(String commandId)
-    {
+
+    public void setCommandId(String commandId) {
         this.commandId = commandId;
     }
-    public Date getCreated()
-    {
+
+    public Date getCreated() {
         return created;
     }
-    public void setCreated(Date created)
-    {
+
+    public void setCreated(Date created) {
         this.created = created;
     }
-    public String getTrackName()
-    {
+
+    public String getTrackName() {
         return trackName;
     }
-    public void setTrackName(String trackName)
-    {
+
+    public void setTrackName(String trackName) {
         this.trackName = trackName;
     }
-    public String getFileName()
-    {
+
+    public String getFileName() {
         return fileName;
     }
-    public void setFileName(String fileName)
-    {
+
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-    public PlayStatus getPlayStatus()
-    {
+
+    public PlayStatus getPlayStatus() {
         return playStatus;
     }
-    public void setPlayStatus(PlayStatus playStatus)
-    {
+
+    public void setPlayStatus(PlayStatus playStatus) {
         this.playStatus = playStatus;
     }
-    public byte[] getContent()
-    {
+
+    public byte[] getContent() {
         return content;
     }
-    public void setContent(byte[] content)
-    {
+
+    public void setContent(byte[] content) {
         this.content = content;
     }
-    public String getExternalSessionId()
-    {
+
+    public String getExternalSessionId() {
         return externalSessionId;
     }
-    public void setExternalSessionId(String externalSessionId)
-    {
+
+    public void setExternalSessionId(String externalSessionId) {
         this.externalSessionId = externalSessionId;
     }
-    public String getSubmissionHost()
-    {
+
+    public String getSubmissionHost() {
         return submissionHost;
     }
-    public void setSubmissionHost(String submissionHost)
-    {
+
+    public void setSubmissionHost(String submissionHost) {
         this.submissionHost = submissionHost;
     }
-    public int getDuration()
-    {
+
+    public int getDuration() {
         return duration;
     }
-    public void setDuration(int duration)
-    {
+
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 }

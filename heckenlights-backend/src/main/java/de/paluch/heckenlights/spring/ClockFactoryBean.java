@@ -1,12 +1,14 @@
 package de.paluch.heckenlights.spring;
 
-import javax.inject.Inject;
 import java.time.Clock;
 import java.util.TimeZone;
 
-import de.paluch.heckenlights.model.Rules;
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.stereotype.Component;
+
+import de.paluch.heckenlights.model.Rules;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>

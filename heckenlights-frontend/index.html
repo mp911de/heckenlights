@@ -91,14 +91,24 @@
                 <p id="intro" class="lead"> {{index_intro1}} <span
                         class="glyphicon glyphicon-music"></span> MIDI {{index_intro2}}</p>
 
-                <p id="countdown" class="lead">{{index_countdown_a}} <span id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span id="countdowntext"></span> {{index_countdown_d}}</p>
+                <p id="countdown" class="lead">{{index_countdown_a}} <span
+                        id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
+                        id="countdowntext"></span> {{index_countdown_d}}</p>
 
                 <div style="width: 480px; height: 302px; background-color: #000000;margin: auto">
                     <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
                             frameborder="no" width="480" height="302"></iframe>
                     <br/><a href="http://www.ustream.tv/"
                             style="padding: 2px 0px 4px; width: 400px; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
-                            target="_blank">Live streaming video by Ustream</a></div>
+                            target="_blank">Live streaming video by Ustream</a>
+
+                    <p class="bordered light">
+                        <a href="http://ustream.tv/channel/heckenlights" target="_blank">{{index_watch_on_ustream}}</a>
+                        <br/>
+                        {{index_hint_delay}}
+                    </p>
+                    <br/>
+                </div>
             </div>
             <div id="controls" class="col-md-4">
                 <div id="closed" class="overlay" style="display: none"></div>
@@ -121,31 +131,38 @@
                 <button id="reload" class="btn btn-default" style="display: none"><span
                         class="glyphicon glyphicon-refresh"></span></button>
 
-                <div id="captchacontainer" style="text-align: left; display: hidden">
-                    <div id="recaptcha_div"></div>
-                    <div>{{index_captcha}}</div>
-                    <br/>
-                    <button id="submitcaptcha" class="btn btn-default">{{index_submit}}</button>
-                    <br/>
-                    <br/>
+                <div class="list-group">
+                    <div id="captchacontainer" style="text-align: left; display: hidden" class="list-group-item">
+                        <div id="recaptcha_div"></div>
+                        <div>{{index_captcha}}</div>
+                        <br/>
+                        <button id="submitcaptcha" class="btn btn-default">{{index_submit}}</button>
+                        <br/>
+                        <br/>
 
-                    <div id="captchawarning" class="alert alert-warning" style="display: none" role="alert"></div>
+                        <div id="captchawarning" class="alert alert-warning" style="display: none" role="alert"></div>
+                    </div>
                 </div>
+                <br/>
 
+                <div class="list-group">
+                    <div id="uploadgroup" style="text-align: left;" class="list-group-item">
                 <span id="uploadcontainer" class="btn btn-success fileinput-button" style="adisplay: none">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>{{index_upload}}</span>
                     <!-- The file input field used as target for the file upload widget -->
                     <input id="fileupload" type="file" name="files[]" accept="audio/sp-midi">
                 </span>
-                <br>
-                <br>
-                <!-- The global progress bar -->
-                <div id="uploadprogress" class="progress" style="display: none;">
-                    <div class="progress-bar progress-bar-success"></div>
+                        <br>
+                        <br>
+                        <!-- The global progress bar -->
+                        <div id="uploadprogress" class="progress" style="display: none;">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <div id="uploadwarning" class="alert alert-warning" style="display: none" role="alert"></div>
+                        <div id="uploadsuccess" class="alert alert-success" style="display: none" role="alert"></div>
+                    </div>
                 </div>
-                <div id="uploadwarning" class="alert alert-warning" style="display: none" role="alert"></div>
-                <div id="uploadsuccess" class="alert alert-success" style="display: none" role="alert"></div>
             </div>
         </div>
 
@@ -279,7 +296,7 @@
 <script>
 
     var language = '{{language}}';
-    if(language.len != 2){
+    if (language.len != 2) {
         language = 'de';
     }
 

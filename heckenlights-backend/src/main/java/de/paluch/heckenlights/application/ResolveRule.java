@@ -1,5 +1,6 @@
 package de.paluch.heckenlights.application;
 
+import com.google.common.collect.ImmutableSet;
 import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.Rules;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.time.Clock;
 import java.time.LocalTime;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -27,6 +29,7 @@ public class ResolveRule {
     public Rule getRule() {
 
         LocalTime zonedDateTime = LocalTime.now(clock);
+
         for (Rule rule : rules.getRules()) {
             int hour = zonedDateTime.getHour();
             int minute = zonedDateTime.getMinute();
@@ -83,7 +86,7 @@ public class ResolveRule {
 
         }
 
-        return new FallbackRule(rules.getDefaultAction());
+        return new FallbackRule(rules.getDefaultAction(), Rule.Counter.LightsOnDuration, Rule.Counter.PlaylistPlayedDuration);
     }
 
     public static class FallbackRule extends Rule {
@@ -92,17 +95,25 @@ public class ResolveRule {
             setAction(action);
         }
 
+        public FallbackRule(Action action, Counter... reset) {
+            setAction(action);
+            setReset(ImmutableSet.copyOf(Arrays.asList(reset)));
+        }
+
         @Override
         public boolean equals(Object o) {
-            if (this == o)
+            if (this == o) {
                 return true;
-            if (!(o instanceof Rule))
+            }
+            if (!(o instanceof Rule)) {
                 return false;
+            }
 
             Rule rule = (Rule) o;
 
-            if (getAction() != rule.getAction())
+            if (getAction() != rule.getAction()) {
                 return false;
+            }
 
             return true;
         }

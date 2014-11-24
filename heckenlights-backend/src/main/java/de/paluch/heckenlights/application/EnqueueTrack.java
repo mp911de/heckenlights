@@ -1,20 +1,10 @@
 package de.paluch.heckenlights.application;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Closer;
-import de.paluch.heckenlights.EnqueueS;
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueRequest;
-import de.paluch.heckenlights.model.EnqueueResult;
-import de.paluch.heckenlights.model.OfflineException;
-import de.paluch.heckenlights.model.PlayCommandSummary;
-import de.paluch.heckenlights.model.PlayStatus;
-import de.paluch.heckenlights.model.QuotaExceededException;
-import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.repositories.PlayCommandService;
-import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.springframework.stereotype.Component;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
@@ -25,11 +15,24 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.UUID;
+
+import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Closer;
+
+import de.paluch.heckenlights.EnqueueS;
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
+import de.paluch.heckenlights.model.EnqueueResult;
+import de.paluch.heckenlights.model.OfflineException;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.PlayStatus;
+import de.paluch.heckenlights.model.QuotaExceededException;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.repositories.PlayCommandService;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>

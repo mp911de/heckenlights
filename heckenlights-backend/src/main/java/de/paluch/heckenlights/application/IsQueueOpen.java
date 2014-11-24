@@ -1,9 +1,10 @@
 package de.paluch.heckenlights.application;
 
-import de.paluch.heckenlights.repositories.StateService;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
+import de.paluch.heckenlights.repositories.StateService;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>

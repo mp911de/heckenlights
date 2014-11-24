@@ -1,8 +1,9 @@
 package de.paluch.heckenlights
 
-import org.springframework.stereotype.Component
 import javax.sound.midi._
+
 import de.paluch.heckenlights.application.MidiMessageDetail
+import org.springframework.stereotype.Component
 
 /**
  * This is mostly for fun reasons scala.
@@ -50,7 +51,7 @@ class EnqueueS {
 
     val textTrack: Option[Track] = list.find(t => getText(t) != null)
     return textTrack.collect {
-      case i => getText(i)
-    } getOrElse("")
+                               case i => getText(i)
+                             } getOrElse ("")
   }
 }

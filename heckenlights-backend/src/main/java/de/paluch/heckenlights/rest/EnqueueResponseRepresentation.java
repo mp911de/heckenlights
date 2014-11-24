@@ -1,12 +1,12 @@
 package de.paluch.heckenlights.rest;
 
-import de.paluch.heckenlights.model.PlayStatus;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import de.paluch.heckenlights.model.PlayStatus;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -14,8 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "enqueued")
 @XmlAccessorType(XmlAccessType.NONE)
-public class EnqueueResponseRepresentation
-{
+public class EnqueueResponseRepresentation {
 
     @XmlAttribute(name = "enqueuedCommandId")
     private String enqueuedCommandId;
@@ -32,54 +31,51 @@ public class EnqueueResponseRepresentation
     @XmlElement(name = "durationToPlay")
     private int durationToPlay;
 
-    public EnqueueResponseRepresentation()
-    {
+    public EnqueueResponseRepresentation() {
     }
 
-    public EnqueueResponseRepresentation(PlayStatus playStatus, String message)
-    {
+    public EnqueueResponseRepresentation(PlayStatus playStatus, String message) {
         this.playStatus = playStatus;
         this.message = message;
     }
 
-    public String getEnqueuedCommandId()
-    {
+    public String getEnqueuedCommandId() {
         return enqueuedCommandId;
     }
-    public void setEnqueuedCommandId(String enqueuedCommandId)
-    {
+
+    public void setEnqueuedCommandId(String enqueuedCommandId) {
         this.enqueuedCommandId = enqueuedCommandId;
     }
-    public PlayStatus getPlayStatus()
-    {
+
+    public PlayStatus getPlayStatus() {
         return playStatus;
     }
-    public void setPlayStatus(PlayStatus playStatus)
-    {
+
+    public void setPlayStatus(PlayStatus playStatus) {
         this.playStatus = playStatus;
     }
-    public String getMessage()
-    {
+
+    public String getMessage() {
         return message;
     }
-    public void setMessage(String message)
-    {
+
+    public void setMessage(String message) {
         this.message = message;
     }
-    public int getDurationToPlay()
-    {
+
+    public int getDurationToPlay() {
         return durationToPlay;
     }
-    public void setDurationToPlay(int durationToPlay)
-    {
+
+    public void setDurationToPlay(int durationToPlay) {
         this.durationToPlay = durationToPlay;
     }
-    public String getTrackName()
-    {
+
+    public String getTrackName() {
         return trackName;
     }
-    public void setTrackName(String trackName)
-    {
+
+    public void setTrackName(String trackName) {
         this.trackName = trackName;
     }
 }

@@ -20,7 +20,7 @@
 
     "index_captcha": "Um Midi-Dateien hochzuladen musst du das Captcha-Rätsel lösen. Gib dafür die angezeigten Zahlen/Wörter ein.",
     "index_upload": "Titel hochladen (Midi-Datei)",
-    "index_playlist": "Playlist",
+    "index_playlist": "Wiedergabeliste",
     "index_load_playlist": "Lade die Wiedergabeliste",
     "index_playlist_empty": "Leere Wiedergabeliste",
     "index_submit": "Senden",
@@ -35,6 +35,8 @@
     "index_countdown_b": "1. Dez. um 17:00 Uhr",
     "index_countdown_c": "Also noch",
     "index_countdown_d": "lang warten.",
+    "index_watch_on_ustream":"Auf ustream.tv ansehen",
+    "index_hint_delay":"Der Live-Stream hat eine Verzögerung von ca. 10 bis 20 Sekunden.",
 
     "duration_seconds": "Dauer: __count__ Sekunde",
     "duration_seconds_plural": "Dauer: __count__ Sekunden",
@@ -44,16 +46,16 @@
 
     "and_more": "und __count__  weitere...",
 
-    "internal_server_error":"There was an internal server error, could not validate your request.",
-    "captcha_validation_error":"Validation not successful. Please enter the displayed words/numbers.",
+    "internal_server_error":"Auf dem Server ist ein Fehler aufgetreten, deine Anfrage konnte nicht bearbeitet werden. Bitte versuche es später noch ein mal.",
+    "captcha_validation_error":"Die Eingabe der Zahlen/Worte war nicht korrekt. Bitte trage die angezeigten Zahlen/Worte ein.",
 
-    "enqueue_internal_server_error":"<strong>Aw, snap!</strong> There was an internal server error.",
-    "enqueue_bad_request":"<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM Midi-File.",
-    "enqueue_queue_error":"<strong>Too many requests</strong> Please retry later.",
-    "enqueue_offline":"<strong>Heckenlights is offline</strong> Please come back when it's open again.",
-    "enqueue_unauthenticated":"<strong>Unauthenticated</strong> Please use the captcha to confirm that you are a hooooman.",
+    "enqueue_internal_server_error":"<strong>Oha!</strong> Es ist ein interner Fehler aufgetreten.",
+    "enqueue_bad_request":"<strong>Oha!</strong> Deine Datei konnte nicht in die Wiedergabeliste eingetragen werden. Überprüfe, ob es sich bei deiner Datei um eine MIDI Datei handelt und die Dauer zwischen 10 Sekunden und 5 Minuten liegt.",
+    "enqueue_queue_error":"<strong>Langsam mit den jungen Pferden</strong> Im Moment ist viel los. Versuche es später noch einmal.",
+    "enqueue_offline":"<strong>Heckenlights ist offline</strong> Komm doch einfach wieder, sobald Heckenlights wieder online ist.",
+    "enqueue_unauthenticated":"<strong>Bist du ein Mensch?</strong> Da ich mir nicht sicher bin, trage doch die Worte/Zahlen vom Captcha richtig ein.",
 
-    "enqueue_success":"<strong>Enqeued!</strong> It will take some __count__ second until the file is played.",
-    "enqueue_success_plural":"<strong>Enqeued!</strong> It will take some __count__ seconds until the file is played."
+    "enqueue_success":"<strong>Titel eingetragen!</strong> Dauert nur noch wenige Sekunden bis dein Titel gespielt wird.",
+    "enqueue_success_plural":"<strong>Titel eingetragen!</strong> Dauert nur noch __count__ Sekunden bis dein Titel gespielt wird."
 
 }

@@ -82,17 +82,15 @@ public class ProcessQueue {
             actionSwitched = true;
         }
 
-        if (!rule.getReset().isEmpty()) {
+        if (ruleSwitched || actionSwitched) {
+
             resetCounters(rule);
+            log.info("Switched to Rule with action " + ruleState.getActiveAction() + " (" + rule + ")");
         }
 
         if (ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE
                 || ruleState.getActiveAction() == Rule.Action.PLAYLIST) {
             playlist(commands);
-        }
-
-        if (ruleSwitched || actionSwitched) {
-            log.info("Switched to Rule with action " + ruleState.getActiveAction() + " (" + rule + ")");
         }
 
         if (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON) {
@@ -107,7 +105,6 @@ public class ProcessQueue {
     private void resetCounters(Rule rule) {
 
         boolean resetAll = false;
-
 
         if (rule.getAction() == Rule.Action.LIGHTS_OFF || rule.getAction() == Rule.Action.OFFLINE) {
             resetAll = true;
