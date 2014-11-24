@@ -69,7 +69,7 @@ function submitPreset($api, $presetfile, $session)
         return $enqueueResult;
     }
 
-    if (!wasPresetSubmitted($session)) {
+    if (wasPresetSubmitted($session)) {
         $enqueueResult = new PlaylistEntry();
         $enqueueResult->setSubmitStatus(SUBMIT_RESULT_QUOTA);
         $api->setStatus(429);
@@ -84,7 +84,7 @@ function submitPreset($api, $presetfile, $session)
         return $enqueueResult;
     }
 
-    $content = readFile($presetfile);
+    $content = getFileContent($presetfile);
     if ($content == null) {
         $enqueueResult = new PlaylistEntry();
         $enqueueResult->setSubmitStatus(SUBMIT_RESULT_NOT_FOUND);
@@ -108,12 +108,12 @@ function submitPreset($api, $presetfile, $session)
 
     $enqueueResult = createResult($result, $rawResponse);
 
-    if($result->success === true){
+    if ($result->success === true) {
         setPresetSubmittedFlag($session);
-    }
-
-    if ($result->status === 200) {
-        $result->status = 400;
+    } else {
+        if ($result->status === 200) {
+            $result->status = 400;
+        }
     }
 
     $api->setStatus($result->status);
@@ -121,7 +121,7 @@ function submitPreset($api, $presetfile, $session)
     return $enqueueResult;
 }
 
-function readFile($filename)
+function getFileContent($filename)
 {
     $fullname = constant('presetFileBase') . $filename;
     if (file_exists($fullname)) {

@@ -8,22 +8,27 @@ var heckenlights = (function () {
         var instance = {};
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
-        var mockData = true;
+        var mockData = false;
         var siteIsOpen = false;
+        var fadeoutAfter = 15000;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
+            'submitpreset': 'api/v1/playlist/preset',
             'authentication': 'api/v1/authentication',
-            'playlist': 'api/v1/playlist'
+            'playlist': 'api/v1/playlist',
+            'presets': 'api/v1/presets'
         }
 
 
         instance.initialize = function () {
 
-
             if (mockData) {
                 config.playlist = 'js/demo-playlist.json';
                 config.fileupload = 'js/demo-upload.json';
+                config.submitpreset = 'js/demo-upload.json';
+                config.presets = 'js/demo-preset.json';
+                config.authentication = 'js/demo-authentication.json';
             }
 
             $('#reload').click(function () {
@@ -32,6 +37,7 @@ var heckenlights = (function () {
 
             loadPlaylist();
             checkOrCreateRecaptcha();
+            loadPresets();
 
             $('#uploadwarning').click(function () {
                 $("#uploadwarning").fadeOut();
@@ -43,7 +49,7 @@ var heckenlights = (function () {
 
             loadPlaylistInterval = window.setInterval(function () {
                 loadPlaylist()
-            }, 5000);
+            }, fadeoutAfter);
 
 
             $('#fileupload').fileupload({
@@ -52,64 +58,17 @@ var heckenlights = (function () {
                 done: function (e, data) {
                     if (data.jqXHR.responseJSON) {
                         var enqueued = data.jqXHR.responseJSON;
-                        var key = "enqueue_success_plural";
-                        if(enqueued.durationToPlay && enqueued.durationToPlay == 1){
-                            key = "enqueue_success"
-                        }
-
-                        $('#uploadsuccesstext').html(i18n.t(key, {track: enqueued.trackName, count: enqueued.durationToPlay}));
-                        var tweet = i18n.t("enqueue_tweet", {track: enqueued.trackName, count: enqueued.durationToPlay});
-                        $("#sharetwitter").attr('href', 'http://twitter.com/home?status=' + escape(tweet));
-                        $('#uploadsuccess').fadeIn();
-                        setTimeout(function () {
-                            $("#uploadsuccess").fadeOut()
-                        }, 30000);
+                        enqueueSuccess(enqueued);
                     }
                 },
                 fail: function (e, data) {
-
-                    $('#progress .progress-bar').removeClass('progress-bar-success');
-                    $('#progress .progress-bar').addClass('progress-bar-warning');
-
-                    var message = null;
-                    if (data.jqXHR.status == 401 && data.jqXHR.responseJSON) {
-                        var enqueued = data.jqXHR.responseJSON;
-                        if (enqueued.submitStatus == 'UNAUTHENTICATED') {
-                            message = i18n.t("enqueue_unauthenticated");
-                            checkOrCreateRecaptcha();
-                        }
+                    var enqueued = null;
+                    var status = data.jqXHR.status;
+                    if (data.jqXHR.responseJSON) {
+                        enqueued = data.jqXHR.responseJSON;
                     }
 
-                    if (data.jqXHR.status == 423 && data.jqXHR.responseJSON) {
-                        var enqueued = data.jqXHR.responseJSON;
-                        if (enqueued.submitStatus == 'OFFLINE') {
-                            message = i18n.t("enqueue_offline");
-                        }
-                    }
-
-                    if (data.jqXHR.status == 429 && data.jqXHR.responseJSON) {
-                        var enqueued = data.jqXHR.responseJSON;
-                        if (enqueued.submitStatus == 'QUOTA') {
-                            message = i18n.t("enqueue_queue_error");
-                        }
-                    }
-
-                    if (message == null && data.jqXHR.status >= 400 && data.jqXHR.status <= 499) {
-                        message = i18n.t("enqueue_bad_request");
-                    }
-
-                    if (message == null && data.jqXHR.status >= 500 && data.jqXHR.status <= 599) {
-                        message = i18n.t("enqueue_internal_server_error");
-                    }
-
-                    $('#uploadwarning').html(message);
-                    $('#uploadprogress').hide();
-
-
-                    $('#uploadwarning').fadeIn();
-                    setTimeout(function () {
-                        $("#uploadwarning").fadeOut();
-                    }, 5000);
+                    enqueueFailed(enqueued, status);
                 },
                 start: function () {
                     $('#progress .progress-bar').addClass('progress-bar-success');
@@ -120,6 +79,7 @@ var heckenlights = (function () {
                 },
                 progressall: function (e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
+
                     $('#progress .progress-bar').css(
                         'width',
                         progress + '%'
@@ -130,15 +90,103 @@ var heckenlights = (function () {
 
         }
 
-
-        function checkOrCreateRecaptcha() {
-
-            if (mockData) {
-                config.authentication = 'js/demo-authentication.json';
+        function enqueueSuccess(data) {
+            var key = "enqueue_success_plural";
+            if (data.durationToPlay && data.durationToPlay == 1) {
+                key = "enqueue_success"
             }
 
-            var uri = config.authentication;
+            $('#uploadsuccesstext').html(i18n.t(key, {
+                track: data.trackName,
+                count: data.durationToPlay
+            }));
+            var tweet = i18n.t("enqueue_tweet", {
+                track: data.trackName,
+                count: data.durationToPlay
+            });
 
+            $("#tweetsuccess").attr('href', 'http://twitter.com/home?status=' + escape(tweet));
+            $('#uploadsuccess').fadeIn();
+            setTimeout(function () {
+                $("#uploadsuccess").fadeOut()
+            }, 30000);
+        }
+
+        function enqueueFailed(enqueued, status) {
+            $('#progress .progress-bar').removeClass('progress-bar-success');
+            $('#progress .progress-bar').addClass('progress-bar-warning');
+
+
+            var message = null;
+            if (status == 401 && enqueued) {
+                if (enqueued.submitStatus == 'UNAUTHENTICATED') {
+                    message = i18n.t("enqueue_unauthenticated");
+                    checkOrCreateRecaptcha();
+                }
+            }
+
+            if (status == 423 && enqueued) {
+                if (enqueued.submitStatus == 'OFFLINE') {
+                    message = i18n.t("enqueue_offline");
+                }
+            }
+
+            if (status == 429 && enqueued) {
+                if (enqueued.submitStatus == 'QUOTA') {
+                    message = i18n.t("enqueue_queue_error");
+                }
+            }
+
+            if (message == null && status >= 400 && status <= 499) {
+                message = i18n.t("enqueue_bad_request");
+            }
+
+            if (message == null && status >= 500 && status <= 599) {
+                message = i18n.t("enqueue_internal_server_error");
+            }
+
+            $('#uploadwarning').html(message);
+            $('#uploadprogress').hide();
+
+
+            $('#uploadwarning').fadeIn();
+            setTimeout(function () {
+                $("#uploadwarning").fadeOut();
+            }, fadeoutAfter);
+        }
+
+        function enqueuePreset(presetfile) {
+            var uri = config.submitpreset;
+
+            $.ajax({
+                    dataType: 'json',
+                    accepts: {
+                        json: 'application/json'
+                    },
+                    url: uri,
+                    type: 'POST',
+                    data: JSON.stringify({
+                        presetfile: presetfile
+                    })
+                }
+            ).done(function (data) {
+                    enqueueSuccess(data);
+                    $('#presetcontainer').fadeOut();
+                }).fail(function (jqXHR) {
+                    var enqueued = null;
+                    var status = jqXHR.status;
+                    if (jqXHR.responseJSON) {
+                        enqueued = jqXHR.responseJSON;
+                    }
+
+                    enqueueFailed(enqueued, status);
+                });
+        }
+
+
+        function loadPresets() {
+
+            var uri = config.presets;
 
             $.ajax({
                     dataType: 'json',
@@ -146,12 +194,82 @@ var heckenlights = (function () {
                         json: 'application/json'
                     },
                     url: uri
+                }
+            ).done(function (data) {
 
+                    $("#presets").empty();
+                    if (!data) {
+                        return;
+                    }
+
+                    for (var key in data) {
+
+
+                        if (data.hasOwnProperty(key)) {
+
+                            var title = data[key];
+
+                            var a = $(document.createElement("a"));
+                            a.addClass('btn btn-default preset-btn');
+                            a.attr('data-preset', key);
+
+                            a.mouseover(function () {
+                                $(this).addClass('btn-success').removeClass('btn-default');
+                            });
+
+                            a.mouseout(function () {
+                                $(this).addClass('btn-default').removeClass('btn-success');
+                            });
+
+                            a.click(function () {
+                                var presetfile = $(this).data('preset');
+                                if (presetfile && presetfile.length != 0) {
+                                    enqueuePreset($(this).data('preset'));
+                                }
+                            });
+
+                            a.append("<i class='fa fa-music'></i> " + $('<div/>').text(title).html())
+
+                            $("#presets").append(a, '<br/>');
+                        }
+                    }
+                });
+        }
+
+        function captchaConfirmsHooooman(data) {
+            $('#captchacontainer').hide();
+
+            if (data.presetSubmitted) {
+                $('#presetcontainer').hide();
+            }
+            else {
+                $('#presetcontainer').show();
+            }
+
+            $('#uploadgroup').show();
+            $('#lastinupload').show();
+        }
+
+        function hideAllUploads() {
+            $('#uploadgroup').hide();
+            $('#lastinupload').hide();
+            $('#presetcontainer').hide();
+        }
+
+        function checkOrCreateRecaptcha() {
+
+            var uri = config.authentication;
+
+            $.ajax({
+                    dataType: 'json',
+                    accepts: {
+                        json: 'application/json'
+                    },
+                    url: uri
                 }
             ).done(function (data) {
 
                     if (!data || !data.humanOrMachine || data.humanOrMachine == 'machine') {
-                        //$('#uploadcontainer').hide();
                         Recaptcha.create(data.recaptchaPublicKey,
                             "recaptcha_div",
                             {
@@ -159,19 +277,18 @@ var heckenlights = (function () {
                                 callback: Recaptcha.focus_response_field
                             }
                         );
+                        hideAllUploads();
 
-                        $('#uploadgroup').hide();
                         $("#submitcaptcha").click(function () {
                             submitCaptcha();
                         });
                     }
 
                     if (data.humanOrMachine && data.humanOrMachine == 'human') {
-                        $('#captchacontainer').hide();
-                        $('#uploadgroup').show();
+                        captchaConfirmsHooooman(data);
                     }
                 }).fail(function (data) {
-                    $('#uploadgroup').hide();
+                    hideAllUploads();
                 });
         }
 
@@ -194,30 +311,30 @@ var heckenlights = (function () {
             }).done(
                 function (data) {
                     if (!data.humanOrMachine || data.humanOrMachine == 'machine') {
-                        $('#captchawarning').html(i18n.t("captcha_validation_error"));
+                        hideAllUploads();
 
+                        $('#captchawarning').html(i18n.t("captcha_validation_error"));
                         $('#captchawarning').fadeIn();
                         setTimeout(function () {
                             $("#captchawarning").fadeOut();
-                        }, 5000);
+                        }, fadeoutAfter);
 
                         checkOrCreateRecaptcha();
                         return;
                     }
 
                     if (data.humanOrMachine && data.humanOrMachine == 'human') {
-                        $('#captchacontainer').hide();
-                        $('#uploadcontainer').show();
-                        return;
+                        captchaConfirmsHooooman(data);
                     }
                 }
             ).fail(function () {
+                    hideAllUploads();
                     $('#captchawarning').html(i18n.t("internal_server_error"));
                     $('#captchawarning').fadeIn();
 
                     setTimeout(function () {
                         $("#captchawarning").fadeOut();
-                    }, 5000);
+                    }, fadeoutAfter);
                 });
         }
 
@@ -228,12 +345,12 @@ var heckenlights = (function () {
             $("#closed").show();
             $("#closedsign").show();
             $("#captchacontainer").hide();
-            $("#uploadgroup").hide();
+            hideAllUploads();
         }
 
         function queueClosed() {
             $("#captchacontainer").hide();
-            $("#uploadgroup").hide();
+            hideAllUploads();
         }
 
         function siteOpen() {
@@ -258,26 +375,26 @@ var heckenlights = (function () {
                     var first = true;
                     $("#playlist").empty();
 
-                    if (!data) {
-                        return;
-                    }
+                    if (data) {
+                        if (data.online) {
+                            $("#closed").hide();
+                            $("#closedsign").hide();
+                            if (!siteIsOpen) {
+                                siteOpen();
+                            }
+                        }
+                        else {
+                            if (siteIsOpen) {
+                                siteClosed();
+                            }
+                        }
 
-                    if (data.online) {
-                        if (!siteIsOpen) {
-                            siteOpen();
+                        if (!data.queueOpen) {
+                            queueClosed();
                         }
                     }
-                    else {
-                        if (siteIsOpen) {
-                            siteClosed();
-                        }
-                    }
 
-                    if (!data.queueOpen) {
-                        queueClosed();
-                    }
-
-                    if (data.entries && data.entries.length) {
+                    if (data && data.entries && data.entries.length && data.entries.length != 0) {
 
                         var entries = data.entries;
                         for (var index in entries) {

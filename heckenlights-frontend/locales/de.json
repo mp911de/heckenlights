@@ -38,6 +38,7 @@
     "index_watch_on_ustream":"Auf ustream.tv ansehen",
     "index_hint_delay":"Der Live-Stream hat eine Verzögerung von ca. 10 bis 20 Sekunden.",
     "index_upload_info": "Hast du Musik im MIDI-Format? Sehr gut, lade deine eigenen Weihnachtstracks auf heckenlights.org hoch. Dein Track muss zwischen 10 und 5 Minuten lang sein.",
+    "index_preset": "Hast du gerade keine MIDI Datei zur Hand? Dann wähle doch einen Titel aus der Liste die ich für dich vorbereitet habe.",
 
     "duration_seconds": "Dauer: __count__ Sekunde",
     "duration_seconds_plural": "Dauer: __count__ Sekunden",
@@ -50,14 +51,14 @@
     "internal_server_error":"Auf dem Server ist ein Fehler aufgetreten, deine Anfrage konnte nicht bearbeitet werden. Bitte versuche es später noch ein mal.",
     "captcha_validation_error":"Die Eingabe der Zahlen/Worte war nicht korrekt. Bitte trage die angezeigten Zahlen/Worte ein.",
 
-    "enqueue_internal_server_error":"<strong>Oha!</strong> Es ist ein interner Fehler aufgetreten.",
-    "enqueue_bad_request":"<strong>Oha!</strong> Deine Datei konnte nicht in die Wiedergabeliste eingetragen werden. Überprüfe, ob es sich bei deiner Datei um eine MIDI Datei handelt und die Dauer zwischen 10 Sekunden und 5 Minuten liegt.",
-    "enqueue_queue_error":"<strong>Langsam mit den jungen Pferden</strong> Im Moment ist viel los. Versuche es später noch einmal.",
-    "enqueue_offline":"<strong>Heckenlights ist offline</strong> Komm doch einfach wieder, sobald Heckenlights wieder online ist.",
-    "enqueue_unauthenticated":"<strong>Bist du ein Mensch?</strong> Da ich mir nicht sicher bin, trage doch die Worte/Zahlen vom Captcha richtig ein.",
+    "enqueue_internal_server_error":"<strong>Oha!</strong><br/> Es ist ein interner Fehler aufgetreten.",
+    "enqueue_bad_request":"<strong>Oha!</strong><br/> Deine Datei konnte nicht in die Wiedergabeliste eingetragen werden. Überprüfe, ob es sich bei deiner Datei um eine MIDI Datei handelt und die Dauer zwischen 10 Sekunden und 5 Minuten liegt.",
+    "enqueue_queue_error":"<strong>Langsam mit den jungen Pferden</strong><br/> Im Moment ist viel los. Versuche es später noch einmal.",
+    "enqueue_offline":"<strong>Heckenlights ist offline</strong><br/> Komm doch einfach wieder, sobald Heckenlights wieder online ist.",
+    "enqueue_unauthenticated":"<strong>Bist du ein Mensch?</strong><br/> Da ich mir nicht sicher bin, trage doch die Worte/Zahlen vom Captcha richtig ein.",
 
-    "enqueue_success":"<strong>Titel __track__ eingetragen!</strong> Dauert nur noch wenige Sekunden bis dein Titel gespielt wird.",
-    "enqueue_success_plural":"<strong>Titel __track__ eingetragen!</strong> Dauert nur noch __count__ Sekunden bis dein Titel gespielt wird.",
+    "enqueue_success":"<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Dauert nur noch wenige Sekunden bis dein Titel gespielt wird.",
+    "enqueue_success_plural":"<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Dauert nur noch __count__ Sekunden bis dein Titel gespielt wird.",
     "enqueue_tweet":"Ich habe __track__ auf http://heckenlights.org hochgeladen. In __count__ Sekunden geht es los. #Heckenlights"
 
 }

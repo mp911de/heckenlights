@@ -146,7 +146,7 @@
                 <br/>
 
                 <div class="list-group">
-                    <div id="uploadgroup" style="text-align: left;" class="list-group-item">
+                    <div id="uploadgroup" style="text-align: left; display: none" class="list-group-item">
                         <span id="uploadcontainer" class="btn btn-success fileinput-button" style="adisplay: none">
                             <i class="glyphicon glyphicon-plus"></i>
                             <span>{{index_upload}}</span>
@@ -170,19 +170,18 @@
                         </div>
                     </div>
 
-                    <div id="predefined" style="text-align: left;" class="list-group-item">
-                        Hast du gerade keine MIDI Datei zur Hand? Dann wähle doch einen Titel aus der Liste die ich für dich vorbereitet habe.
-                        <a href="#"  target="_blank" style="width: 300px; text-align: left"
-                           class="btn btn-default" onmouseover="$(this).removeClass('btn-default').addClass('btn-success');"
-                        onmouseout="$(this).removeClass('btn-success').addClass('btn-default');"><i class="fa fa-music"></i> Twitter</a>
-                        <br/>
+                    <div id="presetcontainer" style="text-align: left; display: none" class="list-group-item">
+                        <p>{{index_preset}}</p>
 
+                        <div id="presets"></div>
+                    </div>
+                    <div id="lastinupload" class="list-group-item" style="text-align: left; display: none">
+                        &nbsp;
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
 </header>
 
 <!-- About -->

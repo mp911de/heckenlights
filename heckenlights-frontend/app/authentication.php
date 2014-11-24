@@ -18,6 +18,7 @@ function getAuthentication($session)
 {
     $model = new Authentication();
     $model->setRecaptchaPublicKey(constant(RECAPTCHA_PUBLIC_KEY));
+    $model->setPresetSubmitted(wasPresetSubmitted($session));
 
     if (array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
         $model->setHumanOrMachine($session[HUMAN_OR_MACHINE_KEY]);
@@ -47,7 +48,7 @@ function wasPresetSubmitted($session)
     return false;
 }
 
-function setPresetSubmittedFlag($session)
+function setPresetSubmittedFlag(&$session)
 {
     $session[PRESET_SUBMITTED] = true;
 }

@@ -51,13 +51,13 @@
     "internal_server_error":"There was an internal server error, could not validate your request.",
     "captcha_validation_error":"Validation not successful. Please enter the displayed words/numbers.",
 
-    "enqueue_internal_server_error":"<strong>Aw, snap!</strong> There was an internal server error.",
-    "enqueue_bad_request":"<strong>Aw, snap!</strong> Could not submit your file to the queue. Check if whether your file is a GM MIDI-File.",
-    "enqueue_queue_error":"<strong>Too many requests</strong> Please retry later.",
-    "enqueue_offline":"<strong>Heckenlights is offline</strong> Please come back when it's open again.",
-    "enqueue_unauthenticated":"<strong>Unauthenticated</strong> Please use the captcha to confirm that you are a hooooman.",
+    "enqueue_internal_server_error":"<strong>Aw, snap!</strong><br/> There was an internal server error.",
+    "enqueue_bad_request":"<strong>Aw, snap!</strong><br/> Could not submit your file to the queue. Check if whether your file is a GM MIDI-File.",
+    "enqueue_queue_error":"<strong>Too many requests</strong><br/> Please retry later.",
+    "enqueue_offline":"<strong>Heckenlights is offline</strong><br/> Please come back when it's open again.",
+    "enqueue_unauthenticated":"<strong>Unauthenticated</strong><br/> Please use the captcha to confirm that you are a hooooman.",
 
-    "enqueue_success":"<strong>Enqeued your track __track__!</strong> It will take some __count__ second until the file is played.",
-    "enqueue_success_plural":"<strong>Enqeued your track __track__!</strong> It will take some __count__ seconds until the file is played.",
+    "enqueue_success":"<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ second until the file is played.",
+    "enqueue_success_plural":"<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ seconds until the file is played.",
     "enqueue_tweet":"Uploaded __track__ at http://heckenlights.org. Come, hear and see it in __count__ seconds #Heckenlights"
 }

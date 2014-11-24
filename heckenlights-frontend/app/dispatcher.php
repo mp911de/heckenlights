@@ -1,6 +1,7 @@
 <?php
 require_once 'settings.php';
 require_once 'lib/requestId.php';
+require_once 'lib/presets.php';
 
 if (!array_key_exists('HTTP_ORIGIN', $_SERVER)) {
     $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
@@ -12,7 +13,8 @@ $resourcePath = substr($urlPath, strpos($urlPath, $apiBase) + strlen($apiBase));
 
 $knownResources = [
     'playlist' => 'PlaylistAPI',
-    'authentication' => 'AuthenticationAPI'
+    'authentication' => 'AuthenticationAPI',
+    'presets' => 'PresetAPI'
 ];
 
 $validResource = false;
