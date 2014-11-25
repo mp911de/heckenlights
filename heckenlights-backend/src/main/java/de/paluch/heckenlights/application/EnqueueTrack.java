@@ -1,20 +1,10 @@
 package de.paluch.heckenlights.application;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Closer;
-import de.paluch.heckenlights.EnqueueS;
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueRequest;
-import de.paluch.heckenlights.model.EnqueueResult;
-import de.paluch.heckenlights.model.OfflineException;
-import de.paluch.heckenlights.model.PlayCommandSummary;
-import de.paluch.heckenlights.model.PlayStatus;
-import de.paluch.heckenlights.model.QuotaExceededException;
-import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.repositories.PlayCommandService;
-import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.springframework.stereotype.Component;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
@@ -25,11 +15,24 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.UUID;
+
+import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Closer;
+
+import de.paluch.heckenlights.EnqueueS;
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
+import de.paluch.heckenlights.model.EnqueueResult;
+import de.paluch.heckenlights.model.OfflineException;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.PlayStatus;
+import de.paluch.heckenlights.model.QuotaExceededException;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.repositories.PlayCommandService;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -53,6 +56,8 @@ public class EnqueueTrack {
     @Inject
     private GetOnlineState getOnlineState;
 
+    private static Sequencer sequencer;
+
     private final static int MINIMAL_DURATION_SEC = 10;
     private final static int MAXIMAL_DURATION_SEC = 300;
     private final static int QUOTA = 10;
@@ -75,12 +80,12 @@ public class EnqueueTrack {
             throw new QuotaExceededException("Queue limit of " + LIMIT_ENEUQUED + " exceeded by " + (count - LIMIT_ENEUQUED));
         }
 
-        if (!isQueueOpen.isQueueOpen()) {
-            throw new OfflineException("Queue closed");
-        }
-
         if (!getOnlineState.isOnline()) {
             throw new OfflineException("System is offline");
+        }
+
+        if (!isQueueOpen.isQueueOpen()) {
+            throw new OfflineException("Queue closed");
         }
 
         return enqueue(enqueue);
@@ -141,18 +146,29 @@ public class EnqueueTrack {
     private int getDuration(Sequence sequence) throws IOException, InvalidMidiDataException {
         try {
             // Create a sequencer for the sequence
-            Sequencer sequencer = MidiSystem.getSequencer();
-            sequencer.open();
-            sequencer.setSequence(sequence);
 
-            int durationInSecs = (int) (sequencer.getMicrosecondLength() / 1000000.0);
-            sequencer.close();
-            return durationInSecs;
+            Sequencer sequencer = getSequencer();
+            synchronized (this) {
+                sequencer.setSequence(sequence);
+                int durationInSecs = (int) (sequencer.getMicrosecondLength() / 1000000.0);
+                return durationInSecs;
+            }
 
         } catch (MidiUnavailableException e) {
             log.warn(e.getMessage(), e);
             return -1;
         }
+    }
+
+    private Sequencer getSequencer() throws MidiUnavailableException {
+        Sequencer sequencer = this.getSequencer();
+
+        if (sequencer == null) {
+            sequencer = MidiSystem.getSequencer();
+            sequencer.open();
+            this.sequencer = sequencer;
+        }
+        return sequencer;
     }
 
     protected String getSequenceName(Sequence sequence) {

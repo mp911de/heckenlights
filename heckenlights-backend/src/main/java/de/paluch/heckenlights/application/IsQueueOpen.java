@@ -1,10 +1,9 @@
 package de.paluch.heckenlights.application;
 
-import javax.inject.Inject;
-
+import de.paluch.heckenlights.repositories.StateService;
 import org.springframework.stereotype.Component;
 
-import de.paluch.heckenlights.repositories.StateService;
+import javax.inject.Inject;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -16,8 +15,11 @@ public class IsQueueOpen {
     @Inject
     private StateService stateService;
 
+    @Inject
+    private GetOnlineState getOnlineState;
+
     public boolean isQueueOpen() {
-        return stateService.isQueueOpen();
+        return getOnlineState.isOnline() && stateService.isQueueOpen();
     }
 
 }
