@@ -74,11 +74,16 @@ class RestApiClient
 
         $ch = curl_init();
 
+        $remote = $_SERVER['REMOTE_ADDR'];
+        if (array_key_exists('REMOTE_HOST', $_SERVER)) {
+            $remote = $_SERVER['REMOTE_HOST'];
+        }
+
         $httpHeaders = array(
             "User-Agent: " . $this->userAgent,
             "X-Tracking.SessionId: " . session_id(),
             "X-Tracking.RequestId: " . $requestId,
-            "X-Tracking.UserId: " . $_SERVER['REMOTE_HOST']
+            "X-Tracking.UserId: " . $remote
         );
 
         if (isset($additionalHeaders) && is_array($additionalHeaders)) {

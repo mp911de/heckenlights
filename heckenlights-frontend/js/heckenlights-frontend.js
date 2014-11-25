@@ -360,6 +360,14 @@ var heckenlights = (function () {
             checkOrCreateRecaptcha();
         }
 
+        function emptyPlaylist() {
+            var html = "<a href=\"#\" class=\"list-group-item\">" +
+                "<h4 class=\"list-group-item-heading\">" + i18n.t("index_playlist_empty") + "</h4>" +
+                "<p class=\"list-group-item-text\">&nbsp;</p></a>"
+
+            $("#playlist").append(html);
+        }
+
         function loadPlaylist() {
             var uri = config.playlist;
             $.ajax({
@@ -384,14 +392,15 @@ var heckenlights = (function () {
                             }
                         }
                         else {
-                            if (siteIsOpen) {
-                                siteClosed();
-                            }
+                            siteClosed();
                         }
 
                         if (!data.queueOpen) {
                             queueClosed();
                         }
+                    }
+                    else{
+                        siteClosed();
                     }
 
                     if (data && data.entries && data.entries.length && data.entries.length != 0) {
@@ -433,15 +442,13 @@ var heckenlights = (function () {
                         }
                     }
                     else {
-                        var html = "<a href=\"#\" class=\"list-group-item\">" +
-                            "<h4 class=\"list-group-item-heading\">" + i18n.t("index_playlist_empty") + "</h4>" +
-                            "<p class=\"list-group-item-text\">-</p></a>"
-
-                        $("#playlist").append(html);
+                        emptyPlaylist();
                     }
                 }
             ).
                 fail(function () {
+                    $("#playlist").empty();
+                    emptyPlaylist();
                     siteClosed();
                 });
         }
