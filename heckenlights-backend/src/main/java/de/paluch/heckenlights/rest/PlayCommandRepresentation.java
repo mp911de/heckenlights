@@ -1,8 +1,7 @@
 package de.paluch.heckenlights.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import de.paluch.heckenlights.model.PlayStatus;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,9 +9,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import de.paluch.heckenlights.model.PlayStatus;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -33,6 +32,9 @@ public class PlayCommandRepresentation {
 
     @XmlElement(name = "trackName")
     private String trackName;
+
+    @XmlElement(name = "fileName")
+    private String fileName;
 
     @XmlElement(name = "playStatus")
     private PlayStatus playStatus;
@@ -147,5 +149,13 @@ public class PlayCommandRepresentation {
 
     public void setRemaining(int remaining) {
         this.remaining = remaining;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

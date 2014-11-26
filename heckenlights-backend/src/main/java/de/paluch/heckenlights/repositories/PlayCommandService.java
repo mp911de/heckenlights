@@ -93,6 +93,7 @@ public class PlayCommandService {
         command.setPlayStatus(PlayStatus.ENQUEUED);
         command.setSubmissionHost(enqueue.getSubmissionHost());
         command.setExternalSessionId(enqueue.getExternalSessionId());
+        command.setFileName(enqueue.getFileName());
         command.setTrackName(enqueue.getTrackName());
 
         playCommandRepository.save(command);
@@ -239,6 +240,7 @@ public class PlayCommandService {
         result.setPlayStatus(from.getPlayStatus());
         result.setSubmissionHost(from.getSubmissionHost());
         result.setTrackName(from.getTrackName());
+        result.setFileName(from.getFileName());
 
         return result;
     }

@@ -14,6 +14,7 @@ public class PlayCommandSummary {
     private Date created;
 
     private String trackName;
+    private String fileName;
 
     private PlayStatus playStatus;
 
@@ -116,5 +117,13 @@ public class PlayCommandSummary {
 
     public void setRemaining(int remaining) {
         this.remaining = remaining;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
