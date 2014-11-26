@@ -72,7 +72,7 @@
     <bean id="playlistTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="playlistJobDetail" />
         <property name="startDelay" value="1000" />
-        <property name="repeatInterval" value="5000" />
+        <property name="repeatInterval" value="1000" />
     </bean>
 
     <!-- *** Start Quartz engine *** -->
