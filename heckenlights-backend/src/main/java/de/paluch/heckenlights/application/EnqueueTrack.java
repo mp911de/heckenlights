@@ -158,7 +158,7 @@ public class EnqueueTrack {
     }
 
     private Sequencer getSequencer() throws MidiUnavailableException {
-        Sequencer sequencer = this.getSequencer();
+        Sequencer sequencer = this.sequencer;
 
         if (sequencer == null) {
             sequencer = MidiSystem.getSequencer();
