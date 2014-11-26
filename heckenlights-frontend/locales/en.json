@@ -37,11 +37,11 @@
     "index_countdown_d": "to go.",
     "index_watch_on_ustream":"Watch on ustream.tv",
     "index_hint_delay":"Live stream is delayed by 10 to 20 seconds.",
-    "index_upload_info": "Hast du Musik im MIDI-Format? Sehr gut, lade deine eigenen Weihnachtstracks auf heckenlights.org hoch. Dein Track muss zwischen 10 und 5 Minuten lang sein.",
+    "index_upload_info": "Do you have MIDI files? Upload your christmas tracks to heckenlights.org hoch. Track duration must be between 10 seconds and 5 minutes.",
 
 
-    "duration_seconds": "Duration: __count__ second",
-    "duration_seconds_plural": "Duration: __count__ seconds",
+    "duration_seconds": "Time to start: __count__ second",
+    "duration_seconds_plural": "Time to start: __count__ seconds",
 
     "remaining_seconds": "Remaining: __count__ second",
     "remaining_seconds_plural": "Remaining: __count__ seconds",
@@ -57,7 +57,8 @@
     "enqueue_offline":"<strong>Heckenlights is offline</strong><br/> Please come back when it's open again.",
     "enqueue_unauthenticated":"<strong>Unauthenticated</strong><br/> Please use the captcha to confirm that you are a hooooman.",
 
-    "enqueue_success":"<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ second until the file is played.",
+    "enqueue_success":"<strong>Enqeued your track __track__!</strong><br/> It will be played in a few seconds.",
     "enqueue_success_plural":"<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ seconds until the file is played.",
-    "enqueue_tweet":"Uploaded __track__ at http://heckenlights.org. Come, hear and see it in __count__ seconds #Heckenlights"
+    "enqueue_tweet":"Uploaded __track__ at http://heckenlights.org. Come, hear and see it in __count__ seconds #Heckenlights",
+    "enqueue_tweet_now":"Uploaded __track__ at http://heckenlights.org. Come, hear and see it now. #Heckenlights"
 }

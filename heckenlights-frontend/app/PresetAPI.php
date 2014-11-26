@@ -17,9 +17,16 @@ class PresetAPI extends AbstractAPI
     {
         session_start();
         global $presets;
-        // filename:title
-        $model = $presets;
+        $result = array();
 
+        foreach ($presets as $key => $value) {
+            $fullname = constant('presetFileBase') . $key;
+            if (file_exists($fullname)) {
+                $result[$key] = $value;
+            }
+        }
+
+        $model = $result;
         return $model;
     }
 }

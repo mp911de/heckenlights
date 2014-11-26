@@ -200,11 +200,19 @@
 <!-- endbuild -->
 
 <script>
+
+    var language = '{{language}}';
+    if (language.length != 2) {
+        language = 'de';
+    }
+
     var options = {
         // change path
         resPostPath: 'locales/__lng__.json',
         resGetPath: 'locales/__lng__.json',
-        useCookie: false
+        useCookie: false,
+        lng: language,
+        fallbackLng: false
     }
 
     $.i18n.init(options, function () {

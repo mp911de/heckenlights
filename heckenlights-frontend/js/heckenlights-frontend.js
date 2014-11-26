@@ -8,6 +8,7 @@ var heckenlights = (function () {
         var instance = {};
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
+        var countdownInterval;
         var mockData = false;
         var siteIsOpen = false;
         var fadeoutAfter = 15000;
@@ -48,8 +49,12 @@ var heckenlights = (function () {
             });
 
             loadPlaylistInterval = window.setInterval(function () {
-                loadPlaylist()
+                loadPlaylist();
             }, fadeoutAfter);
+
+            countdownInterval = window.setInterval(function () {
+                refreshCountdown();
+            }, 50);
 
 
             $('#fileupload').fileupload({
@@ -90,17 +95,41 @@ var heckenlights = (function () {
 
         }
 
+        function refreshCountdown() {
+
+            $('.countdown').each(function (index, value) {
+                var key = $(value).data("i18n");
+                var end = $(value).data("countdown-end");
+                var diff = end - Date.now();
+
+
+                if (diff > 0) {
+                    diff = Math.round(diff / 1000);
+                    var text = i18n.t(key, {count: diff});
+                    if ($(value).html() != text) {
+                        $(value).html(text);
+                    }
+                }
+            });
+        }
+
         function enqueueSuccess(data) {
-            var key = "enqueue_success_plural";
-            if (data.durationToPlay && data.durationToPlay == 1) {
-                key = "enqueue_success"
+            var key = "enqueue_success";
+            if (data.durationToPlay && data.durationToPlay >= 20) {
+                key = "enqueue_success_plural"
             }
 
             $('#uploadsuccesstext').html(i18n.t(key, {
                 track: data.trackName,
                 count: data.durationToPlay
             }));
-            var tweet = i18n.t("enqueue_tweet", {
+
+            var tweetKey = "enqueue_tweet_now";
+            if (data.durationToPlay >= 20) {
+                tweetKey = "enqueue_tweet";
+            }
+
+            var tweet = i18n.t(tweetKey, {
                 track: data.trackName,
                 count: data.durationToPlay
             });
@@ -341,7 +370,6 @@ var heckenlights = (function () {
 
         function siteClosed() {
             siteIsOpen = false;
-            $("#playlist").empty();
             $("#closed").show();
             $("#closedsign").show();
             $("#captchacontainer").hide();
@@ -399,7 +427,7 @@ var heckenlights = (function () {
                             queueClosed();
                         }
                     }
-                    else{
+                    else {
                         siteClosed();
                     }
 
@@ -410,23 +438,36 @@ var heckenlights = (function () {
 
                             var playCommand = entries[index];
                             var trackName = "No name";
+                            var foundTrackName = false;
                             if (playCommand.trackName && playCommand.trackName != '') {
                                 trackName = playCommand.trackName;
+                                foundTrackName = true;
+                            }
+
+                            if (playCommand.fileName && playCommand.fileName != '') {
+                                if (foundTrackName) {
+                                    trackName += " (" + playCommand.fileName + ")";
+
+                                } else {
+                                    trackName = playCommand.fileName;
+                                }
                             }
 
                             if (playCommand.playing) {
 
+                                var coundownend = Date.now() + (playCommand.remaining * 1000);
                                 var html = "<a href=\"#\" class=\"list-group-item active\">" +
                                     "<h4 class=\"list-group-item-heading\"><span class=\"glyphicon glyphicon-play\"></span> " + trackName + "</h4>" +
-                                    "<p class=\"list-group-item-text\">" + i18n.t("remaining_seconds", {count: playCommand.remaining}) + "</p>" +
+                                    "<p class=\"list-group-item-text countdown\" data-i18n=\"remaining_seconds\" data-countdown-end=\"" + coundownend + "\">" + i18n.t("remaining_seconds", {count: playCommand.remaining}) + "</p>" +
                                     "</a>"
 
                                 $("#playlist").append(html);
                                 first = false;
                             } else {
+                                var coundownend = Date.now() + (playCommand.timeToStart * 1000);
                                 var html = "<a href=\"#\" class=\"list-group-item\">" +
                                     "<h4 class=\"list-group-item-heading\">" + trackName + "</h4>" +
-                                    "<p class=\"list-group-item-text\">" + i18n.t("duration_seconds", {count: playCommand.duration}) + "</p></a>"
+                                    "<p class=\"list-group-item-text countdown\" data-i18n=\"duration_seconds\" data-countdown-end=\"" + coundownend + "\">" + i18n.t("duration_seconds", {count: playCommand.timeToStart}) + "</p></a>"
 
                                 $("#playlist").append(html);
                             }

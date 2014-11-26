@@ -10,6 +10,7 @@ class PlaylistEntry
 {
     public $id = '';
     public $trackName = '';
+    public $fileName = '';
     public $playStatus = '';
     public $duration = 0;
     public $timeToStart = 0;
@@ -144,7 +145,20 @@ class PlaylistEntry
         $this->submitStatus = $submitStatus;
     }
 
+    /**
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
 
-
+    /**
+     * @param string $fileName
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+    }
 
 }

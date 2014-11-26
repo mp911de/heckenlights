@@ -1,8 +1,12 @@
 <?php
 
 $presets = array(
-    "ave_maria.mid" => "Ave Maria",
-    "P-jingle_bells_2.mid" => "Jingle Bells",
-    "Stillena.mid" => "Stille Nacht/Silent Night",
+    "AlleJahreWieder.mid" => "Alle Jahre wieder",
+    "DeckTheHalls.mid" => "Deck the Halls",
+    "JingleBells.mid" => "Jingle Bells",
+    "LeiseRieseltDerSchnee.mid" => "Leise rieselt der Schnee",
+    "OComeAllYeFaithful.mid" => "O Come, All Ye Faithful",
+    "WeWishYouAMerryChristmas.mid" => "We Wish You a Merry Christmas"
 );
+asort($presets);
 ?>

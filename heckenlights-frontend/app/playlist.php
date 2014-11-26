@@ -163,6 +163,10 @@ function createResult($result, $rawResponse)
             $enqueueResult->setTrackName($enqueue['trackName']);
         }
 
+        if (array_key_exists('fileName', $enqueue)) {
+            $enqueueResult->setFileName($enqueue['fileName']);
+        }
+
         if (array_key_exists('message', $enqueue)) {
             $enqueueResult->setMessage($enqueue['message']);
         }
@@ -248,6 +252,14 @@ function createPlaylistModel($jsonData)
 
             if (array_key_exists('trackName', $playcommand)) {
                 $entry->setTrackName($playcommand['trackName']);
+            }
+
+            if (array_key_exists('fileName', $playcommand)) {
+                $entry->setFileName($playcommand['fileName']);
+            }
+
+            if (array_key_exists('timeToStart', $playcommand)) {
+                $entry->setTimeToStart($playcommand['timeToStart']);
             }
 
             if (array_key_exists(REMAINING, $playcommand)) {
