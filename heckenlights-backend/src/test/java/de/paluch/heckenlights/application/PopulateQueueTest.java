@@ -1,11 +1,9 @@
 package de.paluch.heckenlights.application;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.io.File;
-import java.nio.file.Paths;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import com.google.common.io.Resources;
 import de.paluch.heckenlights.model.EnqueueRequest;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.io.Resources;
+import java.io.File;
+import java.nio.file.Paths;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PopulateQueueTest {
@@ -42,7 +41,7 @@ public class PopulateQueueTest {
     public void testEnqueue() throws Exception {
         sut.populateQueue();
 
-        verify(enqueueTrack).enqueue(enqueueCaptor.capture());
+        verify(enqueueTrack).populate(enqueueCaptor.capture());
         EnqueueRequest value = enqueueCaptor.getValue();
 
         assertThat(value.getFileName()).isEqualTo(RESOURCE_NAME);

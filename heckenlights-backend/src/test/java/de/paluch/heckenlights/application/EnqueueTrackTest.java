@@ -1,10 +1,7 @@
 package de.paluch.heckenlights.application;
 
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.io.InputStream;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import de.paluch.heckenlights.model.EnqueueRequest;
 import de.paluch.heckenlights.model.EnqueueResult;
 import de.paluch.heckenlights.repositories.PlayCommandService;
@@ -14,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.util.StreamUtils;
+
+import java.io.InputStream;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -37,7 +36,7 @@ public class EnqueueTrackTest {
         model.setContent(StreamUtils.copyToByteArray(is));
 
         model.setDuration(12);
-		EnqueueResult result = sut.enqueue(model);
+        EnqueueResult result = sut.populate(model);
 
 		assertThat(model.getTrackName()).isEqualTo("Seq-1");
 		assertThat(result.getTrackName()).isEqualTo("Seq-1");
