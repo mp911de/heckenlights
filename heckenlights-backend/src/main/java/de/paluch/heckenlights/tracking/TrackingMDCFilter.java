@@ -2,7 +2,6 @@ package de.paluch.heckenlights.tracking;
 
 import de.paluch.heckenlights.mdc.AbstractMDCFilter;
 import de.paluch.heckenlights.mdc.DDC;
-import org.apache.log4j.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -50,9 +49,6 @@ public class TrackingMDCFilter extends AbstractMDCFilter {
         DDC.clear();
         super.doFilter(new PersistentAttributeHttpServletRequestWrapper((HttpServletRequest) request), response, chain);
 
-        HttpServletResponse resp = (HttpServletResponse) response;
-        Logger.getLogger(getClass())
-                .info("Response " + resp.getStatus() + " URI " + ((HttpServletRequest) request).getRequestURI());
     }
 
     /**

@@ -1,21 +1,18 @@
 package de.paluch.heckenlights.application;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.Date;
-
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
-
+import com.google.common.io.Files;
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.google.common.io.Files;
-
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueRequest;
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -48,7 +45,7 @@ public class PopulateQueue {
                 model.setFileName(FilenameUtils.getName(file.getName()));
 
                 model.setCreated(new Date());
-                enqueueTrack.enqueue(model);
+                enqueueTrack.populate(model);
             }
         }
     }

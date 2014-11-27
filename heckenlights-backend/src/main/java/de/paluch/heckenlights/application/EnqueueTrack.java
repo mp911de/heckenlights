@@ -85,16 +85,23 @@ public class EnqueueTrack {
             throw new OfflineException("Queue closed");
         }
 
-        return enqueue(enqueue);
+        log.info("Enqueuing " + enqueue.getFileName() + " from " + enqueue.getExternalSessionId() + "/"
+                + enqueue.getSubmissionHost());
+
+        return enqueueImpl(enqueue);
     }
 
-    public EnqueueResult enqueue(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
+    public EnqueueResult populate(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
+            DurationExceededException {
+        log.info("Populating Queue with " + enqueue.getFileName());
+        return enqueueImpl(enqueue);
+    }
+
+    private EnqueueResult enqueueImpl(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
             DurationExceededException {
         Closer closer = Closer.create();
         try {
 
-            log.info("Enqueuing " + enqueue.getFileName() + " from " + enqueue.getExternalSessionId() + "/"
-                    + enqueue.getSubmissionHost());
             Sequence sequence = getSequence(closer, enqueue.getContent());
             int durationInSecs = getDuration(sequence);
             validateDuration(durationInSecs);
