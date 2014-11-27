@@ -75,10 +75,26 @@
         <property name="repeatInterval" value="1000" />
     </bean>
 
+    <bean name="refreshRulesJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="de.paluch.heckenlights.application.RefreshRulesJob" />
+        <property name="durability" value="true" />
+        <property name="jobDataAsMap">
+            <map>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="refreshRulesTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="refreshRulesJobDetail" />
+        <property name="startDelay" value="5000" />
+        <property name="repeatInterval" value="5000" />
+    </bean>
+
     <!-- *** Start Quartz engine *** -->
     <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
+                <ref bean="refreshRulesTrigger" />
                 <ref bean="playlistTrigger" />
             </list>
         </property>
@@ -89,6 +105,7 @@
                 <prop key="org.quartz.threadPool.threadCount">4</prop>
             </props>
         </property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext" />
     </bean>
 
     <bean class="de.paluch.heckenlights.model.RuleState" scope="singleton"></bean>
