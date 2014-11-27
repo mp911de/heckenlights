@@ -3,6 +3,7 @@ package biz.paluch.heckenlights.messagebox.rest;
 import biz.paluch.heckenlights.messagebox.application.DispatchNextRequest;
 import biz.paluch.heckenlights.messagebox.application.GetAdvertising;
 import biz.paluch.heckenlights.messagebox.application.GetCurrentTitle;
+import biz.paluch.heckenlights.messagebox.application.GetMessage;
 import biz.paluch.heckenlights.messagebox.application.GetTweet;
 import biz.paluch.heckenlights.messagebox.model.DispatchAction;
 import biz.paluch.heckenlights.messagebox.model.TweetSummary;
@@ -41,6 +42,9 @@ public class MessageboxRessource {
 
     @Inject
     private GetCurrentTitle getCurrentTitle;
+
+    @Inject
+    private GetMessage getMessage;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -85,26 +89,12 @@ public class MessageboxRessource {
 
     @RequestMapping(value = "/tweets/{tweetId}.png", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getTweetPng(@PathVariable long tweetId) throws IOException {
-        byte[] bytes = getTweet.getTweetImage(tweetId, "png");
-        if (bytes == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Content", getTweet.getTweetText(tweetId));
-        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        return respondImage(getTweet.getTweetText(tweetId), getTweet.getTweetImage(tweetId, "png"));
     }
 
     @RequestMapping(value = "/tweets/{tweetId}.ppm", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getTweetPpm(@PathVariable long tweetId) throws IOException {
-        byte[] bytes = getTweet.getTweetImage(tweetId, "ppm");
-        if (bytes == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Content", getTweet.getTweetText(tweetId));
-
-        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        return respondImage(getTweet.getTweetText(tweetId), getTweet.getTweetImage(tweetId, "ppm"));
     }
 
     @RequestMapping(value = "/title/current", method = RequestMethod.GET, produces = { MediaType.TEXT_PLAIN_VALUE })
@@ -120,16 +110,46 @@ public class MessageboxRessource {
     @RequestMapping(value = "/title/current.png", method = RequestMethod.GET, produces = { MediaType.IMAGE_PNG_VALUE })
     public ResponseEntity<byte[]> getCurrentTitlePng() throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Content", getCurrentTitle.getCurrentTitle());
-        return new ResponseEntity<>(getCurrentTitle.getCurrentTitleImage("png"), headers, HttpStatus.OK);
+        return respondImage(getCurrentTitle.getCurrentTitle(), getCurrentTitle.getCurrentTitleImage("png"));
     }
 
     @RequestMapping(value = "/title/current.ppm", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getCurrentTitlePpm() throws IOException {
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add("X-Content", getCurrentTitle.getCurrentTitle());
-        return new ResponseEntity<>(getCurrentTitle.getCurrentTitleImage("ppm"), headers, HttpStatus.OK);
+        return respondImage(getCurrentTitle.getCurrentTitle(), getCurrentTitle.getCurrentTitleImage("ppm"));
+    }
+
+    @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET, produces = { MediaType.TEXT_PLAIN_VALUE })
+    public ResponseEntity<String> getMessage(@PathVariable String messageId) {
+        String result = getMessage.getMessage(messageId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/messages/{messageId}.png", method = RequestMethod.GET, produces = { MediaType.IMAGE_PNG_VALUE })
+    public ResponseEntity<byte[]> getMessagePng(@PathVariable String messageId) throws IOException {
+
+        return respondImage(getMessage.getMessage(messageId), getMessage.getImage(messageId, "png"));
+    }
+
+    @RequestMapping(value = "/messages/{messageId}.ppm", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getMessagePpm(@PathVariable String messageId) throws IOException {
+        return respondImage(getMessage.getMessage(messageId), getMessage.getImage(messageId, "ppm"));
+    }
+
+    private ResponseEntity<byte[]> respondImage(String content, byte[] result) {
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("X-Content", content);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     private ResponseEntity<Void> buildResponse(UriComponentsBuilder uriComponentsBuilder, DispatchAction dispatchAction,
@@ -142,6 +162,17 @@ public class MessageboxRessource {
             TweetSummary firstUnprocessedTweet = getTweet.getFirstUnprocessedTweet();
             if (firstUnprocessedTweet != null) {
                 uriComponentsBuilder.path("tweets/").path(Long.toString(firstUnprocessedTweet.getId()) + typeSuffix);
+
+                headers.add(HttpHeaderNames.LOCATION, uriComponentsBuilder.build().toUriString());
+                return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
+            }
+        }
+
+        if (dispatchAction == DispatchAction.Message) {
+
+            String messageId = getMessage.getFirstUnprocessedMessageId();
+            if (messageId != null) {
+                uriComponentsBuilder.path("messages/").path(messageId + typeSuffix);
 
                 headers.add(HttpHeaderNames.LOCATION, uriComponentsBuilder.build().toUriString());
                 return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);

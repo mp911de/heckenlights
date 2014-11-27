@@ -36,8 +36,7 @@ public class GetDisplayCount {
 
     private DisplayCountDocument getCountDocument() {
 
-        SimpleDateFormat format = new SimpleDateFormat(COUNT_FORMAT);
-        String key = COUNT + "_" + format.format(new Date());
+        String key = getCountKey();
         DisplayCountDocument count = displayCountRepository.findOne(key);
 
         if (count == null) {
@@ -46,6 +45,11 @@ public class GetDisplayCount {
             displayCountRepository.save(count);
         }
         return count;
+    }
+
+    public String getCountKey() {
+        SimpleDateFormat format = new SimpleDateFormat(COUNT_FORMAT);
+        return COUNT + "_" + format.format(new Date());
     }
 
     public DisplayCount getRatio() {
@@ -58,6 +62,7 @@ public class GetDisplayCount {
         result.setAdvertising(displayCountDocument.getAdvertising());
         result.setTitle(displayCountDocument.getTitle());
         result.setTweets(displayCountDocument.getTweets());
+        result.setMessages(displayCountDocument.getMessages());
         return result;
     }
 
@@ -76,6 +81,7 @@ public class GetDisplayCount {
 		displayCountDocument.setAdvertising(displayCount.getAdvertising());
 		displayCountDocument.setTitle(displayCount.getTitle());
 		displayCountDocument.setTweets(displayCount.getTweets());
+        displayCountDocument.setMessages(displayCount.getMessages());
 
 		displayCountRepository.save(displayCountDocument);
 

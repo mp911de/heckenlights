@@ -23,6 +23,9 @@ public class DispatchNextRequest {
     @Inject
     private GetCurrentTitle getCurrentTitle;
 
+    @Inject
+    private GetMessage getMessage;
+
     public DispatchAction getDispatchAction() {
 
         DisplayCount displayCount = getDisplayCount.getDisplayCount();
@@ -32,11 +35,21 @@ public class DispatchNextRequest {
         double advertising = displayCount.getAdvertising();
         double title = displayCount.getTitle();
 
-        double ratioTweets = tweets / ratio.getTweets();
-        double ratioAdvertising = advertising / ratio.getAdvertising();
-        double ratioTitle = title / ratio.getTitle();
+        double ratioTweets = divIfNotZero(tweets, ratio.getTweets());
+        double ratioAdvertising = divIfNotZero(advertising, ratio.getAdvertising());
+        double ratioTitle = divIfNotZero(title, ratio.getTitle());
 
-        if (ratioTitle < ratioAdvertising || ratioTitle < ratioTweets) {
+        if (ratio.getMessages() != 0) {
+            String messageId = getMessage.getFirstUnprocessedMessageId();
+
+            if (StringUtils.hasText(messageId)) {
+                displayCount.setMessages(displayCount.getMessages() + 1);
+                getDisplayCount.update(displayCount);
+                return DispatchAction.Message;
+            }
+        }
+
+        if (ratio.getTitle() != 0 && (ratioTitle < ratioAdvertising || ratioTitle < ratioTweets)) {
             String titleText = getCurrentTitle.getCurrentTitle();
 
             if (StringUtils.hasText(titleText)) {
@@ -46,7 +59,7 @@ public class DispatchNextRequest {
             }
         }
 
-        if (ratioTweets < ratioAdvertising || ratioTweets < ratioTitle) {
+        if (ratio.getTweets() != 0 && (ratioTweets < ratioAdvertising || ratioTweets < ratioTitle)) {
             TweetSummary firstUnprocessedTweet = getTweet.getFirstUnprocessedTweet();
             if (firstUnprocessedTweet != null) {
                 displayCount.setTweets(displayCount.getTweets() + 1);
@@ -55,11 +68,17 @@ public class DispatchNextRequest {
             }
         }
 
-
         displayCount.setAdvertising(displayCount.getAdvertising() + 1);
         getDisplayCount.update(displayCount);
 
         return DispatchAction.Advertising;
 
+    }
+
+    private double divIfNotZero(double base, double div) {
+        if (div != 0) {
+            return base / div;
+        }
+        return -1;
     }
 }

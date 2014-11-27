@@ -1,21 +1,5 @@
 package biz.paluch.heckenlights.messagebox.application;
 
-import biz.paluch.heckenlights.messagebox.client.midirelay.MidiRelayClient;
-import biz.paluch.heckenlights.messagebox.client.midirelay.PlayerStateRepresentation;
-import biz.paluch.heckenlights.messagebox.client.midirelay.PlayerStateTrackRepresentation;
-import org.joda.time.Duration;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.TiledImage;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -25,6 +9,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.media.jai.RasterFactory;
+import javax.media.jai.TiledImage;
+
+import org.joda.time.Duration;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import biz.paluch.heckenlights.messagebox.client.midirelay.MidiRelayClient;
+import biz.paluch.heckenlights.messagebox.client.midirelay.PlayerStateRepresentation;
+import biz.paluch.heckenlights.messagebox.client.midirelay.PlayerStateTrackRepresentation;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -96,6 +98,9 @@ public class GetCurrentTitle {
     public byte[] getCurrentTitleImage(String format) throws IOException {
 
         String title = getCurrentTitle();
+        if (title == null) {
+            return null;
+        }
 
         List<String> parts = new ArrayList<>();
         parts.add(title);

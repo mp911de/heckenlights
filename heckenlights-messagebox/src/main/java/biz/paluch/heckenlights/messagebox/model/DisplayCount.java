@@ -8,6 +8,7 @@ public class DisplayCount {
     private int advertising;
     private int tweets;
     private int title;
+    private int messages;
 
     public int getAdvertising() {
         return advertising;
@@ -31,5 +32,13 @@ public class DisplayCount {
 
     public void setTitle(int title) {
         this.title = title;
+    }
+
+    public int getMessages() {
+        return messages;
+    }
+
+    public void setMessages(int messages) {
+        this.messages = messages;
     }
 }

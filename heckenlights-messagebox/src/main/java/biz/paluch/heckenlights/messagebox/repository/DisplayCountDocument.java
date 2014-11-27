@@ -15,18 +15,19 @@ public class DisplayCountDocument {
     private int advertising;
     private int tweets;
     private int title;
+    private int messages;
 
-	public DisplayCountDocument() {
-	}
+    public DisplayCountDocument() {
+    }
 
-	public DisplayCountDocument(String id, int advertising, int tweets, int title) {
-		this.id = id;
-		this.advertising = advertising;
-		this.tweets = tweets;
-		this.title = title;
-	}
+    public DisplayCountDocument(String id, int advertising, int tweets, int title) {
+        this.id = id;
+        this.advertising = advertising;
+        this.tweets = tweets;
+        this.title = title;
+    }
 
-	public String getId() {
+    public String getId() {
         return id;
     }
 
@@ -56,5 +57,13 @@ public class DisplayCountDocument {
 
     public void setTitle(int title) {
         this.title = title;
+    }
+
+    public int getMessages() {
+        return messages;
+    }
+
+    public void setMessages(int messages) {
+        this.messages = messages;
     }
 }
