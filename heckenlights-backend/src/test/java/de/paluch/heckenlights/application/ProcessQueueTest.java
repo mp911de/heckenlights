@@ -176,6 +176,18 @@ public class ProcessQueueTest {
         assertThat(ruleState.getPlaylistPlayedTimeMs()).isEqualTo(60000);
         assertThat(ruleState.getLightsOnTimeMs()).isEqualTo(0);
 
+        psr.setRunning(false);
+
+        setTime("10:02:00");
+        sut.processQueue();
+        assertThat(ruleState.getPlaylistPlayedTimeMs()).isEqualTo(120000);
+        assertThat(ruleState.getLightsOnTimeMs()).isEqualTo(0);
+
+        setTime("10:03:00");
+        sut.processQueue();
+        assertThat(ruleState.getPlaylistPlayedTimeMs()).isEqualTo(120000);
+        assertThat(ruleState.getLightsOnTimeMs()).isEqualTo(60000);
+
     }
 
     @Test
@@ -183,7 +195,6 @@ public class ProcessQueueTest {
 
         when(resolveRule.getRule()).thenReturn(new ResolveRule.FallbackRule(Rule.Action.PLAYLIST_AUTO_ENQEUE));
         PlayerStateRepresentation psr = new PlayerStateRepresentation();
-        psr.setRunning(true);
 
         ruleState.setActiveAction(Rule.Action.LIGHTS_ON);
 
@@ -227,14 +238,10 @@ public class ProcessQueueTest {
         assertThat(ruleState.getLightsOnTimeMs()).isEqualTo(0);
         assertThat(ruleState.getPlaylistPlayedTimeMs()).isEqualTo(0);
 
-        setTime("10:00:00");
-
-        sut.processQueue();
-        assertThat(ruleState.getLightsOnTimeMs()).isEqualTo(0);
-        assertThat(ruleState.getPlaylistPlayedTimeMs()).isEqualTo(0);
-
-        rule.getReset().clear();
+        rule = new ResolveRule.FallbackRule(Rule.Action.PLAYLIST);
         rule.getReset().add(Rule.Counter.PlaylistPlayedDuration);
+        when(resolveRule.getRule()).thenReturn(rule);
+
         ruleState.setPlaylistPlayedTimeMs(100);
         ruleState.setLightsOnTimeMs(100);
 

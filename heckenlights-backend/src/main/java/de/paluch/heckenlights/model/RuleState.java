@@ -11,6 +11,7 @@ public class RuleState {
     private Rule.Action activeAction;
     private long ruleActiveSince = 0;
     private int playlistSize = 0;
+    private boolean playing = false;
 
     public void addPlaylistPlayedTimeMs(long timeMs) {
         playlistPlayedTimeMs += timeMs;
@@ -66,5 +67,13 @@ public class RuleState {
 
     public void setPlaylistSize(int playlistSize) {
         this.playlistSize = playlistSize;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
     }
 }

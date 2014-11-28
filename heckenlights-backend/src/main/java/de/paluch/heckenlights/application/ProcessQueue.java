@@ -52,11 +52,11 @@ public class ProcessQueue {
 
     public void processQueue() throws IOException, InvalidMidiDataException, DurationExceededException {
 
-        updateLastScan();
-
         if (!stateService.isQueueProcessorActive()) {
             return;
         }
+
+        updateLastScan();
 
         Rule rule = resolveRule.getRule();
         PlayerStateRepresentation state = client.getState();
@@ -132,6 +132,8 @@ public class ProcessQueue {
             return true;
         }
 
+        ruleState.setPlaying(state.isRunning());
+
         if (state.isRunning()) {
             return true;
         }
@@ -167,16 +169,20 @@ public class ProcessQueue {
     }
 
     private void updateLastScan() {
+        boolean found = false;
         if (lastScanMs != -1) {
-            if (ruleState.getActiveAction() == Rule.Action.PLAYLIST
-                    || ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE) {
+            if (!found && ruleState.isPlaying()) {
                 long played = clock.millis() - lastScanMs;
                 ruleState.addPlaylistPlayedTimeMs(played);
+                found = true;
             }
 
-            if (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON) {
+            if (!found
+                    && (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON
+                            || ruleState.getActiveAction() == Rule.Action.PLAYLIST || ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE)) {
                 long played = clock.millis() - lastScanMs;
                 ruleState.addLightsOnTimeMs(played);
+                found = true;
             }
         }
 
