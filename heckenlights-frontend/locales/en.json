@@ -3,7 +3,7 @@
     "og_locale": "en_US",
     "moment_locale": "en-US",
     "og_locale_alternate": "de_DE",
-    "description": "Heckenlights is the christmas light installation in Heckenpfad, Weinheim Germany. Take control over Heckenlights using your MIDI files.",
+    "description": "Heckenlights is the christmas lights installation in Heckenpfad, Weinheim Germany. Take control over Heckenlights using your MIDI files.",
     "navbar_switch": "Navigation umschalten",
     "navbar_home": "Home",
     "navbar_about": "About",
@@ -16,7 +16,7 @@
     "top_claim": "Become a Christmas Light Master.",
     "top_findout_more": "Find Out More",
     "about_takecontrol": "Watch. Play music. Take control. Tweet #Heckenlights",
-    "about_lead": "Heckenlights is a christmas light installation in Heckenpfad, Weinheim Germany. It plays to christmas music and is controlled using <href=\"http://en.wikipedia.org/wiki/General_MIDI\"><span class=\"glyphicon glyphicon-music\"></span>MIDI</a>. Heckenlights allows <span class=\"glyphicon glyphicon-hand-right\"\u003e\u003c/span\u003e you to control and watch it play. Tweet #Heckenlights and see your messages on the mesagebox. Become yourself a program director for Heckenlights using your christmas MIDI music.<br/><br/> Heckenlights start on 17:00 CET Dec. 1st 2014 and will be available until Jan. 6th 2015. Since\n                            christmas lights are cool only at night Heckenlights will operate daily between \u003ca\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T17&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e17:00\n                                CET\u003c/a\u003e to \u003ca\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T22&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e22:00\n                                CET\u003c/a\u003e and \u003ca\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T05&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e5:00\n                                CET\u003c/a\u003e to \u003ca\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T08&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e8:00\n                                CET\u003c/a\u003e.",
+    "about_lead": "Heckenlights is a christmas lights installation located in Heckenpfad, Weinheim Germany. It plays to christmas music and is controlled by <a href=\"http://en.wikipedia.org/wiki/General_MIDI\"><span class=\"glyphicon glyphicon-music\"></span>MIDI</a>. Heckenlights allows <span class=\"glyphicon glyphicon-hand-right\"\u003e\u003c/span\u003e you to control and watch it play. Send tweets using #Heckenlights and see them on the messagebox. Become a program director for Heckenlights by using your personal christmas MIDI music.<br/><br/> Heckenlights start on 5pm CET Dec. 1st 2014 and will be available until Jan. 6th 2015. As christmas lights are fancier at night Heckenlights will operate daily between \u003ca\n href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T17&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e5 pm (CET)\u003c/a\u003e to \u003ca\n                                    href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T22&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e10 pm (CET)\u003c/a\u003e and \u003ca href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T05&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e5 am (CET)\u003c/a\u003e to \u003ca href=\"http://www.timeanddate.com/worldclock/converted.html?iso=20141201T08&p1=961&p2=0&p3=179&p4=224&p5=771&p6=248\"\u003e8 am (CET)\u003c/a\u003e.",
 
     "index_captcha": "You need to solve the captcha in order to upload MIDIfiles for Heckenlights.",
     "index_upload": "Upload Track (MIDI-File)",
@@ -24,19 +24,19 @@
     "index_load_playlist": "Loading Playlist",
     "index_playlist_empty": "Empty Playlist",
     "index_submit": "Submit",
-    "index_intro1": "Heckenlights is a christmas lights installation playing christmas songs using lights. You can watch, hear and even submit your own christmas music. Heckenlights is controlled using",
+    "index_intro1": "Heckenlights is a christmas lights installation playing christmas songs. You can watch, listen to and even submit your own christmas music. Heckenlights is controlled by",
     "index_intro2": ".",
 
     "index_legal": "Legal",
-    "index_legal_oss": "Heckenlights is a free, non-profit, fun-only and open source project. Heckenlights is made for joy in the christmas time. It is created for you and me.",
-    "index_legal_pd": "Christmas music, like other copyrighted work, can be either public domain or are copyrighted. I do not want with Heckenlights to infringe any rights held by copyright owners. If you decide to upload christmas songs for playing on Heckenlights, either make sure the works are public domain or you own/can decide over the rights for performing. If you're not sure about public domain so <a href=\"https://songclearance.com/Christmas%20Music:%20Public%20Domain%20vs.%20Copyrighted%20Works\">https://songclearance.com</a> or <a href=\"http://www.pdinfo.com/public-domain-music-list.php\">PDInfo</a> are good starting points.",
-    "index_legal_contact": "Hechenlights played a song you hold copyrights for and you did not grant performance? Please contact me: <a href=\"mailto:legal@heckenlights.org\">legal@heckenlights.org</a>",
+    "index_legal_oss": "Heckenlights is a free, non-profit, just for fun and open source project. Heckenlights has been created to give pleasure during christmas time. Everyone is welcome to enjoy it!",
+    "index_legal_pd": "Christmas music can be either copyrighted work or public domain. I do not want to infringe any of these copyrights. If you wish to upload christmas songs that will be playing on Heckenlights, please make sure that these works are either public domain or that you own the rights for performing. If you're not sure about public domain so <a href=\"https://songclearance.com/Christmas%20Music:%20Public%20Domain%20vs.%20Copyrighted%20Works\">https://songclearance.com</a> or <a href=\"http://www.pdinfo.com/public-domain-music-list.php\">PDInfo</a> are good starting points.",
+    "index_legal_contact": "Heckenlights played a song that breached your copyright? Please contact <a href=\"mailto:legal@heckenlights.org\">legal@heckenlights.org</a>",
     "index_countdown_a": "Heckenlights starts on",
-    "index_countdown_b": "Dec. 1st on 17:00 CET",
+    "index_countdown_b": "Dec. 1st on 5pm CET",
     "index_countdown_c": "So",
     "index_countdown_d": "to go.",
-    "index_watch_on_ustream":"Watch on ustream.tv",
-    "index_hint_delay":"Live stream is delayed by 10 to 20 seconds.",
+    "index_watch_on_ustream": "Watch on ustream.tv",
+    "index_hint_delay": "Live stream is delayed by 10 to 20 seconds.",
     "index_upload_info": "Do you have MIDI files? Upload your christmas tracks to heckenlights.org hoch. Track duration must be between 10 seconds and 5 minutes.",
 
 
@@ -48,17 +48,17 @@
 
     "and_more": "and __count__  more...",
 
-    "internal_server_error":"There was an internal server error, could not validate your request.",
-    "captcha_validation_error":"Validation not successful. Please enter the displayed words/numbers.",
+    "internal_server_error": "There was an internal server error, could not validate your request.",
+    "captcha_validation_error": "Validation not successful. Please enter the displayed words/numbers.",
 
-    "enqueue_internal_server_error":"<strong>Aw, snap!</strong><br/> There was an internal server error.",
-    "enqueue_bad_request":"<strong>Aw, snap!</strong><br/> Could not submit your file to the queue. Check if whether your file is a GM MIDI-File.",
-    "enqueue_queue_error":"<strong>Too many requests</strong><br/> Please retry later.",
-    "enqueue_offline":"<strong>Heckenlights is offline</strong><br/> Please come back when it's open again.",
-    "enqueue_unauthenticated":"<strong>Unauthenticated</strong><br/> Please use the captcha to confirm that you are a hooooman.",
+    "enqueue_internal_server_error": "<strong>Aw, snap!</strong><br/> There was an internal server error.",
+    "enqueue_bad_request": "<strong>Aw, snap!</strong><br/> Could not submit your file to the queue. Check if whether your file is a GM MIDI-File.",
+    "enqueue_queue_error": "<strong>Too many requests</strong><br/> Please retry later.",
+    "enqueue_offline": "<strong>Heckenlights is offline</strong><br/> Please come back when it's open again.",
+    "enqueue_unauthenticated": "<strong>Unauthenticated</strong><br/> Please use the captcha to confirm that you are a hooooman.",
 
-    "enqueue_success":"<strong>Enqeued your track __track__!</strong><br/> It will be played in a few seconds.",
-    "enqueue_success_plural":"<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ seconds until the file is played.",
-    "enqueue_tweet":"Uploaded __track__ at http://heckenlights.org. Come, hear and see it in __count__ seconds #Heckenlights",
-    "enqueue_tweet_now":"Uploaded __track__ at http://heckenlights.org. Come, hear and see it now. #Heckenlights"
+    "enqueue_success": "<strong>Enqeued your track __track__!</strong><br/> It will be played in a few seconds.",
+    "enqueue_success_plural": "<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ seconds until the file is played.",
+    "enqueue_tweet": "Uploaded __track__ at http://heckenlights.org. Come, hear and see it in __count__ seconds #Heckenlights",
+    "enqueue_tweet_now": "Uploaded __track__ at http://heckenlights.org. Come, hear and see it now. #Heckenlights"
 }

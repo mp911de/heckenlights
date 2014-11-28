@@ -30,13 +30,13 @@
     "index_legal": "Rechtliches",
     "index_legal_oss": "Heckenlights ist ein freies, non-profit und Open Source Projekt. Heckenlights ist gemacht, um Freude in der Weihnachtszeit zu bereiten. Es ist gemacht für dich und mich.",
     "index_legal_pd": "Weihnachtslieder (Musik) unterliegt, wie alle anderen künstlerisch geschaffenen Werke, dem Copyright oder ist gemeinfrei. Das ist von Titel zu Titel unterschiedlich. Ich möchte mit Heckenlights keine Rechte von Rechteinhabern verletzen. Wenn du dich entscheidest, Musik in Form von MIDI-Dateien hochzuladen, so stelle bitte sicher, dass die Werke entweder gemeinfrei sind oder du über die erforderlichen Rechte zur Aufführung verfügst. Als Musiker kannst du natürlich selbst Werke komponieren und bei Heckenlights an die Wiedergabeliste senden. Bist du dir nicht sicher? Schau mal bei <a href=\"https://songclearance.com/Christmas%20Music:%20Public%20Domain%20vs.%20Copyrighted%20Works\">https://songclearance.com</a> oder <a href=\"http://www.pdinfo.com/public-domain-music-list.php\">PDInfo</a> nach. Die Seiten liefern eine gute Auskunft, welche Titel frei verwendet werden dürfen.",
-    "index_legal_contact": "Hechenlights hat ein Werk gespielt, dessen Rechteinhaber du bist, jedoch hast du keine Aufführungsrechte genehmigt? Bitte kontaktiere mich: <a href=\"mailto:legal@heckenlights.org\">legal@heckenlights.org</a>",
+    "index_legal_contact": "Heckenlights hat ein Werk gespielt, dessen Rechteinhaber du bist, jedoch hast du keine Aufführungsrechte genehmigt? Bitte kontaktiere mich: <a href=\"mailto:legal@heckenlights.org\">legal@heckenlights.org</a>",
     "index_countdown_a": "Heckenlights beginnt am",
     "index_countdown_b": "1. Dez. um 17:00 Uhr",
     "index_countdown_c": "Also noch",
     "index_countdown_d": "lang warten.",
-    "index_watch_on_ustream":"Auf ustream.tv ansehen",
-    "index_hint_delay":"Der Live-Stream hat eine Verzögerung von ca. 10 bis 20 Sekunden.",
+    "index_watch_on_ustream": "Auf ustream.tv ansehen",
+    "index_hint_delay": "Der Live-Stream hat eine Verzögerung von ca. 10 bis 20 Sekunden.",
     "index_upload_info": "Hast du Musik im MIDI-Format? Sehr gut, lade deine eigenen Weihnachtstracks auf heckenlights.org hoch. Dein Track muss zwischen 10 Sekunden und 5 Minuten lang sein.",
     "index_preset": "Hast du gerade keine MIDI Datei zur Hand? Dann wähle doch einen Titel aus der Liste die ich für dich vorbereitet habe.",
 
@@ -48,18 +48,18 @@
 
     "and_more": "und __count__  weitere...",
 
-    "internal_server_error":"Auf dem Server ist ein Fehler aufgetreten, deine Anfrage konnte nicht bearbeitet werden. Bitte versuche es später noch ein mal.",
-    "captcha_validation_error":"Die Eingabe der Zahlen/Worte war nicht korrekt. Bitte trage die angezeigten Zahlen/Worte ein.",
+    "internal_server_error": "Auf dem Server ist ein Fehler aufgetreten, deine Anfrage konnte nicht bearbeitet werden. Bitte versuche es später noch ein mal.",
+    "captcha_validation_error": "Die Eingabe der Zahlen/Worte war nicht korrekt. Bitte trage die angezeigten Zahlen/Worte ein.",
 
-    "enqueue_internal_server_error":"<strong>Oha!</strong><br/> Es ist ein interner Fehler aufgetreten.",
-    "enqueue_bad_request":"<strong>Oha!</strong><br/> Deine Datei konnte nicht in die Wiedergabeliste eingetragen werden. Überprüfe, ob es sich bei deiner Datei um eine MIDI Datei handelt und die Dauer zwischen 10 Sekunden und 5 Minuten liegt.",
-    "enqueue_queue_error":"<strong>Langsam mit den jungen Pferden</strong><br/> Im Moment ist viel los. Versuche es später noch einmal.",
-    "enqueue_offline":"<strong>Heckenlights ist offline</strong><br/> Komm doch einfach wieder, sobald Heckenlights wieder online ist.",
-    "enqueue_unauthenticated":"<strong>Bist du ein Mensch?</strong><br/> Da ich mir nicht sicher bin, trage doch die Worte/Zahlen vom Captcha richtig ein.",
+    "enqueue_internal_server_error": "<strong>Oha!</strong><br/> Es ist ein interner Fehler aufgetreten.",
+    "enqueue_bad_request": "<strong>Oha!</strong><br/> Deine Datei konnte nicht in die Wiedergabeliste eingetragen werden. Überprüfe, ob es sich bei deiner Datei um eine MIDI Datei handelt und die Dauer zwischen 10 Sekunden und 5 Minuten liegt.",
+    "enqueue_queue_error": "<strong>Langsam mit den jungen Pferden</strong><br/> Im Moment ist viel los. Versuche es später noch einmal.",
+    "enqueue_offline": "<strong>Heckenlights ist offline</strong><br/> Komm doch einfach wieder, sobald Heckenlights wieder online ist.",
+    "enqueue_unauthenticated": "<strong>Bist du ein Mensch?</strong><br/> Da ich mir nicht sicher bin, trage doch die Worte/Zahlen vom Captcha richtig ein.",
 
-    "enqueue_success":"<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch wenige Sekunden bis dein Titel gespielt wird.",
-    "enqueue_success_plural":"<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch __count__ Sekunden bis dein Titel gespielt wird.",
-    "enqueue_tweet":"Ich habe __track__ auf http://heckenlights.org hochgeladen. In __count__ Sekunden geht es los. #Heckenlights",
-    "enqueue_tweet_now":"Ich habe __track__ auf http://heckenlights.org hochgeladen. Jetzt geht es los. #Heckenlights"
+    "enqueue_success": "<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch wenige Sekunden bis dein Titel gespielt wird.",
+    "enqueue_success_plural": "<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch __count__ Sekunden bis dein Titel gespielt wird.",
+    "enqueue_tweet": "Ich habe __track__ auf http://heckenlights.org hochgeladen. In __count__ Sekunden geht es los. #Heckenlights",
+    "enqueue_tweet_now": "Ich habe __track__ auf http://heckenlights.org hochgeladen. Jetzt geht es los. #Heckenlights"
 
 }
