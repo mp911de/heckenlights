@@ -129,6 +129,9 @@ class RestApiClient
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+
         if ($this->proxySettings != null) {
             curl_setopt($ch, CURLOPT_PROXY, $this->proxySettings["proxy_host"]);
             curl_setopt($ch, CURLOPT_PROXYPORT, $this->proxySettings["proxy_port"]);

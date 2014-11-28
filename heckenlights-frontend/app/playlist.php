@@ -218,8 +218,20 @@ function createResult($result, $rawResponse)
 function getPlaylist()
 {
     $client = new RestApiClient(constant('backend'), '');
-    $rawResponse = $client->send("GET", "/?playStatus=ENQUEUED", ["Accept: application/json"], '', false);
+    try {
+        $rawResponse = $client->send("GET", "/?playStatus=ENQUEUED", ["Accept: application/json"], '', false);
+    } catch (Exception $e) {
 
+        if(strpos($e->getMessage(), 'Connection refused')){
+            return createPlaylistModel("{ playCommands: [], online: false, queueOpen: false, backend: \"down\"}");
+        }
+
+        if(strpos($e->getMessage(), 'timed out')){
+            return createPlaylistModel("{ playCommands: [], online: false, queueOpen: false, backend: \"timeout\"}");
+        }
+
+        throw $e;
+    }
     if (stripos($rawResponse->header, HTTP_1_1_200) != 0) {
         throw new Exception("Bad Request");
     }
