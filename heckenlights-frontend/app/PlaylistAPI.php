@@ -30,6 +30,7 @@ class PlaylistAPI extends AbstractAPI
     protected function post()
     {
         session_start();
+        apache_note("sessionid", session_id());
         if (sizeof($this->args) == 1 && $this->args[0] == 'queue') {
             return submitMidiFile($this, $_SESSION);
         }

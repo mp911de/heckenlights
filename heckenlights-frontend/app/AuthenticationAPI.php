@@ -17,6 +17,7 @@ class AuthenticationAPI extends AbstractAPI
     protected function get()
     {
         session_start();
+        apache_note("sessionid", session_id());
         $model = getAuthentication($_SESSION);
 
         return $model;
@@ -25,6 +26,7 @@ class AuthenticationAPI extends AbstractAPI
     protected function post(){
 
         session_start();
+        apache_note("sessionid", session_id());
         $model = authenticate($_POST, $_SESSION, $_SERVER["REMOTE_ADDR"]);
         session_commit();
         return $model;

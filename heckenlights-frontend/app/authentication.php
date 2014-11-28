@@ -40,7 +40,8 @@ function isAuthenticated($session)
 function wasPresetSubmitted($session)
 {
     if (array_key_exists(PRESET_SUBMITTED, $session)) {
-        if ($session[PRESET_SUBMITTED] === true) {
+        $count = $session[PRESET_SUBMITTED];
+        if (is_numeric($count) && $count >= 2) {
             return true;
         }
     }
@@ -50,7 +51,11 @@ function wasPresetSubmitted($session)
 
 function setPresetSubmittedFlag(&$session)
 {
-    $session[PRESET_SUBMITTED] = true;
+    if (array_key_exists(PRESET_SUBMITTED, $session)) {
+        $session[PRESET_SUBMITTED]++;
+    }else{
+        $session[PRESET_SUBMITTED] = 1;
+    }
 }
 
 function authenticate($post, &$session, $remoteAddr)

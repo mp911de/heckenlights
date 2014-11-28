@@ -37,7 +37,6 @@ var heckenlights = (function () {
             });
 
             loadPlaylist();
-            checkOrCreateRecaptcha();
             loadPresets();
 
             $('#uploadwarning').click(function () {
@@ -200,7 +199,7 @@ var heckenlights = (function () {
                 }
             ).done(function (data) {
                     enqueueSuccess(data);
-                    $('#presetcontainer').fadeOut();
+                    checkOrCreateRecaptcha();
                 }).fail(function (jqXHR) {
                     var enqueued = null;
                     var status = jqXHR.status;
@@ -299,13 +298,17 @@ var heckenlights = (function () {
             ).done(function (data) {
 
                     if (!data || !data.humanOrMachine || data.humanOrMachine == 'machine') {
-                        Recaptcha.create(data.recaptchaPublicKey,
-                            "recaptcha_div",
-                            {
-                                theme: "white",
-                                callback: Recaptcha.focus_response_field
-                            }
-                        );
+                        if (siteIsOpen) {
+                            $("#captchacontainer").show();
+
+                            Recaptcha.create(data.recaptchaPublicKey,
+                                "recaptcha_div",
+                                {
+                                    theme: "white",
+                                    callback: Recaptcha.focus_response_field
+                                }
+                            );
+                        }
                         hideAllUploads();
 
                         $("#submitcaptcha").click(function () {
