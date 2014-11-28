@@ -51,7 +51,7 @@ public class MidiRelayClient {
     public PlayerStateRepresentation getState() {
         try {
 
-            long timeWindow = (System.currentTimeMillis() / 1000) / 5;
+            long timeWindow = (System.currentTimeMillis() / 500);
             PlayerStateRepresentation result = semaphore.getIfPresent(timeWindow);
             if (result == null) {
                 result = clientProxy.getState();
