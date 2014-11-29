@@ -456,21 +456,39 @@ var heckenlights = (function () {
                                 }
                             }
 
+                            var remaining = "<p class=\"list-group-item-text countdown\">&nbsp;</p>";
+
                             if (playCommand.playing) {
 
                                 var coundownend = Date.now() + (playCommand.remaining * 1000);
+
+                                if (playCommand.remaining && playCommand.remaining > 0) {
+                                    remaining = "<p class=\"list-group-item-text countdown\" data-i18n=\"remaining_seconds\" " +
+                                    "data-countdown-end=\"" + coundownend + "\">" +
+                                    i18n.t("remaining_seconds", {count: playCommand.remaining}) + "</p>";
+                                }
+
                                 var html = "<a href=\"#\" class=\"list-group-item active\">" +
                                     "<h4 class=\"list-group-item-heading\"><span class=\"glyphicon glyphicon-play\"></span> " + trackName + "</h4>" +
-                                    "<p class=\"list-group-item-text countdown\" data-i18n=\"remaining_seconds\" data-countdown-end=\"" + coundownend + "\">" + i18n.t("remaining_seconds", {count: playCommand.remaining}) + "</p>" +
+                                    remaining +
                                     "</a>"
 
                                 $("#playlist").append(html);
                                 first = false;
                             } else {
                                 var coundownend = Date.now() + (playCommand.timeToStart * 1000);
+
+                                if (playCommand.timeToStart && playCommand.timeToStart > 0) {
+                                    remaining =
+                                        "<p class=\"list-group-item-text countdown\" data-i18n=\"duration_seconds\" " +
+                                        "data-countdown-end=\"" + coundownend + "\">" +
+                                        i18n.t("duration_seconds", {count: playCommand.timeToStart}) + "</p>";
+                                }
+
                                 var html = "<a href=\"#\" class=\"list-group-item\">" +
                                     "<h4 class=\"list-group-item-heading\">" + trackName + "</h4>" +
-                                    "<p class=\"list-group-item-text countdown\" data-i18n=\"duration_seconds\" data-countdown-end=\"" + coundownend + "\">" + i18n.t("duration_seconds", {count: playCommand.timeToStart}) + "</p></a>"
+                                    remaining +
+                                    "</a>"
 
                                 $("#playlist").append(html);
                             }

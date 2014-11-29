@@ -222,11 +222,11 @@ function getPlaylist()
         $rawResponse = $client->send("GET", "/?playStatus=ENQUEUED", ["Accept: application/json"], '', false);
     } catch (Exception $e) {
 
-        if(strpos($e->getMessage(), 'Connection refused')){
+        if (strpos($e->getMessage(), 'Connection refused')) {
             return createPlaylistModel("{ playCommands: [], online: false, queueOpen: false, backend: \"down\"}");
         }
 
-        if(strpos($e->getMessage(), 'timed out')){
+        if (strpos($e->getMessage(), 'timed out')) {
             return createPlaylistModel("{ playCommands: [], online: false, queueOpen: false, backend: \"timeout\"}");
         }
 
@@ -251,34 +251,36 @@ function createPlaylistModel($jsonData)
         $playlist->setOnline($json[ONLINE]);
         $playlist->setQueueOpen($json[QUEUE_OPEN]);
 
-        foreach ($playcommands as $playcommand) {
+        if ($playlist->getOnline()) {
+            foreach ($playcommands as $playcommand) {
 
-            $entry = new PlaylistEntry();
-            $entry->setId($playcommand[ID]);
-            $entry->setDuration($playcommand[DURATION]);
-            $entry->setPlayStatus($playcommand[PLAY_STATUS]);
+                $entry = new PlaylistEntry();
+                $entry->setId($playcommand[ID]);
+                $entry->setDuration($playcommand[DURATION]);
+                $entry->setPlayStatus($playcommand[PLAY_STATUS]);
 
-            if (PLAYSTATUS_PLAYING === $playcommand[PLAY_STATUS]) {
-                $entry->setPlaying(true);
+                if (PLAYSTATUS_PLAYING === $playcommand[PLAY_STATUS]) {
+                    $entry->setPlaying(true);
+                }
+
+                if (array_key_exists('trackName', $playcommand)) {
+                    $entry->setTrackName($playcommand['trackName']);
+                }
+
+                if (array_key_exists('fileName', $playcommand)) {
+                    $entry->setFileName($playcommand['fileName']);
+                }
+
+                if (array_key_exists('timeToStart', $playcommand)) {
+                    $entry->setTimeToStart($playcommand['timeToStart']);
+                }
+
+                if (array_key_exists(REMAINING, $playcommand)) {
+                    $entry->setRemaining($playcommand[REMAINING]);
+                }
+
+                $result[] = $entry;
             }
-
-            if (array_key_exists('trackName', $playcommand)) {
-                $entry->setTrackName($playcommand['trackName']);
-            }
-
-            if (array_key_exists('fileName', $playcommand)) {
-                $entry->setFileName($playcommand['fileName']);
-            }
-
-            if (array_key_exists('timeToStart', $playcommand)) {
-                $entry->setTimeToStart($playcommand['timeToStart']);
-            }
-
-            if (array_key_exists(REMAINING, $playcommand)) {
-                $entry->setRemaining($playcommand[REMAINING]);
-            }
-
-            $result[] = $entry;
         }
     }
     $playlist->setEntries($result);
