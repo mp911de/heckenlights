@@ -1,5 +1,15 @@
 package de.paluch.heckenlights.application;
 
+import java.io.IOException;
+import java.time.Clock;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.sound.midi.InvalidMidiDataException;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
+
 import de.paluch.heckenlights.client.MidiRelayClient;
 import de.paluch.heckenlights.client.PlayerStateRepresentation;
 import de.paluch.heckenlights.model.DurationExceededException;
@@ -9,14 +19,6 @@ import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.TrackContent;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import de.paluch.heckenlights.repositories.StateService;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
-import java.io.IOException;
-import java.time.Clock;
-import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -90,7 +92,7 @@ public class ProcessQueue {
 
         if (ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE
                 || ruleState.getActiveAction() == Rule.Action.PLAYLIST) {
-            playlist(commands);
+            playlist(commands, ruleSwitched, actionSwitched);
         }
 
         if (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON) {
@@ -132,6 +134,12 @@ public class ProcessQueue {
             return true;
         }
 
+        if (ruleState.isPlaying() != state.isRunning()) {
+            ruleState.setSwitchedPlayState(true);
+        } else {
+            ruleState.setSwitchedPlayState(false);
+        }
+
         ruleState.setPlaying(state.isRunning());
 
         if (state.isRunning()) {
@@ -152,12 +160,17 @@ public class ProcessQueue {
         }
     }
 
-    private void playlist(List<PlayCommandSummary> commands) throws IOException, InvalidMidiDataException,
-            DurationExceededException {
+    private void playlist(List<PlayCommandSummary> commands, boolean ruleSwitched, boolean actionSwitched) throws IOException,
+            InvalidMidiDataException, DurationExceededException {
         if (commands.isEmpty()) {
             if (ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE) {
                 populateQueue.populateQueue();
             }
+
+            if (ruleState.isSwitchedPlayState()) {
+                lightsOn(true, true);
+            }
+
         } else {
             PlayCommandSummary playCommand = commands.get(0);
             TrackContent trackContent = playCommandService.getTrackContent(playCommand.getId());

@@ -12,6 +12,7 @@ public class RuleState {
     private long ruleActiveSince = 0;
     private int playlistSize = 0;
     private boolean playing = false;
+    private boolean switchedPlayState = false;
 
     public void addPlaylistPlayedTimeMs(long timeMs) {
         playlistPlayedTimeMs += timeMs;
@@ -75,5 +76,13 @@ public class RuleState {
 
     public void setPlaying(boolean playing) {
         this.playing = playing;
+    }
+
+    public boolean isSwitchedPlayState() {
+        return switchedPlayState;
+    }
+
+    public void setSwitchedPlayState(boolean switchedPlayState) {
+        this.switchedPlayState = switchedPlayState;
     }
 }
