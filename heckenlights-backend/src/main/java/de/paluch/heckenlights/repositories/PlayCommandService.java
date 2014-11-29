@@ -2,27 +2,7 @@ package de.paluch.heckenlights.repositories;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
-import de.paluch.heckenlights.client.MidiRelayClient;
-import de.paluch.heckenlights.client.PlayerStateRepresentation;
-import de.paluch.heckenlights.model.EnqueueRequest;
-import de.paluch.heckenlights.model.PlayCommandSummary;
-import de.paluch.heckenlights.model.PlayStatus;
-import de.paluch.heckenlights.model.TrackContent;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsOperations;
-import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,6 +11,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
+
+import de.paluch.heckenlights.client.MidiRelayClient;
+import de.paluch.heckenlights.client.PlayerStateRepresentation;
+import de.paluch.heckenlights.model.EnqueueRequest;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.PlayStatus;
+import de.paluch.heckenlights.model.TrackContent;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -117,7 +121,7 @@ public class PlayCommandService {
         PlayerStateRepresentation state = client.getState();
 
         if (state != null && state.getTrack() != null) {
-            timeToStart = appendCurrentTrack(result, timeToStart, state);
+            timeToStart = appendCurrentTrack(result, state) + timeBetweenTracks;
         }
 
         for (PlayCommandDocument playCommandDocument : documents) {
@@ -144,14 +148,15 @@ public class PlayCommandService {
         return result;
     }
 
-    private int appendCurrentTrack(List<PlayCommandSummary> result, int timeToStart, PlayerStateRepresentation state) {
+    private int appendCurrentTrack(List<PlayCommandSummary> result, PlayerStateRepresentation state) {
+        int timeToStart = 0;
         PlayCommandDocument playCommandDocument = playCommandRepository.findOne(state.getTrack().getId());
         if (playCommandDocument != null) {
             PlayCommandSummary currentTrack = toSummaryModel(playCommandDocument);
             currentTrack.setPlayStatus(PlayStatus.PLAYING);
             currentTrack.setTimeToStart(0);
             currentTrack.setRemaining(state.getEstimatedSecondsToPlay());
-            timeToStart += state.getEstimatedSecondsToPlay();
+            timeToStart = state.getEstimatedSecondsToPlay();
             result.add(currentTrack);
         }
         return timeToStart;
