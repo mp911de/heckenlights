@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.Cache;
@@ -22,6 +23,9 @@ import com.google.common.cache.CacheBuilder;
  */
 @Component
 public class MidiRelayClient {
+
+    private Logger log = Logger.getLogger(getClass());
+
     @Inject
     private MidiRelayClientProxy clientProxy;
 
@@ -60,6 +64,7 @@ public class MidiRelayClient {
             }
             return result;
         } catch (Exception e) {
+            log.warn(e.getMessage());
             return null;
         }
     }

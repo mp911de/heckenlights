@@ -1,13 +1,15 @@
 package biz.paluch.heckenlights.messagebox.client.midirelay;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Date;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 30.11.13 19:27
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerStateRepresentation
 {
 
