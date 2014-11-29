@@ -1,7 +1,6 @@
 package de.paluch.heckenlights.client;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.Date;
 
@@ -14,9 +13,7 @@ public class PlayerStateRepresentation {
 
     private boolean running;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date started;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date estimatedEnd;
     private int estimatedSecondsToPlay;
 

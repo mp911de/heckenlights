@@ -1,9 +1,12 @@
 package de.paluch.heckenlights.client;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 01.12.13 10:27
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerStateTrackRepresentation {
 
     private String id;
