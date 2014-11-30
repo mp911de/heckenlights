@@ -66,6 +66,10 @@ var countdown = (function () {
 
         var tz = jstz.determine();
         if (duration.asSeconds() > 0) {
+            if (!$("#countdown").is(":visible")) {
+               $("#countdown").show();
+            }
+
             if (tz && tz.name()) {
                 var zoned = starting.clone().tz(tz.name());
 
