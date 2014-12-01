@@ -41,7 +41,7 @@ function wasPresetSubmitted($session)
 {
     if (array_key_exists(PRESET_SUBMITTED, $session)) {
         $count = $session[PRESET_SUBMITTED];
-        if (is_numeric($count) && $count >= 2) {
+        if (is_numeric($count) && $count >= 10) {
             return true;
         }
     }
