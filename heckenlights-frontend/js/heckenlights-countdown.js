@@ -54,6 +54,9 @@ var countdown = (function () {
             if ($("#countdowntext").text() != text) {
                 $("#countdowntext").text(text);
             }
+        }else
+        {
+            $("#countdown").hide();
         }
     }
 

@@ -88,12 +88,11 @@
 
                 <h1>Heckenlights</h1>
 
-                <p id="intro" class="lead"> {{index_intro1}} <a href="http://{{language}}.wikipedia.org/wiki/General_MIDI"><span
+                <p id="intro" class="lead"> {{index_intro1}} <a
+                        href="http://{{language}}.wikipedia.org/wiki/General_MIDI"><span
                         class="glyphicon glyphicon-music"></span> MIDI</a> {{index_intro2}}</p>
 
-                <p id="countdown" class="lead" style="display: none;">{{index_countdown_a}} <span
-                        id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
-                        id="countdowntext"></span> {{index_countdown_d}}</p>
+                <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
 
                 <div style="width: 480px; height: 302px; background-color: #000000;margin: auto">
                     <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
@@ -111,8 +110,12 @@
                 </div>
             </div>
             <div id="controls" class="col-md-4">
-                <div id="closed" class="overlay" style="display: none"></div>
+                <div id="closed" class="overlay" style="display: none;">
+                </div>
                 <div id="closedsign" class="overlay" style="display: none"></div>
+                <div id="offlinenote2" class="overlay" style="display: none">
+                    <div><p class="lead">{{{info_offline}}}</p></div>
+                </div>
                 <div class="list-group">
                     <h3 class="light">{{index_playlist}}</h3>
 
@@ -304,10 +307,6 @@
 <script src="js/heckenlights-frontend.js"></script>
 <!-- endbuild -->
 
-<!-- build:js js/heckenlights-countdown.js -->
-<script src="js/heckenlights-countdown.js"></script>
-<!-- endbuild -->
-
 <script>
 
     var language = '{{language}}';
@@ -328,10 +327,11 @@
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
             heckenlights().initialize();
-            countdown().initialize();
         });
     });
 
 </script>
+
+
 </body>
 </html>

@@ -9,9 +9,10 @@ var heckenlights = (function () {
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
         var countdownInterval;
-        var mockData = false;
+        var mockData = true;
         var siteIsOpen = false;
         var fadeoutAfter = 15000;
+        var playlistRefresh = 15000;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -49,7 +50,7 @@ var heckenlights = (function () {
 
             loadPlaylistInterval = window.setInterval(function () {
                 loadPlaylist();
-            }, fadeoutAfter);
+            }, playlistRefresh);
 
             countdownInterval = window.setInterval(function () {
                 refreshCountdown();
@@ -375,6 +376,8 @@ var heckenlights = (function () {
             siteIsOpen = false;
             $("#closed").show();
             $("#closedsign").show();
+            $("#offlinenote").show();
+            $("#offlinenote2").show();
             $("#captchacontainer").hide();
             hideAllUploads();
         }
@@ -388,6 +391,8 @@ var heckenlights = (function () {
             siteIsOpen = true;
             $("#closed").hide();
             $("#closedsign").hide();
+            $("#offlinenote").hide();
+            $("#offlinenote2").hide();
             checkOrCreateRecaptcha();
         }
 
@@ -418,6 +423,8 @@ var heckenlights = (function () {
                         if (data.online) {
                             $("#closed").hide();
                             $("#closedsign").hide();
+                            $("#offlinenote").hide();
+                            $("#offlinenote2").hide();
                             if (!siteIsOpen) {
                                 siteOpen();
                             }
