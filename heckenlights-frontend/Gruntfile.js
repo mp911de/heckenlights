@@ -218,6 +218,11 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
+            },
+            touch:{
+                files: {
+                    'dist/apple-touch-icon.png': 'images/icon.png'
+                }
             }
         },
 
@@ -370,7 +375,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dist-css', ['less-compile', 'cssmin']);
 
     // Full distribution task.
-    grunt.registerTask('build', ['clean', 'mustache_render', 'copy:html', 'wiredep', 'useminPrepare', 'autoprefixer', 'concat', 'dist-css', 'uglify', 'filerev', 'usemin', 'copy:resources']);
+    grunt.registerTask('build', ['clean', 'mustache_render', 'copy:html', 'wiredep', 'useminPrepare', 'autoprefixer', 'concat', 'dist-css', 'uglify', 'filerev', 'usemin', 'copy:resources', 'copy:touch']);
 
     grunt.registerTask('dist', ['build', 'compress']);
 

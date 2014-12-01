@@ -38,7 +38,9 @@
     "index_countdown_d": "to go.",
     "index_watch_on_ustream": "Watch on ustream.tv",
     "index_hint_delay": "Live stream is delayed by 10 to 20 seconds.",
-    "index_upload_info": "Do you have MIDI files? Upload your christmas tracks to heckenlights.org hoch. Track duration must be between 10 seconds and 5 minutes.",
+    "index_hint_nothing_happening": "Nothing happens? You see lights but they're not sparkling? You do not hear any music? The playlist is most probably empty. Submit a track using either the presets or upload a MIDI file.",
+
+    "index_upload_info": "Do you have MIDI files? Upload your christmas tracks to heckenlights.org. Track duration must be between 10 seconds and 5 minutes.",
 
 
     "duration_seconds": "Time to start: __count__ second",

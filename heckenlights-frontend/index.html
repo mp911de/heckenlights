@@ -104,7 +104,9 @@
                     <p class="bordered light">
                         <a href="http://ustream.tv/channel/heckenlights" target="_blank">{{index_watch_on_ustream}}</a>
                         <br/>
-                        {{index_hint_delay}}
+                        {{index_hint_delay}}<br/>
+                        <br/>
+                        {{index_hint_nothing_happening}}
                     </p>
                     <br/>
                 </div>
@@ -150,6 +152,8 @@
 
                 <div class="list-group">
                     <div id="uploadgroup" style="text-align: left; display: none" class="list-group-item">
+
+                        <p>{{index_upload_info}}</p>
                         <span id="uploadcontainer" class="btn btn-success fileinput-button" style="display: none">
                             <i class="glyphicon glyphicon-plus"></i>
                             <span>{{index_upload}}</span>
@@ -157,9 +161,8 @@
                             <input id="fileupload" type="file" name="files[]" accept="audio/sp-midi">
                         </span>
                         <br/>
-                        <br/>
 
-                        <p>{{index_upload_info}}</p>
+
                         <!-- The global progress bar -->
                         <div id="uploadprogress" class="progress" style="display: none;">
                             <div class="progress-bar progress-bar-success"></div>

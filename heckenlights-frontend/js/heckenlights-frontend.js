@@ -9,10 +9,10 @@ var heckenlights = (function () {
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
         var countdownInterval;
-        var mockData = true;
+        var mockData = false;
         var siteIsOpen = false;
         var fadeoutAfter = 15000;
-        var playlistRefresh = 15000;
+        var playlistRefresh = 5000;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -276,11 +276,13 @@ var heckenlights = (function () {
             }
 
             $('#uploadgroup').show();
+            $('#uploadcontainer').show();
             $('#lastinupload').show();
         }
 
         function hideAllUploads() {
             $('#uploadgroup').hide();
+            $('#uploadcontainer').hide();
             $('#lastinupload').hide();
             $('#presetcontainer').hide();
         }
@@ -387,6 +389,10 @@ var heckenlights = (function () {
             hideAllUploads();
         }
 
+        function queueOpen() {
+            checkOrCreateRecaptcha();
+        }
+
         function siteOpen() {
             siteIsOpen = true;
             $("#closed").hide();
@@ -435,6 +441,9 @@ var heckenlights = (function () {
 
                         if (!data.queueOpen) {
                             queueClosed();
+                        }else if(data.online)
+                        {
+                            queueOpen();
                         }
                     }
                     else {
