@@ -11,6 +11,7 @@ var heckenlights = (function () {
         var countdownInterval;
         var mockData = false;
         var siteIsOpen = false;
+        var queueIsOpen = false;
         var fadeoutAfter = 15000;
         var playlistRefresh = 5000;
 
@@ -385,11 +386,13 @@ var heckenlights = (function () {
         }
 
         function queueClosed() {
+            queueIsOpen = false;
             $("#captchacontainer").hide();
             hideAllUploads();
         }
 
         function queueOpen() {
+            queueIsOpen = true;
             checkOrCreateRecaptcha();
         }
 
@@ -399,7 +402,6 @@ var heckenlights = (function () {
             $("#closedsign").hide();
             $("#offlinenote").hide();
             $("#offlinenote2").hide();
-            checkOrCreateRecaptcha();
         }
 
         function emptyPlaylist() {
@@ -408,6 +410,30 @@ var heckenlights = (function () {
                 "<p class=\"list-group-item-text\">&nbsp;</p></a>"
 
             $("#playlist").append(html);
+        }
+
+        function updateSiteState(data) {
+
+            if (data && data.online) {
+
+
+                if (!siteIsOpen) {
+                    siteOpen();
+                }
+
+                if (data.queueOpen) {
+                    if (!queueIsOpen) {
+                        queueOpen();
+                    }
+                } else {
+                    if (queueIsOpen) {
+                        queueClosed();
+                    }
+                }
+            }
+            else {
+                siteClosed();
+            }
         }
 
         function loadPlaylist() {
@@ -425,30 +451,7 @@ var heckenlights = (function () {
                     var first = true;
                     $("#playlist").empty();
 
-                    if (data) {
-                        if (data.online) {
-                            $("#closed").hide();
-                            $("#closedsign").hide();
-                            $("#offlinenote").hide();
-                            $("#offlinenote2").hide();
-                            if (!siteIsOpen) {
-                                siteOpen();
-                            }
-                        }
-                        else {
-                            siteClosed();
-                        }
-
-                        if (!data.queueOpen) {
-                            queueClosed();
-                        }else if(data.online)
-                        {
-                            queueOpen();
-                        }
-                    }
-                    else {
-                        siteClosed();
-                    }
+                    updateSiteState(data);
 
                     if (data && data.entries && data.entries.length && data.entries.length != 0) {
 

@@ -25,8 +25,7 @@
     "index_load_playlist": "Lade die Wiedergabeliste",
     "index_playlist_empty": "Leere Wiedergabeliste",
     "index_submit": "Senden",
-    "index_intro1": "Heckenlights ist die Weihnachtsbeleuchtung im Heckenpfad, Weinheim, die Weihnachtslieder auf Lämpchen spielt. Du kannst Heckenlights sehen und hören. Du kannst sogar deine eigene Weihnachtsmusik an Heckenlights senden und sehen, wie diese abgespielt wird. Heckenlights wird über ",
-    "index_intro2": " gesteuert.",
+    "index_intro1": "Heckenlights ist die Weihnachtsbeleuchtung, die Weihnachtslieder auf Lämpchen spielt. Du kannst Heckenlights sehen, hören und deine eigene Weihnachtsmusik an Heckenlights senden.",
 
     "index_legal": "Rechtliches",
     "index_legal_oss": "Heckenlights ist ein freies, non-profit und Open Source Projekt. Heckenlights ist gemacht, um Freude in der Weihnachtszeit zu bereiten. Es ist gemacht für dich und mich.",
@@ -39,7 +38,7 @@
     "index_watch_on_ustream": "Auf ustream.tv ansehen",
     "index_hint_delay": "Der Live-Stream hat eine Verzögerung von ca. 10 bis 20 Sekunden.",
     "index_hint_nothing_happening": "Du siehst Lichter, aber es passiert nichts? Du hörtst keine Musik? Wahrscheinlich ist die Wiedergabeliste leer. Klick doch einfach einen Titel an um ihn zur Wiedergabeliste hinzuzufügen.",
-    "index_upload_info": "Hast du Musik im MIDI-Format? Sehr gut, lade deine eigenen Weihnachtstracks auf heckenlights.org hoch. Dein Track muss zwischen 10 Sekunden und 5 Minuten lang sein.",
+    "index_upload_info": "Hast du Musik im MIDI-Format? Lade deine eigenen Weihnachtstracks hoch. Dein Track muss zwischen 10 Sekunden und 5 Minuten lang sein.",
     "index_preset": "Hast du gerade keine MIDI Datei zur Hand? Dann wähle doch einen Titel aus der Liste die ich für dich vorbereitet habe.",
 
     "duration_seconds": "Bis zum Start: __count__ Sekunde",
