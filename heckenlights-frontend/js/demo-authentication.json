@@ -1,4 +1,5 @@
 {
-    "humanOrMachine": "human",
-    "presetSubmitted":false
+    "humanOrMachine": "machine",
+    "presetSubmitted":false,
+    "recaptchaPublicKey":"6LdrfvwSAAAAAOoD5JvsNvDQsV3-80HidpJZqZR0"
 }

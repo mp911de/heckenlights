@@ -17,8 +17,6 @@
 
     <title>HECKENLIGHTS</title>
 
-    <script src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-
     <!-- build:css(dist) css/bootstrap.css -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <!-- endbuild -->
@@ -321,16 +319,23 @@
         lng: language,
         fallbackLng: false
     }
+    var h = heckenlights();
 
     $.i18n.init(options, function () {
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
-            heckenlights().initialize();
+           h.initialize();
         });
     });
 
+    var onloadCallback = function() {
+        h.captchaInitialized();
+        h.checkOrCreateRecaptcha();
+    }
+
 </script>
 
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl={{language}}" async defer></script>
 
 </body>
 </html>

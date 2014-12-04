@@ -7,8 +7,8 @@
 
 /* SITE */
 
-  Last update: 2014/11/26
+  Last update: 2014/12/04
   Standards: HTML5, CSS3
 
   Components: Bootstrap, jQuery, Font Awesome, respond, html5shiv
-  Software: Java, Spring Data, Spring Boot, MongoDB, Midi, ustream.tv, IntelliJ IDEA, PhpStorm, Github
+  Software: Java, Spring Data, Spring Boot, TokuMX, Midi, ustream.tv, IntelliJ IDEA, PhpStorm, Github

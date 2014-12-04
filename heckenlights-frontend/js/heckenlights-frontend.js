@@ -14,6 +14,8 @@ var heckenlights = (function () {
         var queueIsOpen = false;
         var fadeoutAfter = 15000;
         var playlistRefresh = 5000;
+        var captchaInitialized = false;
+        var captchaRendered = null;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -40,6 +42,10 @@ var heckenlights = (function () {
 
             loadPlaylist();
             loadPresets();
+
+            $("#submitcaptcha").click(function () {
+                submitCaptcha();
+            });
 
             $('#uploadwarning').click(function () {
                 $("#uploadwarning").fadeOut();
@@ -94,6 +100,10 @@ var heckenlights = (function () {
             }).prop('disabled', !$.support.fileInput)
                 .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
+        }
+
+        instance.captchaInitialized = function () {
+            captchaInitialized = true;
         }
 
         function refreshCountdown() {
@@ -266,6 +276,48 @@ var heckenlights = (function () {
                 });
         }
 
+
+        function checkOrCreateRecaptcha() {
+
+            var uri = config.authentication;
+
+            $.ajax({
+                    dataType: 'json',
+                    accepts: {
+                        json: 'application/json'
+                    },
+                    url: uri
+                }
+            ).done(function (data) {
+
+                    if (!data || !data.humanOrMachine || data.humanOrMachine == 'machine') {
+                        if (siteIsOpen && captchaInitialized) {
+                            $("#captchacontainer").show();
+
+                            if (captchaRendered != null) {
+                                grecaptcha.reset(captchaRendered);
+                            } else {
+                                captchaRendered = grecaptcha.render(
+                                    "recaptcha_div",
+                                    {
+                                        'sitekey': data.recaptchaPublicKey,
+                                        'theme': 'light'
+                                    }
+                                );
+                            }
+
+                        }
+                        hideAllUploads();
+                    }
+
+                    if (data.humanOrMachine && data.humanOrMachine == 'human') {
+                        captchaConfirmsHooooman(data);
+                    }
+                }).fail(function (data) {
+                    hideAllUploads();
+                });
+        }
+
         function captchaConfirmsHooooman(data) {
             $('#captchacontainer').hide();
 
@@ -288,50 +340,11 @@ var heckenlights = (function () {
             $('#presetcontainer').hide();
         }
 
-        function checkOrCreateRecaptcha() {
-
-            var uri = config.authentication;
-
-            $.ajax({
-                    dataType: 'json',
-                    accepts: {
-                        json: 'application/json'
-                    },
-                    url: uri
-                }
-            ).done(function (data) {
-
-                    if (!data || !data.humanOrMachine || data.humanOrMachine == 'machine') {
-                        if (siteIsOpen) {
-                            $("#captchacontainer").show();
-
-                            Recaptcha.create(data.recaptchaPublicKey,
-                                "recaptcha_div",
-                                {
-                                    theme: "white",
-                                    callback: Recaptcha.focus_response_field
-                                }
-                            );
-                        }
-                        hideAllUploads();
-
-                        $("#submitcaptcha").click(function () {
-                            submitCaptcha();
-                        });
-                    }
-
-                    if (data.humanOrMachine && data.humanOrMachine == 'human') {
-                        captchaConfirmsHooooman(data);
-                    }
-                }).fail(function (data) {
-                    hideAllUploads();
-                });
-        }
+        instance.checkOrCreateRecaptcha = checkOrCreateRecaptcha;
 
         function submitCaptcha() {
 
-            var captcha = $("#recaptcha_response_field").val();
-            var challenge = $("#recaptcha_challenge_field").val();
+            var captcha = grecaptcha.getResponse(captchaRendered);
             var uri = "api/v1/authentication";
             $.ajax({
                 dataType: 'json',
@@ -341,8 +354,7 @@ var heckenlights = (function () {
                 url: uri,
                 type: 'POST',
                 data: {
-                    recaptcha_response_field: captcha,
-                    recaptcha_challenge_field: challenge
+                    recaptcha_response_field: captcha
                 }
             }).done(
                 function (data) {
@@ -402,6 +414,7 @@ var heckenlights = (function () {
             $("#closedsign").hide();
             $("#offlinenote").hide();
             $("#offlinenote2").hide();
+            checkOrCreateRecaptcha();
         }
 
         function emptyPlaylist() {
