@@ -19,15 +19,17 @@ function getAuthentication($session)
     $model->setRecaptchaPublicKey(constant(RECAPTCHA_PUBLIC_KEY));
     $model->setPresetSubmitted(wasPresetSubmitted($session));
 
-    if (array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
+    /*if (array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
         $model->setHumanOrMachine($session[HUMAN_OR_MACHINE_KEY]);
-    }
+    }*/
+    $model->setHumanOrMachine("human");
+
     return $model;
 }
 
 function isAuthenticated($session)
 {
-    if (array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
+    if (true || array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
         if ($session[HUMAN_OR_MACHINE_KEY] === HUMAN) {
             return true;
         }

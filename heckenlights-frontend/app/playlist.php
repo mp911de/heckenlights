@@ -60,7 +60,7 @@ function submitMidiFile($api, $session)
 
 function submitPreset($api, $presetfile, $session)
 {
-    global $presets;
+    global $presetfiles;
 
     if (!isAuthenticated($session)) {
         $enqueueResult = new PlaylistEntry();
@@ -76,7 +76,7 @@ function submitPreset($api, $presetfile, $session)
         return $enqueueResult;
     }
 
-    if (!array_key_exists($presetfile, $presets)) {
+    if (!array_key_exists($presetfile, $presetfiles)) {
         $enqueueResult = new PlaylistEntry();
         $enqueueResult->setSubmitStatus(SUBMIT_RESULT_NOT_FOUND);
         $enqueueResult->setTrackName($presetfile);
