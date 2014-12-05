@@ -9,6 +9,7 @@ var heckenlights = (function () {
         var visiblePlaylistEntries = 5;
         var loadPlaylistInterval;
         var countdownInterval;
+        var loadPresetInterval;
         var mockData = false;
         var siteIsOpen = false;
         var queueIsOpen = false;
@@ -62,6 +63,10 @@ var heckenlights = (function () {
             countdownInterval = window.setInterval(function () {
                 refreshCountdown();
             }, 50);
+
+            loadPresetInterval = window.setInterval(function () {
+                loadPresets();
+            }, 60 * 1000);
 
 
             $('#fileupload').fileupload({
@@ -278,6 +283,10 @@ var heckenlights = (function () {
 
 
         function checkOrCreateRecaptcha() {
+
+            if (!siteIsOpen) {
+                return;
+            }
 
             var uri = config.authentication;
 
