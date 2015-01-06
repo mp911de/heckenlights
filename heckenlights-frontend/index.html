@@ -86,32 +86,33 @@
 
                 <h1>Heckenlights</h1>
 
-                <p id="intro" class="lead">{{index_intro1}}</p>
+                <p id="intro" class="lead" style="display: none">{{index_intro1}}</p>
 
-                <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
+                <!-- <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p> -->
 
-                <div style="width: 480px; margin: auto">
-                    <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
-                            frameborder="no" width="480" height="302"></iframe>
-                    <br/><a href="http://www.ustream.tv/"
-                            style="padding: 2px 0px 4px; width: 400px; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
-                            target="_blank">Live streaming video by Ustream</a>
+                <div class="bordered" style="width: 580px; height: 300px; margin: auto; background-color: rgba(90, 3, 0, 0.74)">
+                    <p style="margin-top: 50px" class="lead">{{index_suspended}}</p>
+                    <!-- <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
+                             frameborder="no" width="580" height="472"></iframe>
+                     <br/><a href="http://www.ustream.tv/"
+                             style="padding: 2px 0px 4px; width: 400px; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
+                             target="_blank">Live streaming video by Ustream</a>
 
-                    <p class="bordered light">
-                        <a href="http://ustream.tv/channel/heckenlights" target="_blank">{{index_watch_on_ustream}}</a>
-                        <br/>
-                        {{index_hint_delay}}<br/>
-                        <br/>
-                        {{index_hint_nothing_happening}}
-                    </p>
+                     <p class="bordered light">
+                         <a href="http://ustream.tv/channel/heckenlights" target="_blank">{{index_watch_on_ustream}}</a>
+                         <br/>
+                         {{index_hint_delay}}<br/>
+                         <br/>
+                         {{index_hint_nothing_happening}}
+                     </p> -->
                 </div>
             </div>
             <div id="controls" class="col-md-4">
-                <div id="closed" class="overlay" style="display: none;">
+                <div id="closed" class="closedoverlay overlay" style="display: none;">
                 </div>
                 <div id="closedsign" class="overlay" style="display: none"></div>
                 <div id="offlinenote2" class="overlay" style="display: none">
-                    <div><p class="lead">{{{info_offline}}}</p></div>
+                   <!-- <div><p class="lead">{{{info_offline_suspended}}}</p></div> -->
                 </div>
                 <div class="list-group">
                     <h3 class="light">{{index_playlist}}</h3>
@@ -156,11 +157,12 @@
                         </span>
                         <br/>
 
-
                         <!-- The global progress bar -->
                         <div id="uploadprogress" class="progress" style="display: none;">
                             <div class="progress-bar progress-bar-success"></div>
                         </div>
+                        <br/>
+
                         <div id="uploadwarning" class="alert alert-warning" style="display: none" role="alert"></div>
                         <div id="uploadsuccess" class="alert alert-success" style="display: none" role="alert">
                             <span id="uploadsuccesstext"></span>
@@ -324,18 +326,20 @@
     $.i18n.init(options, function () {
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
-           h.initialize();
+            h.initialize();
         });
     });
 
-    var onloadCallback = function() {
+    var onloadCallback = function () {
         h.captchaInitialized();
         h.checkOrCreateRecaptcha();
     }
 
 </script>
 
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl={{language}}" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl={{language}}" async
+        defer></script>
+
 
 </body>
 </html>

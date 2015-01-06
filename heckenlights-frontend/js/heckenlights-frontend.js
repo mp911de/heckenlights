@@ -17,6 +17,7 @@ var heckenlights = (function () {
         var playlistRefresh = 5000;
         var captchaInitialized = false;
         var captchaRendered = null;
+        var suspended = true;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -37,37 +38,42 @@ var heckenlights = (function () {
                 config.authentication = 'js/demo-authentication.json';
             }
 
-            $('#reload').click(function () {
-                loadPlaylist()
-            });
+            if (suspended) {
+                $("#playlist").empty();
+                emptyPlaylist();
+                siteClosed();
+            }else{
+                $('#reload').click(function () {
+                    loadPlaylist()
+                });
 
-            loadPlaylist();
-            loadPresets();
-
-            $("#submitcaptcha").click(function () {
-                submitCaptcha();
-            });
-
-            $('#uploadwarning').click(function () {
-                $("#uploadwarning").fadeOut();
-            });
-
-            $('#captchawarning').click(function () {
-                $("#captchawarning").fadeOut();
-            });
-
-            loadPlaylistInterval = window.setInterval(function () {
                 loadPlaylist();
-            }, playlistRefresh);
-
-            countdownInterval = window.setInterval(function () {
-                refreshCountdown();
-            }, 50);
-
-            loadPresetInterval = window.setInterval(function () {
                 loadPresets();
-            }, 60 * 1000);
 
+                $("#submitcaptcha").click(function () {
+                    submitCaptcha();
+                });
+
+                $('#uploadwarning').click(function () {
+                    $("#uploadwarning").fadeOut();
+                });
+
+                $('#captchawarning').click(function () {
+                    $("#captchawarning").fadeOut();
+                });
+
+                loadPlaylistInterval = window.setInterval(function () {
+                    loadPlaylist();
+                }, playlistRefresh);
+
+                countdownInterval = window.setInterval(function () {
+                    refreshCountdown();
+                }, 50);
+
+                loadPresetInterval = window.setInterval(function () {
+                    loadPresets();
+                }, 60 * 1000);
+            }
 
             $('#fileupload').fileupload({
                 url: config.fileupload,
@@ -77,6 +83,7 @@ var heckenlights = (function () {
                         var enqueued = data.jqXHR.responseJSON;
                         enqueueSuccess(enqueued);
                     }
+                    $('#uploadprogress').hide();
                 },
                 fail: function (e, data) {
                     var enqueued = null;
@@ -86,6 +93,7 @@ var heckenlights = (function () {
                     }
 
                     enqueueFailed(enqueued, status);
+                    $('#uploadprogress').hide();
                 },
                 start: function () {
                     $('#progress .progress-bar').addClass('progress-bar-success');

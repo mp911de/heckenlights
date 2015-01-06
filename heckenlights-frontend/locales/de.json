@@ -61,6 +61,7 @@
     "enqueue_success": "<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch wenige Sekunden bis dein Titel gespielt wird.",
     "enqueue_success_plural": "<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch __count__ Sekunden bis dein Titel gespielt wird.",
     "enqueue_tweet": "Ich habe __track__ auf http://heckenlights.org hochgeladen. In __count__ Sekunden geht es los. #Heckenlights",
-    "enqueue_tweet_now": "Ich habe __track__ auf http://heckenlights.org hochgeladen. Jetzt geht es los. #Heckenlights"
+    "enqueue_tweet_now": "Ich habe __track__ auf http://heckenlights.org hochgeladen. Jetzt geht es los. #Heckenlights",
+    "index_suspended": "Heckenlights ist nun geschlossen. Vielen Dank für die rege teilnahme. Heckenlights kommt im Dezember wieder zurück."
 
 }

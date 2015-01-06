@@ -62,5 +62,6 @@
     "enqueue_success": "<strong>Enqeued your track __track__!</strong><br/> It will be played in a few seconds.",
     "enqueue_success_plural": "<strong>Enqeued your track __track__!</strong><br/> It will take some __count__ seconds until the file is played.",
     "enqueue_tweet": "Uploaded __track__ at http://heckenlights.org. Come, hear and see it in __count__ seconds #Heckenlights",
-    "enqueue_tweet_now": "Uploaded __track__ at http://heckenlights.org. Come, hear and see it now. #Heckenlights"
+    "enqueue_tweet_now": "Uploaded __track__ at http://heckenlights.org. Come, hear and see it now. #Heckenlights",
+    "index_suspended":"Thank you for using Heckenlights. Heckenlights is now closed and will come back next December."
 }

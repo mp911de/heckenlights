@@ -29,13 +29,13 @@ function getAuthentication($session)
 
 function isAuthenticated($session)
 {
-    if (true || array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
+    if (array_key_exists(HUMAN_OR_MACHINE_KEY, $session)) {
         if ($session[HUMAN_OR_MACHINE_KEY] === HUMAN) {
             return true;
         }
     }
 
-    return false;
+    return true;
 }
 
 function wasPresetSubmitted($session)
