@@ -49,6 +49,8 @@ public:
   int DrawGlyph(Canvas *c, int x, int y, const Color &color,
                 uint32_t unicode_codepoint) const;
 private:
+  Font(const Font& x);  // No copy constructor. Use references or pointer instead.
+
   struct Glyph;
   typedef std::map<uint32_t, Glyph*> CodepointGlyphMap;
 
@@ -66,7 +68,11 @@ private:
 int DrawText(Canvas *c, const Font &font, int x, int y, const Color &color,
              const char *utf8_text);
 
-// lines, circles and stuff.
+// Draw a circle centered at "x", "y", with a radius of "radius" and with "color"
+void DrawCircle(Canvas *c, int xx, int y, int radius, const Color &color);
+
+// Draw a line from "x0", "y0" to "x1", "y1" and with "color"
+void DrawLine(Canvas *c, int x0, int y0, int x1, int y1, const Color &color);
 
 }  // namespace rgb_matrix
 
