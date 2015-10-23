@@ -358,7 +358,7 @@ int main(int argc, char *argv[]) {
     ImageScroller *scroller = new ImageScroller(matrix,
                                                 1,
                                                 scroll_ms);
-    if (!scroller->LoadPPM(demo_parameter))
+    if (!scroller->LoadPPM(filename))
       return 1;
     image_gen = scroller;
   } else {
