@@ -1,17 +1,5 @@
 package biz.paluch.heckenlights.messagebox.application;
 
-import biz.paluch.heckenlights.messagebox.model.TweetSummary;
-import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
-import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.media.jai.RasterFactory;
-import javax.media.jai.TiledImage;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -20,6 +8,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.media.jai.RasterFactory;
+import javax.media.jai.TiledImage;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import biz.paluch.heckenlights.messagebox.model.TweetSummary;
+import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
+import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -70,8 +72,7 @@ public class GetTweet {
         return toTweetSummary(document);
     }
 
-    public String getTweetText(long id)
-    {
+    public String getTweetText(long id) {
         TweetDocument document = tweetRepository.findOne(id);
         if (document == null) {
             return null;
@@ -106,7 +107,7 @@ public class GetTweet {
 
         Renderer renderer = new Renderer(Color.cyan);
 
-        int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 28;
+        int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 12 + height;
 
         // We need a sample model for color images where the pixels are bytes, with three bands.
         SampleModel sampleModel = RasterFactory.createBandedSampleModel(DataBuffer.TYPE_BYTE, width, height, 3);
@@ -120,11 +121,10 @@ public class GetTweet {
 
         graphics.drawImage(image, (int) (widthPreroll), 0, null);
 
-        renderer.runGraphics(widthPreroll + 28, parts, graphics);
+        renderer.runGraphics(widthPreroll + 12 + height, parts, graphics);
         graphics.dispose();
 
         return ImageEncoder.encode(format, tiledImage);
     }
-
 
 }

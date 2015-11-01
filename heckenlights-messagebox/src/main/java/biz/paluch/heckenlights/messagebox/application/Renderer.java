@@ -1,21 +1,22 @@
 package biz.paluch.heckenlights.messagebox.application;
 
-import biz.paluch.heckenlights.messagebox.model.Text;
-import org.slf4j.LoggerFactory;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import org.slf4j.LoggerFactory;
+
+import biz.paluch.heckenlights.messagebox.model.Text;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 class Renderer {
 
-    public static final int FONT_SIZE = 15;
-    public static final int TEXT_BASELINE = 13;
+    public static final int FONT_SIZE = 30;
+    public static final int TEXT_BASELINE = 24;
     private static String FONT_NAME = "assets/Menlo-Regular.ttf";
     private static Font FONT;
     private EmojiLocator emojiLocator = new EmojiLocator();
@@ -88,8 +89,12 @@ class Renderer {
         if (emojiLocator.exists(textSegment.getCodepoint())) {
             try {
                 Image image = emojiLocator.getEmoji(textSegment.getCodepoint());
-                graphics2D.drawImage(image, (int) (x + 1), 0, null);
-                return image.getWidth(null) + 2;
+
+                // Assume emoji have a fixed size of 32px
+                int size = 32;
+
+                graphics2D.drawImage(image, (int) (x + 1), 0, size, size, null, null);
+                return size + 4;
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

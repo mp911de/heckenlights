@@ -15,6 +15,14 @@ public class PlayerStateTrackRepresentation
     private String fileName;
     private int duration;
 
+    public PlayerStateTrackRepresentation() {
+    }
+
+    public PlayerStateTrackRepresentation(String sequenceName, String fileName) {
+        this.sequenceName = sequenceName;
+        this.fileName = fileName;
+    }
+
     public String getId()
     {
         return id;

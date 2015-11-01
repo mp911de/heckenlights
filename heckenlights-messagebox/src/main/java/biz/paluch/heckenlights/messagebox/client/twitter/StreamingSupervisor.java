@@ -63,9 +63,7 @@ public class StreamingSupervisor {
         StreamListener streamListener = new StreamListener() {
             @Override
             public void onTweet(Tweet tweet) {
-
                 writeMessageActor.tell(tweet, ActorRef.noSender());
-
             }
 
             @Override

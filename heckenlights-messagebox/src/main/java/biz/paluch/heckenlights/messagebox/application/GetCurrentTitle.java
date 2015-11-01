@@ -107,7 +107,7 @@ public class GetCurrentTitle {
 
         Renderer renderer = new Renderer(new Color(200, 200, 200));
 
-        int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 24;
+        int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 8 + height;
 
         // We need a sample model for color images where the pixels are bytes, with three bands.
         SampleModel sampleModel = RasterFactory.createBandedSampleModel(DataBuffer.TYPE_BYTE, width, height, 3);
@@ -119,7 +119,7 @@ public class GetCurrentTitle {
 
         graphics.drawImage(image, (int) (widthPreroll + 1), 0, null);
 
-        renderer.runGraphics(widthPreroll + 24, parts, graphics);
+        renderer.runGraphics(widthPreroll + 8 + height, parts, graphics);
         graphics.dispose();
 
         return ImageEncoder.encode(format, tiledImage);
