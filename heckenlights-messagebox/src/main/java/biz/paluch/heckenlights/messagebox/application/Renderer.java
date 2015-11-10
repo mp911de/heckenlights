@@ -15,9 +15,9 @@ import biz.paluch.heckenlights.messagebox.model.Text;
  */
 class Renderer {
 
-    public static final int FONT_SIZE = 30;
-    public static final int TEXT_BASELINE = 24;
-    private static String FONT_NAME = "assets/Menlo-Regular.ttf";
+    public static final int FONT_SIZE = 33;
+    public static final int TEXT_BASELINE = 25;
+    private static String FONT_NAME = "assets/Roboto-Medium.ttf";
     private static Font FONT;
     private EmojiLocator emojiLocator = new EmojiLocator();
     private Color fg;
@@ -80,6 +80,7 @@ class Renderer {
     }
 
     private double drawString(Graphics2D graphics2D, double x, Font font, Text textSegment) {
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics2D.drawString(textSegment.getText(), (int) x, TEXT_BASELINE);
         Rectangle2D stringBounds = font.getStringBounds(textSegment.getText(), graphics2D.getFontRenderContext());
         return stringBounds.getWidth();
@@ -88,7 +89,7 @@ class Renderer {
     private double drawEmoji(Graphics2D graphics2D, double x, Text textSegment) {
         if (emojiLocator.exists(textSegment.getCodepoint())) {
             try {
-                Image image = emojiLocator.getEmoji(textSegment.getCodepoint());
+                Image pi-messagebox/messagebox-controller/config.iniimage = emojiLocator.getEmoji(textSegment.getCodepoint());
 
                 // Assume emoji have a fixed size of 32px
                 int size = 32;

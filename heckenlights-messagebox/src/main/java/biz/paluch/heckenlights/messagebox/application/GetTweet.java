@@ -105,7 +105,7 @@ public class GetTweet {
         parts.add(tweet.getSender() + ": ");
         parts.add(tweet.getMessage());
 
-        Renderer renderer = new Renderer(Color.cyan);
+        Renderer renderer = new Renderer(new Color(85,172,238));
 
         int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 12 + height;
 
@@ -121,7 +121,7 @@ public class GetTweet {
 
         graphics.drawImage(image, (int) (widthPreroll), 0, null);
 
-        renderer.runGraphics(widthPreroll + 12 + height, parts, graphics);
+        renderer.runGraphics(widthPreroll + 4 + height, parts, graphics);
         graphics.dispose();
 
         return ImageEncoder.encode(format, tiledImage);
