@@ -85,10 +85,12 @@ def main():
 
         if filename is not None:
             width = get_width(filename)
-
+            Config.read("config.ini")
+            scrollspeed_ms_per_pixel = Config.getfloat("settings", "scrollspeed_ms_per_pixel")
+            cmdline = Config.get("settings", "led_matrix_args")
             if width is not None:
                 sleep_time = min(width, max(width - 32, 0)) * scrollspeed_ms_per_pixel
-                command_line=  "%s -r 16 -m %d0.0 %s" % (led_matrix_executable, scrollspeed_ms_per_pixel * 100, filename)
+                command_line=  "%s %s -m %d0.0 %s" % (led_matrix_executable, cmdline, scrollspeed_ms_per_pixel * 100, filename)
                 logging.debug("Command Line: " + command_line)
                 args = shlex.split(command_line)
                 process = subprocess.Popen(args)
@@ -125,6 +127,3 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         cleanup()
         raise
-    
-
-
