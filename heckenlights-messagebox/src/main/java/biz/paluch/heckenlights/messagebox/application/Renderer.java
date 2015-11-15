@@ -89,7 +89,7 @@ class Renderer {
     private double drawEmoji(Graphics2D graphics2D, double x, Text textSegment) {
         if (emojiLocator.exists(textSegment.getCodepoint())) {
             try {
-                Image pi-messagebox/messagebox-controller/config.iniimage = emojiLocator.getEmoji(textSegment.getCodepoint());
+                Image image = emojiLocator.getEmoji(textSegment.getCodepoint());
 
                 // Assume emoji have a fixed size of 32px
                 int size = 32;
