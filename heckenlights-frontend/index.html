@@ -86,13 +86,14 @@
 
                 <h1>Heckenlights</h1>
 
-                <p id="intro" class="lead" style="display: none">{{index_intro1}}</p>
+                <p id="intro" class="lead">{{index_intro1}}</p>
+                <p id="countdown" class="lead" style="display: none;">{{index_countdown_a}} <span
+                        id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
+                        id="countdowntext"></span> {{index_countdown_d}}</p>
+                <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
 
-                <!-- <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p> -->
-
-                <div class="bordered" style="width: 580px; height: 300px; margin: auto; background-color: rgba(90, 3, 0, 0.74)">
-                    <p style="margin-top: 50px" class="lead">{{index_suspended}}</p>
-                    <!-- <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
+                <div style="width: 480px; margin: auto">
+                    <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
                              frameborder="no" width="580" height="472"></iframe>
                      <br/><a href="http://www.ustream.tv/"
                              style="padding: 2px 0px 4px; width: 400px; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
@@ -104,7 +105,7 @@
                          {{index_hint_delay}}<br/>
                          <br/>
                          {{index_hint_nothing_happening}}
-                     </p> -->
+                     </p>
                 </div>
             </div>
             <div id="controls" class="col-md-4">
@@ -112,7 +113,7 @@
                 </div>
                 <div id="closedsign" class="overlay" style="display: none"></div>
                 <div id="offlinenote2" class="overlay" style="display: none">
-                   <!-- <div><p class="lead">{{{info_offline_suspended}}}</p></div> -->
+                    <div><p class="lead">{{{info_offline}}}</p></div>
                 </div>
                 <div class="list-group">
                     <h3 class="light">{{index_playlist}}</h3>
@@ -271,7 +272,7 @@
                         href="http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/">http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/</a>
                 </p>
 
-                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014</p>
+                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2015</p>
             </div>
         </div>
     </div>
@@ -306,6 +307,10 @@
 <script src="js/heckenlights-frontend.js"></script>
 <!-- endbuild -->
 
+<!-- build:js js/heckenlights-countdown.js -->
+<script src="js/heckenlights-countdown.js"></script>
+<!-- endbuild -->
+
 <script>
 
     var language = '{{language}}';
@@ -327,6 +332,7 @@
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
             h.initialize();
+            countdown().initialize();
         });
     });
 
