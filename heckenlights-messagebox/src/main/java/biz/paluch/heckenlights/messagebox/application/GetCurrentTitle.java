@@ -53,10 +53,6 @@ public class GetCurrentTitle {
     private MidiRelayClient midiRelayClient;
 
     public String getCurrentTitle() {
-        if(true) {
-            return "bafds";
-        }
-
         try {
             PlayerStateRepresentation state = midiRelayClient.getState();
 
