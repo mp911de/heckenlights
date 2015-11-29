@@ -102,4 +102,8 @@ class Renderer {
         }
         return 0;
     }
+
+    public void setForeground(Color fg) {
+        this.fg = fg;
+    }
 }
