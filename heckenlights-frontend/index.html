@@ -73,30 +73,27 @@
                 </li>
             </ul>
         </div>
-
-
         <!--/.nav-collapse -->
     </div>
 </div>
 
-<header id="top" class="header">
+<div id="top" class="header">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
 
                 <h1>Heckenlights</h1>
 
-                <p id="intro" class="lead">{{index_intro1}}</p>
-                <p id="countdown" class="lead" style="display: none;">{{index_countdown_a}} <span
-                        id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
-                        id="countdowntext"></span> {{index_countdown_d}}</p>
-                <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
+                <p id="intro" class="lead" style="display: none">{{index_intro1}}</p>
 
-                <div>
-                    <iframe src="http://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
+                <!-- <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p> -->
+
+                <div class="bordered" style="width: 580px; height: 300px; margin: auto; background-color: rgba(90, 3, 0, 0.74)">
+                    <p style="margin-top: 50px" class="lead">{{index_suspended}}</p>
+                    <!-- <iframe src="https://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
                              frameborder="no" width="100%" height="372"></iframe>
                      <br/><a href="http://www.ustream.tv/"
-                             style="padding: 2px 0px 4px; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
+                             style="display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
                              target="_blank">Live streaming video by Ustream</a>
 
                      <p class="bordered light">
@@ -105,11 +102,16 @@
                          {{index_hint_delay}}<br/>
                          <br/>
                          {{index_hint_nothing_happening}}
-                     </p>
+                     </p>-->
                 </div>
             </div>
             <div id="controls" class="col-md-4">
+                <div id="closed" class="closedoverlay overlay" style="display: none;">
+                </div>
                 <div id="closedsign" class="overlay" style="display: none"></div>
+                <div id="offlinenote2" class="overlay" style="display: none">
+                   <!-- <div><p class="lead">{{{info_offline_suspended}}}</p></div> -->
+                </div>
                 <div class="list-group">
                     <h3 class="light">{{index_playlist}}</h3>
 
@@ -148,12 +150,10 @@
                         <span id="uploadcontainer" class="btn btn-success fileinput-button" style="display: none">
                             <i class="glyphicon glyphicon-plus"></i>
                             <span>{{index_upload}}</span>
-                            <!-- The file input field used as target for the file upload widget -->
                             <input id="fileupload" type="file" name="files[]" accept="audio/sp-midi">
                         </span>
                         <br/>
 
-                        <!-- The global progress bar -->
                         <div id="uploadprogress" class="progress" style="display: none;">
                             <div class="progress-bar progress-bar-success"></div>
                         </div>
@@ -180,10 +180,11 @@
             </div>
 
         </div>
-</header>
+    </div>
+</div>
 
 <!-- About -->
-<section id="about" class="about">
+<div id="about" class="about">
     <div class="sectiondivider"></div>
     <div class="container">
         <div class="row">
@@ -198,14 +199,11 @@
                 </div>
             </div>
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.container -->
-</section>
-
+</div>
 
 <!-- Legal -->
-<section id="legal" class="legal">
+<div id="legal" class="legal">
     <div class="sectiondivider"></div>
     <div class="container">
         <div class="row">
@@ -228,18 +226,16 @@
                 </div>
             </div>
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.container -->
-</section>
+</div>
 
 <!-- Footer -->
-<footer>
+<div>
     <div class="sectiondivider"></div>
 
     <div id="contact" class="container">
         <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 text-center">
+            <div class="col-sm-10 col-sm-offset-1 text-center">
                 <h4><strong>Heckenlights</strong>
                 </h4>
 
@@ -271,7 +267,7 @@
             </div>
         </div>
     </div>
-</footer>
+</div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -302,10 +298,6 @@
 <script src="js/heckenlights-frontend.js"></script>
 <!-- endbuild -->
 
-<!-- build:js js/heckenlights-countdown.js -->
-<script src="js/heckenlights-countdown.js"></script>
-<!-- endbuild -->
-
 <script>
 
     var language = '{{language}}';
@@ -327,7 +319,6 @@
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
             h.initialize();
-            countdown().initialize();
         });
     });
 
