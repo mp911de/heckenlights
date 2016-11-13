@@ -1,20 +1,10 @@
 package de.paluch.heckenlights.application;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Closer;
-import de.paluch.heckenlights.EnqueueS;
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueRequest;
-import de.paluch.heckenlights.model.EnqueueResult;
-import de.paluch.heckenlights.model.OfflineException;
-import de.paluch.heckenlights.model.PlayCommandSummary;
-import de.paluch.heckenlights.model.PlayStatus;
-import de.paluch.heckenlights.model.QuotaExceededException;
-import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.repositories.PlayCommandService;
-import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.springframework.stereotype.Component;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
@@ -25,11 +15,23 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.UUID;
+
+import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Closer;
+
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
+import de.paluch.heckenlights.model.EnqueueResult;
+import de.paluch.heckenlights.model.OfflineException;
+import de.paluch.heckenlights.model.PlayCommandSummary;
+import de.paluch.heckenlights.model.PlayStatus;
+import de.paluch.heckenlights.model.QuotaExceededException;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.repositories.PlayCommandService;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -61,18 +63,18 @@ public class EnqueueTrack {
     private final static int LIMIT_ENEUQUED = 20;
     private final static int QUOTA_MINUTES = 30;
 
-    public EnqueueResult enqueueWithQuotaCheck(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
-            DurationExceededException, QuotaExceededException, OfflineException {
+    public EnqueueResult enqueueWithQuotaCheck(EnqueueRequest enqueue)
+            throws IOException, InvalidMidiDataException, DurationExceededException, QuotaExceededException, OfflineException {
 
         int count = playCommandService.getEnquedCommandCount(enqueue.getExternalSessionId(), enqueue.getSubmissionHost(),
                 QUOTA_MINUTES);
         if (count > QUOTA) {
-            throw new QuotaExceededException("Quota limit of " + QUOTA + " for " + QUOTA_MINUTES + " exceeded by "
-                    + (count - QUOTA));
+            throw new QuotaExceededException(
+                    "Quota limit of " + QUOTA + " for " + QUOTA_MINUTES + " exceeded by " + (count - QUOTA));
         }
 
-        List<PlayCommandSummary> enqueuedCommands = playCommandService.getListByPlayStatusOrderByCreated(
-                ImmutableList.of(PlayStatus.ENQUEUED), 100);
+        List<PlayCommandSummary> enqueuedCommands = playCommandService
+                .getListByPlayStatusOrderByCreated(ImmutableList.of(PlayStatus.ENQUEUED), 100);
         if (enqueuedCommands.size() > LIMIT_ENEUQUED) {
             throw new QuotaExceededException("Queue limit of " + LIMIT_ENEUQUED + " exceeded by " + (count - LIMIT_ENEUQUED));
         }
@@ -91,14 +93,14 @@ public class EnqueueTrack {
         return enqueueImpl(enqueue);
     }
 
-    public EnqueueResult populate(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
-            DurationExceededException {
+    public EnqueueResult populate(EnqueueRequest enqueue)
+            throws IOException, InvalidMidiDataException, DurationExceededException {
         log.info("Populating Queue with " + enqueue.getFileName());
         return enqueueImpl(enqueue);
     }
 
-    private EnqueueResult enqueueImpl(EnqueueRequest enqueue) throws IOException, InvalidMidiDataException,
-            DurationExceededException {
+    private EnqueueResult enqueueImpl(EnqueueRequest enqueue)
+            throws IOException, InvalidMidiDataException, DurationExceededException {
         Closer closer = Closer.create();
         try {
 
@@ -113,7 +115,7 @@ public class EnqueueTrack {
             ObjectId fileReference = playCommandService.createFile(enqueue.getFileName(), CONTENT_TYPE, enqueue.getContent(),
                     id);
 
-            enqueue.setTrackName(new EnqueueS().getSequenceName(sequence));
+            enqueue.setTrackName(TrackNameUtil.getSequenceName(sequence).orElse(null));
             enqueue.setPlayStatus(PlayStatus.ENQUEUED);
             enqueue.setCommandId(id);
 
@@ -137,13 +139,13 @@ public class EnqueueTrack {
 
     private void validateDuration(int durationInSecs) throws DurationExceededException {
         if (durationInSecs < MINIMAL_DURATION_SEC) {
-            throw new DurationExceededException("Duration " + durationInSecs + " too short, min duration is: "
-                    + MINIMAL_DURATION_SEC);
+            throw new DurationExceededException(
+                    "Duration " + durationInSecs + " too short, min duration is: " + MINIMAL_DURATION_SEC);
         }
 
         if (durationInSecs > MAXIMAL_DURATION_SEC) {
-            throw new DurationExceededException("Duration " + durationInSecs + " too long, min duration is: "
-                    + MAXIMAL_DURATION_SEC);
+            throw new DurationExceededException(
+                    "Duration " + durationInSecs + " too long, min duration is: " + MAXIMAL_DURATION_SEC);
         }
     }
 
@@ -154,8 +156,7 @@ public class EnqueueTrack {
             Sequencer sequencer = getSequencer();
             synchronized (this) {
                 sequencer.setSequence(sequence);
-                int durationInSecs = (int) (sequencer.getMicrosecondLength() / 1000000.0);
-                return durationInSecs;
+                return (int) (sequencer.getMicrosecondLength() / 1000000.0);
             }
 
         } catch (MidiUnavailableException e) {
@@ -165,14 +166,14 @@ public class EnqueueTrack {
     }
 
     private Sequencer getSequencer() throws MidiUnavailableException {
-        Sequencer sequencer = this.sequencer;
+        Sequencer sequencer = EnqueueTrack.sequencer;
 
         if (sequencer == null) {
             sequencer = MidiSystem.getSequencer();
             if (!sequencer.isOpen()) {
                 sequencer.open();
             }
-            this.sequencer = sequencer;
+            EnqueueTrack.sequencer = sequencer;
         }
         return sequencer;
     }

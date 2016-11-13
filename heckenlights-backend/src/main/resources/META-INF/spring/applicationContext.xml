@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
-                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
-    <mongo:mongo id="mongo" host="${mongo.host}" port="${mongo.port}" />
-
-    <mongo:db-factory id="mongoDbFactory" dbname="heckenlights" mongo-ref="mongo" />
-
-    <mongo:mapping-converter id="mongoConverter" />
-
-    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg ref="mongoDbFactory" />
-        <constructor-arg ref="mongoConverter" />
-        <property name="writeConcern" value="SAFE" />
-    </bean>
-
-    <bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
-        <constructor-arg ref="mongoDbFactory" />
-        <constructor-arg ref="mongoConverter" />
-    </bean>
-
-    <mongo:repositories base-package="de.paluch.heckenlights.repositories" />
-
-    <context:component-scan base-package="de.paluch.heckenlights" />
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="midiRelayClientProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="de.paluch.heckenlights.client.MidiRelayClient.MidiRelayClientProxy" />
@@ -40,24 +16,6 @@
     <bean id="apacheHttpClient4Executor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
         <constructor-arg index="0" ref="httpClient" />
     </bean>
-
-    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient">
-        <constructor-arg index="0" ref="clientConnManager" />
-        <property name="params" ref="httpParams" />
-    </bean>
-
-    <bean id="clientConnManager" class="org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager">
-    </bean>
-
-    <bean id="httpParams" class="org.apache.http.params.BasicHttpParams">
-    </bean>
-
-    <bean id="httpConnectionParams" class="org.apache.http.params.HttpConnectionParamBean">
-        <constructor-arg ref="httpParams" />
-        <property name="connectionTimeout" value="${midirelay.connectTimeout}" />
-        <property name="soTimeout" value="${midirelay.readTimeout}" />
-    </bean>
-
 
     <bean name="playlistJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="jobClass" value="de.paluch.heckenlights.application.ProcessQueueJob" />
@@ -107,8 +65,5 @@
         </property>
         <property name="applicationContextSchedulerContextKey" value="applicationContext" />
     </bean>
-
-    <bean class="de.paluch.heckenlights.model.RuleState" scope="singleton"></bean>
-
 
 </beans>

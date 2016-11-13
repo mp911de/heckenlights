@@ -1,11 +1,14 @@
 package de.paluch.heckenlights.application;
 
+import lombok.Getter;
+
 import javax.sound.midi.MidiMessage;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 30.11.13 17:50
  */
+@Getter
 public class MidiMessageDetail
 {
     byte[] bytes;
@@ -41,38 +44,5 @@ public class MidiMessageDetail
 
         hi = (byte) ((t1 & 0xF0) >> 4);
         lo = (byte) (t1 & 0x0F);
-    }
-
-    public byte[] getBytes()
-    {
-        return bytes;
-    }
-    public byte[] getMessage()
-    {
-        return message;
-    }
-    public int getT1()
-    {
-        return t1;
-    }
-    public int getT2()
-    {
-        return t2;
-    }
-    public int getT3()
-    {
-        return t3;
-    }
-    public byte getHi()
-    {
-        return hi;
-    }
-    public byte getLo()
-    {
-        return lo;
-    }
-    public MidiMessage getMidiMessage()
-    {
-        return midiMessage;
     }
 }

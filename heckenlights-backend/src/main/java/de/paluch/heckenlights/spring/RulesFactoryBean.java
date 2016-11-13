@@ -1,16 +1,16 @@
 package de.paluch.heckenlights.spring;
 
-import de.paluch.heckenlights.model.Rules;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
-
-import javax.xml.bind.JAXB;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+
+import javax.xml.bind.JAXB;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
+
+import de.paluch.heckenlights.model.Rules;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -19,7 +19,7 @@ import java.net.URL;
 public class RulesFactoryBean extends AbstractFactoryBean<Rules> {
 
     @Value("${rules.location}")
-    private URL ruleLocation;
+    private Resource ruleLocation;
 
     private transient long lastModified;
 
@@ -35,7 +35,11 @@ public class RulesFactoryBean extends AbstractFactoryBean<Rules> {
     }
 
     public Rules parseRules() {
-        return JAXB.unmarshal(ruleLocation, Rules.class);
+        try {
+            return JAXB.unmarshal(ruleLocation.getFile(), Rules.class);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public boolean isModifiedSinceLastCheck() {
@@ -51,12 +55,10 @@ public class RulesFactoryBean extends AbstractFactoryBean<Rules> {
     private File getFileIfExists() {
         try {
 
-            File file = ResourceUtils.getFile(ruleLocation.toURI());
+            File file = ruleLocation.getFile();
             if (file.exists()) {
                 return file;
             }
-        } catch (URISyntaxException e) {
-            // ignore
         } catch (IOException e) {
             // ignore
         }

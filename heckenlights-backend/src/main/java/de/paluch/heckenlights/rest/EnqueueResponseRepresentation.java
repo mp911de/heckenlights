@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import de.paluch.heckenlights.model.PlayStatus;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -14,6 +16,8 @@ import de.paluch.heckenlights.model.PlayStatus;
  */
 @XmlRootElement(name = "enqueued")
 @XmlAccessorType(XmlAccessType.NONE)
+@Data
+@NoArgsConstructor
 public class EnqueueResponseRepresentation {
 
     @XmlAttribute(name = "enqueuedCommandId")
@@ -31,51 +35,8 @@ public class EnqueueResponseRepresentation {
     @XmlElement(name = "durationToPlay")
     private int durationToPlay;
 
-    public EnqueueResponseRepresentation() {
-    }
-
     public EnqueueResponseRepresentation(PlayStatus playStatus, String message) {
         this.playStatus = playStatus;
         this.message = message;
-    }
-
-    public String getEnqueuedCommandId() {
-        return enqueuedCommandId;
-    }
-
-    public void setEnqueuedCommandId(String enqueuedCommandId) {
-        this.enqueuedCommandId = enqueuedCommandId;
-    }
-
-    public PlayStatus getPlayStatus() {
-        return playStatus;
-    }
-
-    public void setPlayStatus(PlayStatus playStatus) {
-        this.playStatus = playStatus;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getDurationToPlay() {
-        return durationToPlay;
-    }
-
-    public void setDurationToPlay(int durationToPlay) {
-        this.durationToPlay = durationToPlay;
-    }
-
-    public String getTrackName() {
-        return trackName;
-    }
-
-    public void setTrackName(String trackName) {
-        this.trackName = trackName;
     }
 }

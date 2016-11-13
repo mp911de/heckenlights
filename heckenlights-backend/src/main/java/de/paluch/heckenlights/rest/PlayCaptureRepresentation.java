@@ -8,12 +8,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 02.12.13 18:16
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@Data
 public class PlayCaptureRepresentation {
     @XmlAttribute(name = "id")
     private int id;
@@ -21,20 +23,4 @@ public class PlayCaptureRepresentation {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @XmlElement(name = "created")
     private Date created;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
 }

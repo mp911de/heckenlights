@@ -8,13 +8,17 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import lombok.Data;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 02.12.13 18:15
  */
 @XmlRootElement(name = "playCommands")
 @XmlAccessorType(XmlAccessType.NONE)
+@Data
 public class PlayCommandsRepresentation {
+
     @XmlElement(name = "playCommand")
     private List<PlayCommandRepresentation> playCommands = new ArrayList<>();
 
@@ -27,35 +31,4 @@ public class PlayCommandsRepresentation {
     @XmlElement(name = "processingPlayback")
     private boolean processingPlayback;
 
-    public List<PlayCommandRepresentation> getPlayCommands() {
-        return playCommands;
-    }
-
-    public void setPlayCommands(List<PlayCommandRepresentation> playCommands) {
-        this.playCommands = playCommands;
-    }
-
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
-    public boolean isQueueOpen() {
-        return queueOpen;
-    }
-
-    public void setQueueOpen(boolean queueOpen) {
-        this.queueOpen = queueOpen;
-    }
-
-    public boolean isProcessingPlayback() {
-        return processingPlayback;
-    }
-
-    public void setProcessingPlayback(boolean processingPlayback) {
-        this.processingPlayback = processingPlayback;
-    }
 }

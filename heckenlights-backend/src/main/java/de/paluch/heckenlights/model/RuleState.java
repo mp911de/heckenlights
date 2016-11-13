@@ -1,5 +1,7 @@
 package de.paluch.heckenlights.model;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */

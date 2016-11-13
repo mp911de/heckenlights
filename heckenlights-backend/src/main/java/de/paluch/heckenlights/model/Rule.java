@@ -10,10 +10,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 import com.google.common.collect.Sets;
 
+import lombok.Data;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@Data
 public class Rule {
 
     @XmlElementWrapper(name = "days")
@@ -71,66 +74,11 @@ public class Rule {
         return -1;
     }
 
-    public Long getMaxPlaylistPlayedDuration() {
-        return maxPlaylistPlayedDuration;
-    }
-
-    public void setMaxPlaylistPlayedDuration(Long maxPlaylistPlayedDuration) {
-        this.maxPlaylistPlayedDuration = maxPlaylistPlayedDuration;
-    }
-
-    public Boolean getQueueIsEmpty() {
-        return queueIsEmpty;
-    }
-
-    public void setQueueIsEmpty(Boolean queueIsEmpty) {
-        this.queueIsEmpty = queueIsEmpty;
-    }
-
-    public Action getAction() {
-        return action;
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
-    public Long getMinLightsOnDuration() {
-        return minLightsOnDuration;
-    }
-
-    public void setMinLightsOnDuration(Long minLightsOnDuration) {
-        this.minLightsOnDuration = minLightsOnDuration;
-    }
-
-    public Set<Counter> getReset() {
-        return reset;
-    }
-
-    public void setReset(Set<Counter> reset) {
-        this.reset = reset;
-    }
-
     public static enum Action {
         OFFLINE, LIGHTS_ON, LIGHTS_OFF, PLAYLIST, PLAYLIST_AUTO_ENQEUE;
     }
 
     public static enum Counter {
         PlaylistPlayedDuration, LightsOnDuration;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [from='").append(from).append('\'');
-        sb.append(", to='").append(to).append('\'');
-        sb.append(", maxPlaylistPlayedDuration=").append(maxPlaylistPlayedDuration);
-        sb.append(", minLightsOnDuration=").append(minLightsOnDuration);
-        sb.append(", reset=").append(reset);
-        sb.append(", action=").append(action);
-        sb.append(", queueIsEmpty=").append(queueIsEmpty);
-        sb.append(']');
-        return sb.toString();
     }
 }
