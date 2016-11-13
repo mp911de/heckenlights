@@ -9,6 +9,8 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
+    var serveStatic = require('serve-static');
+
     // Configurable paths for the application
     var appConfig = {
         app: './',
@@ -283,11 +285,11 @@ module.exports = function (grunt) {
                                 }
                                 next();
                             }),
-                            connect().use('/locales', connect.static('./locales')),
-                            connect().use('/images', connect.static('./images')),
-                            connect().use('/css', connect.static('./dist/css')),
-                            connect.static('.tmp'),
-                            connect.static(require('path').resolve('.'))
+                            connect().use('/locales', serveStatic('./locales')),
+                            connect().use('/images', serveStatic('./images')),
+                            connect().use('/css', serveStatic('./dist/css')),
+                            serveStatic('.tmp'),
+                            serveStatic(require('path').resolve('.'))
                         ];
                     }
                 }

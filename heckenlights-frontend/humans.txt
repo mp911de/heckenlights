@@ -7,7 +7,7 @@
 
 /* SITE */
 
-  Last update: 2014/12/04
+  Last update: 2016/11/13
   Standards: HTML5, CSS3
 
   Components: Bootstrap, jQuery, Font Awesome, respond, html5shiv

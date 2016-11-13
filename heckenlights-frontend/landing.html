@@ -31,10 +31,9 @@
     <link href="css/heckenlights-frontend.css" rel="stylesheet">
     <!-- endbuild -->
 
-
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
     <!--[if IE]>
@@ -88,7 +87,7 @@
     <div class="text-vertical-center">
         <h1>Heckenlights</h1>
 
-        <h3>{{top_claim}}</h3>
+        <h3>{{{top_claim}}}</h3>
         <br/>
         <a href="#about" class="btn btn-dark btn-lg">{{top_findout_more}}</a>
         <br/>
@@ -128,12 +127,12 @@
 
 
 <!-- Footer -->
-<footer>
+<div>
     <div class="sectiondivider"></div>
 
     <div id="contact" class="container">
         <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 text-center">
+            <div class="col-sm-10 col-sm-offset-1 text-center">
                 <h4><strong>Heckenlights</strong>
                 </h4>
 
@@ -161,28 +160,27 @@
                         href="http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/">http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/</a>
                 </p>
 
-                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2015</p>
+                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2016</p>
             </div>
         </div>
     </div>
-</footer>
-
+<div>
 
 <div id="fb-root"></div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/i18next/1.6.3/i18next-1.6.3.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment-with-locales.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment-with-locales.min.js"></script>
 
-<!-- build:js js/moment-timezone-with-data-2010-2020a.js -->
+<!-- build:js js/moment-timezone-with-data-2010-2020.js -->
 <script src="js/moment-timezone-with-data-2010-2020.js"></script>
 <!-- endbuild -->
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.2.5/moment-timezone-utils.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.9/moment-timezone-utils.min.js"></script>
 
 <!-- build:js js/utils.js -->
 <script src="js/jquery.ui.widget.js"></script>
@@ -192,8 +190,8 @@
 <script src="js/social.js"></script>
 <!-- endbuild -->
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.6/jstz.min.js"></script>
 
 <!-- build:js js/heckenlights-countdown.js -->
 <script src="js/heckenlights-countdown.js"></script>
@@ -213,10 +211,11 @@
         useCookie: false,
         lng: language,
         fallbackLng: false
-    }
+    };
 
     $.i18n.init(options, function () {
         $(':not([data-i18n=""])').i18n();
+
         $(document).ready(function () {
             countdown().initialize();
         });

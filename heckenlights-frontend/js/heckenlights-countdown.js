@@ -1,7 +1,7 @@
 var countdown = (function () {
 
     var instance = {};
-    var moment_string = '2015-12-01 17:00';
+    var moment_string = '2016-12-01 17:00';
     var moment_tz = 'Europe/Berlin';
     var moment_locale_fmt_except = 'de-DE';
 
@@ -101,7 +101,7 @@ var countdown = (function () {
         });
 
         initializeTimers();
-    }
+    };
 
     return instance;
 });
