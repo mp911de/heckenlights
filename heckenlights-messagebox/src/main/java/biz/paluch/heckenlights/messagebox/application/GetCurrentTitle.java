@@ -7,6 +7,7 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +16,6 @@ import javax.inject.Inject;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 
-import com.google.common.collect.ImmutableList;
 import org.joda.time.Duration;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -108,7 +108,8 @@ public class GetCurrentTitle {
 
         Renderer renderer = new Renderer(new Color(200, 200, 200));
 
-        int width = Math.max(minWidth, renderer.getWidth(ImmutableList.of(title, suffix))) + widthPreroll + widthPostroll + 8 + 14 + height;
+        int width = Math.max(minWidth, renderer.getWidth(Arrays.asList(title, suffix))) + widthPreroll + widthPostroll + 8 + 14
+                + height;
 
         // We need a sample model for color images where the pixels are bytes, with three bands.
         SampleModel sampleModel = RasterFactory.createBandedSampleModel(DataBuffer.TYPE_BYTE, width, height, 3);
@@ -123,7 +124,7 @@ public class GetCurrentTitle {
         int offset = renderer.runGraphics(widthPreroll + 8 + height, parts, graphics);
 
         renderer.setForeground(new Color(220, 44, 43));
-        renderer.runGraphics(offset + 12, ImmutableList.of(suffix), graphics);
+        renderer.runGraphics(offset + 12, Arrays.asList(suffix), graphics);
 
         graphics.dispose();
 

@@ -1,9 +1,10 @@
 package biz.paluch.heckenlights.messagebox.application;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>

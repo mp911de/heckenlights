@@ -1,5 +1,8 @@
 package biz.paluch.heckenlights.messagebox.application;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -7,9 +10,6 @@ import org.springframework.stereotype.Service;
 import biz.paluch.heckenlights.messagebox.model.DisplayCount;
 import biz.paluch.heckenlights.messagebox.repository.DisplayCountDocument;
 import biz.paluch.heckenlights.messagebox.repository.DisplayCountRepository;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -24,7 +24,6 @@ public class GetDisplayCount {
 
     @Inject
     private DisplayCountRepository displayCountRepository;
-
 
     public DisplayCount getDisplayCount() {
 
@@ -58,11 +57,14 @@ public class GetDisplayCount {
     }
 
     private DisplayCount toDisplayCount(DisplayCountDocument displayCountDocument) {
+
         DisplayCount result = new DisplayCount();
+
         result.setAdvertising(displayCountDocument.getAdvertising());
         result.setTitle(displayCountDocument.getTitle());
         result.setTweets(displayCountDocument.getTweets());
         result.setMessages(displayCountDocument.getMessages());
+
         return result;
     }
 
@@ -75,15 +77,15 @@ public class GetDisplayCount {
         return ratio;
     }
 
-	public void update(DisplayCount displayCount) {
-		DisplayCountDocument displayCountDocument = getCountDocument();
+    public void update(DisplayCount displayCount) {
 
-		displayCountDocument.setAdvertising(displayCount.getAdvertising());
-		displayCountDocument.setTitle(displayCount.getTitle());
-		displayCountDocument.setTweets(displayCount.getTweets());
+        DisplayCountDocument displayCountDocument = getCountDocument();
+
+        displayCountDocument.setAdvertising(displayCount.getAdvertising());
+        displayCountDocument.setTitle(displayCount.getTitle());
+        displayCountDocument.setTweets(displayCount.getTweets());
         displayCountDocument.setMessages(displayCount.getMessages());
 
-		displayCountRepository.save(displayCountDocument);
-
-	}
+        displayCountRepository.save(displayCountDocument);
+    }
 }
