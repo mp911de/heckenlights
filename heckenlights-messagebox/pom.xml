@@ -24,6 +24,15 @@
             <id>jboss</id>
             <url>https://repository.jboss.org/nexus/service/local/repositories/thirdparty-releases/content</url>
         </repository>
+
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
 
