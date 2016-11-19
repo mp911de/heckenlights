@@ -14,8 +14,6 @@ import javax.inject.Inject;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +25,6 @@ import biz.paluch.heckenlights.messagebox.repository.MessageRepository;
  */
 @Service
 public class GetMessage {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${image.height}")
     private int height;

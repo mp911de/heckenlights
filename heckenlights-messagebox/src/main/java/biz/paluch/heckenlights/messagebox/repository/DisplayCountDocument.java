@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 public class DisplayCountDocument {
 
     @Id
-    private String id;
+    String id;
 
-    private int advertising;
-    private int tweets;
-    private int title;
-    private int messages;
+    int advertising;
+    int tweets;
+    int title;
+    int messages;
 
     public DisplayCountDocument(String id, int advertising, int tweets, int title) {
         this.id = id;

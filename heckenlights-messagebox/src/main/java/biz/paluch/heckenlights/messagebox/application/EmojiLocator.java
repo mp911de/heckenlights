@@ -30,5 +30,4 @@ public class EmojiLocator {
     private String createFileName(int codepoint) {
         return Integer.toHexString(codepoint).toLowerCase() + ".png";
     }
-
 }

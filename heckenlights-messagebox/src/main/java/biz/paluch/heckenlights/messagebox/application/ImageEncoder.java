@@ -15,7 +15,9 @@ import com.sun.media.jai.codecimpl.PNMImageEncoder;
 public class ImageEncoder {
 
     public static byte[] encode(String format, RenderedImage image) throws IOException {
+
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
         if ("ppm".equalsIgnoreCase(format)) {
             PNMEncodeParam encodeParam = new PNMEncodeParam();
             encodeParam.setRaw(true);

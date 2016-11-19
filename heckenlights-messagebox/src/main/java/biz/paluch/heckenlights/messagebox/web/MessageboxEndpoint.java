@@ -1,4 +1,19 @@
-package biz.paluch.heckenlights.messagebox.rest;
+package biz.paluch.heckenlights.messagebox.web;
+
+import java.io.IOException;
+
+import org.jboss.resteasy.util.HttpHeaderNames;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import biz.paluch.heckenlights.messagebox.application.DispatchNextRequest;
 import biz.paluch.heckenlights.messagebox.application.GetAdvertising;
@@ -7,46 +22,34 @@ import biz.paluch.heckenlights.messagebox.application.GetMessage;
 import biz.paluch.heckenlights.messagebox.application.GetTweet;
 import biz.paluch.heckenlights.messagebox.model.DispatchAction;
 import biz.paluch.heckenlights.messagebox.model.TweetSummary;
-import org.jboss.resteasy.util.HttpHeaderNames;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.inject.Inject;
-import java.io.IOException;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Component
-@RestController
-public class MessageboxRessource {
+@Controller
+@ResponseBody
+@RequiredArgsConstructor
+@Slf4j
+public class MessageboxEndpoint {
 
-    @Inject
-    private DispatchNextRequest dispatchNextRequest;
+    @NonNull
+    DispatchNextRequest dispatchNextRequest;
 
-    @Inject
-    private GetTweet getTweet;
+    @NonNull
+    GetTweet getTweet;
 
-    @Inject
-    private GetAdvertising getAdvertising;
+    @NonNull
+    GetAdvertising getAdvertising;
 
-    @Inject
-    private GetCurrentTitle getCurrentTitle;
+    @NonNull
+    GetCurrentTitle getCurrentTitle;
 
-    @Inject
-    private GetMessage getMessage;
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    @NonNull
+    GetMessage getMessage;
 
     @RequestMapping(value = "/dispatch", method = RequestMethod.GET)
     public ResponseEntity<Void> dispatch(UriComponentsBuilder uriComponentsBuilder) {
@@ -156,7 +159,7 @@ public class MessageboxRessource {
             String typeSuffix) {
         HttpHeaders headers = new HttpHeaders();
 
-        logger.info("Dispatching to " + dispatchAction);
+        log.info("Dispatching to " + dispatchAction);
         if (dispatchAction == DispatchAction.Tweet) {
 
             TweetSummary firstUnprocessedTweet = getTweet.getFirstUnprocessedTweet();

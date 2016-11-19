@@ -14,10 +14,10 @@ import lombok.Data;
 @Data
 public class PlayerStateRepresentation {
 
-    private boolean running;
-    private Date started;
-    private Date estimatedEnd;
-    private int estimatedSecondsToPlay;
-    private PlayerStateTrackRepresentation track;
+    boolean running;
+    Date started;
+    Date estimatedEnd;
+    int estimatedSecondsToPlay;
+    PlayerStateTrackRepresentation track;
 
 }

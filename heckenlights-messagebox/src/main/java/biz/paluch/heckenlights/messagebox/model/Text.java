@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class Text {
 
-    private String text;
-    private boolean emoji;
-    private int codepoint;
+    String text;
+    boolean emoji;
+    int codepoint;
 
     public Text(String text, boolean emoji) {
         this.setText(text);

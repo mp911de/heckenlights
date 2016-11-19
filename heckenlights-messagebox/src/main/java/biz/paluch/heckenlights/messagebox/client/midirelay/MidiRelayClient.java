@@ -1,6 +1,5 @@
 package biz.paluch.heckenlights.messagebox.client.midirelay;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -11,15 +10,19 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Component;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 01.12.13 20:52
  */
 @Component
+@RequiredArgsConstructor
 public class MidiRelayClient {
 
-    @Inject
-    private MidiRelayClientProxy clientProxy;
+    @NonNull
+    MidiRelayClientProxy clientProxy;
 
     public String getCurrentPlayId() {
 

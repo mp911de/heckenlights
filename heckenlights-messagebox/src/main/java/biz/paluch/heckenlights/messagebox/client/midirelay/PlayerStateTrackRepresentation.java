@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlayerStateTrackRepresentation {
 
-    private String id;
-    private String sequenceName;
-    private String fileName;
-    private int duration;
+    String id;
+    String sequenceName;
+    String fileName;
+    int duration;
 
     public PlayerStateTrackRepresentation(String sequenceName, String fileName) {
         this.sequenceName = sequenceName;

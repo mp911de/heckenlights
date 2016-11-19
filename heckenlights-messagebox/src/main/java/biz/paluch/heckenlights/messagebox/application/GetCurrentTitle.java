@@ -19,8 +19,6 @@ import javax.media.jai.TiledImage;
 import org.joda.time.Duration;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,14 +26,14 @@ import org.springframework.util.StringUtils;
 import biz.paluch.heckenlights.messagebox.client.midirelay.MidiRelayClient;
 import biz.paluch.heckenlights.messagebox.client.midirelay.PlayerStateRepresentation;
 import biz.paluch.heckenlights.messagebox.client.midirelay.PlayerStateTrackRepresentation;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Service
+@Slf4j
 public class GetCurrentTitle {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${image.height}")
     private int height;
@@ -58,12 +56,12 @@ public class GetCurrentTitle {
 
             if (state != null && state.isRunning() && state.getTrack() != null) {
                 String currentTitle = getCurrentTitle(state);
-                logger.info("Current title: " + currentTitle);
+                log.info("Current title: " + currentTitle);
                 return currentTitle;
             }
 
         } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
+            log.warn(e.getMessage(), e);
         }
         return null;
     }
@@ -81,7 +79,7 @@ public class GetCurrentTitle {
         }
 
         if (StringUtils.hasText(track.getFileName()) && StringUtils.hasText(track.getSequenceName())) {
-            return track.getFileName().trim() + "/" + track.getSequenceName() + suffix;
+            return track.getSequenceName() + suffix;
         }
 
         if (StringUtils.hasText(track.getFileName())) {

@@ -13,9 +13,9 @@ import lombok.Data;
 @Data
 public class TweetSummary {
 
-    private long id;
-    private String sender;
-    private String message;
-    private boolean processed;
-    private Date received;
+    long id;
+    String sender;
+    String message;
+    boolean processed;
+    Date received;
 }

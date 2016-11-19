@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 public class DisplayCount {
 
-    private int advertising;
-    private int tweets;
-    private int title;
-    private int messages;
+    int advertising;
+    int tweets;
+    int title;
+    int messages;
 }

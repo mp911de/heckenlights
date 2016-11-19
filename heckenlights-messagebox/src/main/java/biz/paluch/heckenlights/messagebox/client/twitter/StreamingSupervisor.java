@@ -6,9 +6,6 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.social.twitter.api.Stream;
@@ -21,36 +18,39 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.TopicProcessor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Component
+@Slf4j
 public class StreamingSupervisor {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final TopicProcessor<Tweet> fluxProcessor = TopicProcessor.create();
+
+    private final ReactiveMongoTemplate mongoTemplate;
+    private final Twitter twitter;
+    private final String filter;
+    private final boolean enabled;
 
     private Stream stream;
 
-    @Autowired
-    private ReactiveMongoTemplate mongoTemplate;
+    public StreamingSupervisor(ReactiveMongoTemplate mongoTemplate, Twitter twitter, @Value("${twitter.filter}") String filter,
+            @Value("${twitter.streaming.enabled}") boolean enabled) {
 
-    @Autowired
-    private Twitter twitter;
-
-    @Value("${twitter.filter}")
-    private String filter;
-
-    @Value("${twitter.streaming.enabled}")
-    private boolean enabled;
-
-    private TopicProcessor<Tweet> fluxProcessor = TopicProcessor.create();
+        this.mongoTemplate = mongoTemplate;
+        this.twitter = twitter;
+        this.filter = filter;
+        this.enabled = enabled;
+    }
 
     @PostConstruct
     public void postConstruct() {
 
-        logger.info("Prepare Stream");
+        log.info("Initialize StreamListener");
+
         StreamListener streamListener = new StreamListener() {
             @Override
             public void onTweet(Tweet tweet) {
@@ -60,23 +60,24 @@ public class StreamingSupervisor {
 
             @Override
             public void onDelete(StreamDeleteEvent streamDeleteEvent) {
-                logger.info("Tweet Deleted: " + streamDeleteEvent.getTweetId());
+                log.info("Tweet Deleted: " + streamDeleteEvent.getTweetId());
             }
 
             @Override
             public void onLimit(int i) {
-                logger.warn("Limit: " + i);
+                log.warn("Limit: " + i);
             }
 
             @Override
             public void onWarning(StreamWarningEvent streamWarningEvent) {
-                logger.warn(streamWarningEvent.getCode() + ": " + streamWarningEvent.getMessage() + ", "
+                log.warn(streamWarningEvent.getCode() + ": " + streamWarningEvent.getMessage() + ", "
                         + streamWarningEvent.getPercentFull());
             }
         };
 
         fluxProcessor.map(tweet -> {
-            logger.info("Incoming tweet {} {}", tweet.getFromUser(), tweet.getText());
+
+            log.info("Incoming tweet {} {}", tweet.getFromUser(), tweet.getText());
 
             TweetDocument document = new TweetDocument();
             document.setId(tweet.getId());
@@ -90,7 +91,7 @@ public class StreamingSupervisor {
 
         if (enabled && StringUtils.hasText(filter)) {
             stream = twitter.streamingOperations().filter(filter, Collections.singletonList(streamListener));
-            logger.info("Stream open with filter=" + filter);
+            log.info("Stream open with filter=" + filter);
         }
     }
 

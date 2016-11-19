@@ -1,30 +1,29 @@
 package biz.paluch.heckenlights.messagebox.application;
 
-import biz.paluch.heckenlights.messagebox.model.DispatchAction;
-import biz.paluch.heckenlights.messagebox.model.DisplayCount;
-import biz.paluch.heckenlights.messagebox.model.TweetSummary;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.inject.Inject;
+import biz.paluch.heckenlights.messagebox.model.DispatchAction;
+import biz.paluch.heckenlights.messagebox.model.DisplayCount;
+import biz.paluch.heckenlights.messagebox.model.TweetSummary;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Service
+@RequiredArgsConstructor
 public class DispatchNextRequest {
 
-    @Inject
-    private GetDisplayCount getDisplayCount;
-
-    @Inject
-    private GetTweet getTweet;
-
-    @Inject
-    private GetCurrentTitle getCurrentTitle;
-
-    @Inject
-    private GetMessage getMessage;
+    @NonNull
+    GetDisplayCount getDisplayCount;
+    @NonNull
+    GetTweet getTweet;
+    @NonNull
+    GetCurrentTitle getCurrentTitle;
+    @NonNull
+    GetMessage getMessage;
 
     public DispatchAction getDispatchAction() {
 

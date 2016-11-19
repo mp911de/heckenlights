@@ -3,18 +3,19 @@ package biz.paluch.heckenlights.messagebox.application;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import org.springframework.stereotype.Service;
 
 import biz.paluch.heckenlights.messagebox.model.DisplayCount;
 import biz.paluch.heckenlights.messagebox.repository.DisplayCountDocument;
 import biz.paluch.heckenlights.messagebox.repository.DisplayCountRepository;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Service
+@RequiredArgsConstructor
 public class GetDisplayCount {
 
     public static final String COUNT = "COUNT";
@@ -22,8 +23,8 @@ public class GetDisplayCount {
 
     public static final String COUNT_FORMAT = "yyyy-MM-dd_HH";
 
-    @Inject
-    private DisplayCountRepository displayCountRepository;
+    @NonNull
+    DisplayCountRepository displayCountRepository;
 
     public DisplayCount getDisplayCount() {
 

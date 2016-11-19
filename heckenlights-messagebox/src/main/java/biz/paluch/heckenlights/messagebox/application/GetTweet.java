@@ -14,25 +14,23 @@ import javax.inject.Inject;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import biz.paluch.heckenlights.messagebox.model.TweetSummary;
 import biz.paluch.heckenlights.messagebox.repository.TweetDocument;
 import biz.paluch.heckenlights.messagebox.repository.TweetRepository;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Service
+@Slf4j
 public class GetTweet {
 
     @Inject
     private TweetRepository tweetRepository;
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${image.height}")
     private int height;
@@ -64,7 +62,8 @@ public class GetTweet {
         if (document == null) {
             return null;
         }
-        logger.info("Retrieving Tweet " + document.getSender() + ": " + document.getMessage());
+
+        log.info("Retrieving Tweet {}: {}", document.getSender(), document.getMessage());
 
         document.setProcessed(true);
         tweetRepository.save(document);
@@ -105,7 +104,7 @@ public class GetTweet {
         parts.add(tweet.getSender() + ": ");
         parts.add(tweet.getMessage());
 
-        Renderer renderer = new Renderer(new Color(85,172,238));
+        Renderer renderer = new Renderer(new Color(85, 172, 238));
 
         int width = Math.max(minWidth, renderer.getWidth(parts)) + widthPreroll + widthPostroll + 12 + height;
 

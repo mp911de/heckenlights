@@ -13,17 +13,16 @@ import javax.media.jai.RenderedOp;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Service
+@Slf4j
 public class GetAdvertising {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public byte[] getAdvertising(String format) throws IOException {
 
@@ -31,7 +30,8 @@ public class GetAdvertising {
         List<File> files = new ArrayList<>(FileUtils.listFiles(assets,
                 FileFilterUtils.prefixFileFilter("heckenlights-advertising"), TrueFileFilter.INSTANCE));
 
-        int randomIndex = BigDecimal.valueOf(Math.random() * files.size()).setScale(0, BigDecimal.ROUND_HALF_UP).intValue() % files.size();
+        int randomIndex = BigDecimal.valueOf(Math.random() * files.size()).setScale(0, BigDecimal.ROUND_HALF_UP).intValue()
+                % files.size();
 
         File file = files.get(randomIndex);
 
@@ -39,7 +39,7 @@ public class GetAdvertising {
         parameterBlock.add(file.getCanonicalPath());
         RenderedOp image = JAI.create("fileload", parameterBlock);
 
-        logger.info("Advertising: " + file + ", format: " + format);
+        log.info("Advertising: " + file + ", format: " + format);
 
         return ImageEncoder.encode(format, image);
     }
