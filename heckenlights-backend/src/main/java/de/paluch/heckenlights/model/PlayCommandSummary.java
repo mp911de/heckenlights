@@ -13,16 +13,16 @@ import lombok.Data;
 @Data
 public class PlayCommandSummary {
 
-    private String id;
-    private Date created;
-    private String trackName;
-    private String fileName;
-    private PlayStatus playStatus;
-    private int duration;
-    private String externalSessionId;
-    private String submissionHost;
-    private String exception;
-    private List<Date> captures = new ArrayList<>();
-    private int timeToStart;
-    private int remaining;
+    String id;
+    Date created;
+    String trackName;
+    String fileName;
+    PlayStatus playStatus;
+    int duration;
+    String externalSessionId;
+    String submissionHost;
+    String exception;
+    List<Date> captures = new ArrayList<>();
+    int timeToStart;
+    int remaining;
 }

@@ -2,16 +2,18 @@ package de.paluch.heckenlights.repositories;
 
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Service
+@RequiredArgsConstructor
 public class StateService {
 
-    @Inject
-    private StateRepository stateRepository;
+    @NonNull
+    StateRepository stateRepository;
 
     public boolean isOnline() {
 

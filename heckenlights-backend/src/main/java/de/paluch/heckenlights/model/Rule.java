@@ -21,26 +21,18 @@ public class Rule {
 
     @XmlElementWrapper(name = "days")
     @XmlElement(name = "day")
-    private Set<DayOfWeek> days = Sets.newHashSet();
+    Set<DayOfWeek> days = Sets.newHashSet();
 
-    private String from;
-    private String to;
+    String from;
+    String to;
 
-    private Long maxPlaylistPlayedDuration;
-    private Long minLightsOnDuration;
-    private Boolean queueIsEmpty;
-    private Action action;
+    Long maxPlaylistPlayedDuration;
+    Long minLightsOnDuration;
+    Boolean queueIsEmpty;
+    Action action;
 
     @XmlElement(name = "reset")
-    private Set<Counter> reset = Sets.newHashSet();
-
-    public Set<DayOfWeek> getDays() {
-        return days;
-    }
-
-    public void setDays(Set<DayOfWeek> days) {
-        this.days = days;
-    }
+    Set<Counter> reset = Sets.newHashSet();
 
     public int getHourFrom() {
         if (from != null && from.indexOf(':') > -1) {

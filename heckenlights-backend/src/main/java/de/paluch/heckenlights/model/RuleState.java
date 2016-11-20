@@ -1,20 +1,21 @@
 package de.paluch.heckenlights.model;
 
-import org.springframework.stereotype.Component;
+import lombok.Data;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
+@Data
 public class RuleState {
 
-    private long playlistPlayedTimeMs = 0;
-    private long lightsOnTimeMs = 0;
-    private Rule activeRule;
-    private Rule.Action activeAction;
-    private long ruleActiveSince = 0;
-    private int playlistSize = 0;
-    private boolean playing = false;
-    private boolean switchedPlayState = false;
+    long playlistPlayedTimeMs = 0;
+    long lightsOnTimeMs = 0;
+    Rule activeRule;
+    Rule.Action activeAction;
+    long ruleActiveSince = 0;
+    int playlistSize = 0;
+    boolean playing = false;
+    boolean switchedPlayState = false;
 
     public void addPlaylistPlayedTimeMs(long timeMs) {
         playlistPlayedTimeMs += timeMs;
@@ -24,67 +25,4 @@ public class RuleState {
         lightsOnTimeMs += timeMs;
     }
 
-    public long getPlaylistPlayedTimeMs() {
-        return playlistPlayedTimeMs;
-    }
-
-    public void setPlaylistPlayedTimeMs(long playlistPlayedTimeMs) {
-        this.playlistPlayedTimeMs = playlistPlayedTimeMs;
-    }
-
-    public long getLightsOnTimeMs() {
-        return lightsOnTimeMs;
-    }
-
-    public void setLightsOnTimeMs(long lightsOnTimeMs) {
-        this.lightsOnTimeMs = lightsOnTimeMs;
-    }
-
-    public Rule getActiveRule() {
-        return activeRule;
-    }
-
-    public void setActiveRule(Rule activeRule) {
-        this.activeRule = activeRule;
-    }
-
-    public Rule.Action getActiveAction() {
-        return activeAction;
-    }
-
-    public void setActiveAction(Rule.Action activeAction) {
-        this.activeAction = activeAction;
-    }
-
-    public long getRuleActiveSince() {
-        return ruleActiveSince;
-    }
-
-    public void setRuleActiveSince(long ruleActiveSince) {
-        this.ruleActiveSince = ruleActiveSince;
-    }
-
-    public int getPlaylistSize() {
-        return playlistSize;
-    }
-
-    public void setPlaylistSize(int playlistSize) {
-        this.playlistSize = playlistSize;
-    }
-
-    public boolean isPlaying() {
-        return playing;
-    }
-
-    public void setPlaying(boolean playing) {
-        this.playing = playing;
-    }
-
-    public boolean isSwitchedPlayState() {
-        return switchedPlayState;
-    }
-
-    public void setSwitchedPlayState(boolean switchedPlayState) {
-        this.switchedPlayState = switchedPlayState;
-    }
 }

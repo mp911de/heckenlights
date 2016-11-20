@@ -12,10 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,24 +32,23 @@ import de.paluch.heckenlights.model.EnqueueRequest;
 import de.paluch.heckenlights.model.PlayCommandSummary;
 import de.paluch.heckenlights.model.PlayStatus;
 import de.paluch.heckenlights.model.TrackContent;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 22:22
  */
 @Component
+@RequiredArgsConstructor
 public class PlayCommandService {
 
-    private Logger log = Logger.getLogger(getClass());
-
-    @Inject
-    private PlayCommandRepository playCommandRepository;
-
-    @Inject
-    private MidiRelayClient client;
-
-    @Inject
-    private GridFsOperations gridFsOperations;
+    @NonNull
+    PlayCommandRepository playCommandRepository;
+    @NonNull
+    MidiRelayClient client;
+    @NonNull
+    GridFsOperations gridFsOperations;
 
     private final static int COMMAND_OVERHEAD_SEC = 5;
 

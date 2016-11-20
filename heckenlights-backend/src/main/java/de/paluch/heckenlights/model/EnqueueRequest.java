@@ -11,13 +11,13 @@ import lombok.Data;
 @Data
 public class EnqueueRequest {
 
-    private String commandId;
-    private Date created;
-    private String trackName;
-    private String fileName;
-    private PlayStatus playStatus;
-    private byte[] content;
-    private String externalSessionId;
-    private String submissionHost;
-    private int duration;
+    String commandId;
+    Date created;
+    String trackName;
+    String fileName;
+    PlayStatus playStatus;
+    byte[] content;
+    String externalSessionId;
+    String submissionHost;
+    int duration;
 }

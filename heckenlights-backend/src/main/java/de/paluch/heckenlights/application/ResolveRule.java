@@ -1,30 +1,34 @@
 package de.paluch.heckenlights.application;
 
-import com.google.common.collect.ImmutableSet;
-import de.paluch.heckenlights.model.Rule;
-import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.model.Rules;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
 import java.time.Clock;
 import java.time.LocalTime;
 import java.util.Arrays;
+
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.ImmutableSet;
+
+import de.paluch.heckenlights.model.Rule;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.model.Rules;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Component
+@RequiredArgsConstructor
 public class ResolveRule {
 
-    @Inject
-    private RuleState ruleState;
+    @NonNull
+    RuleState ruleState;
 
-    @Inject
-    private Rules rules;
+    @NonNull
+    Rules rules;
 
-    @Inject
-    private Clock clock;
+    @NonNull
+    Clock clock;
 
     public Rule getRule() {
 

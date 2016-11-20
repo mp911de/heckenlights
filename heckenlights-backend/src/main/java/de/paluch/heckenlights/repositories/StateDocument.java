@@ -1,8 +1,6 @@
 package de.paluch.heckenlights.repositories;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,15 +15,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "id")
 public class StateDocument {
 
-    @Id
-    private String id;
-
-    @Field
-    private boolean online;
-
-    @Field
-    private boolean queueOpen;
-
-    @Field
-    private boolean queueProcessorActive;
+    String id;
+    boolean online;
+    boolean queueOpen;
+    boolean queueProcessorActive;
 }

@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 public class PlayerStateTrackRepresentation {
 
-    private String id;
-    private String sequenceName;
-    private String fileName;
-    private int duration;
+    String id;
+    String sequenceName;
+    String fileName;
+    int duration;
 }

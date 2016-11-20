@@ -19,10 +19,10 @@ import lombok.Data;
 @Data
 public class Rules {
 
-    private String timezone;
-    private TimeUnit timeunit;
-    private Rule.Action defaultAction;
+    String timezone;
+    TimeUnit timeunit;
+    Rule.Action defaultAction;
 
     @XmlElement(name = "rule")
-    private List<Rule> rules = new ArrayList<>();
+    List<Rule> rules = new ArrayList<>();
 }

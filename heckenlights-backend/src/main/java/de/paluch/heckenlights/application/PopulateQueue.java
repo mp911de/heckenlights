@@ -1,31 +1,35 @@
 package de.paluch.heckenlights.application;
 
-import com.google.common.io.Files;
-import de.paluch.heckenlights.model.DurationExceededException;
-import de.paluch.heckenlights.model.EnqueueRequest;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import javax.sound.midi.InvalidMidiDataException;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.sound.midi.InvalidMidiDataException;
+
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Component;
+
+import com.google.common.io.Files;
+
+import de.paluch.heckenlights.model.DurationExceededException;
+import de.paluch.heckenlights.model.EnqueueRequest;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class PopulateQueue {
-
-    private Logger log = Logger.getLogger(getClass());
 
     private String midiDirectory;
 
-    @Inject
-    private EnqueueTrack enqueueTrack;
+    @NonNull
+    EnqueueTrack enqueueTrack;
 
     public void populateQueue() throws IOException, InvalidMidiDataException, DurationExceededException {
 

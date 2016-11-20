@@ -28,20 +28,20 @@ import lombok.EqualsAndHashCode;
 public class PlayCommandDocument {
 
     @Id
-    private String id;
+    String id;
 
     @Indexed
-    private Date created;
-    private String trackName;
+    Date created;
+    String trackName;
 
     @Indexed
-    private PlayStatus playStatus;
+    PlayStatus playStatus;
 
-    private ObjectId attachedFile;
-    private int duration;
-    private String externalSessionId;
-    private String submissionHost;
-    private String exception;
-    private String fileName;
-    private List<ObjectId> captures = new ArrayList<>();
+    ObjectId attachedFile;
+    int duration;
+    String externalSessionId;
+    String submissionHost;
+    String exception;
+    String fileName;
+    List<ObjectId> captures = new ArrayList<>();
 }

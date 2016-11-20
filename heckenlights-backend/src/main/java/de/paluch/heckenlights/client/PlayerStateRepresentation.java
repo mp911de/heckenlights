@@ -1,9 +1,10 @@
 package de.paluch.heckenlights.client;
 
-import lombok.Data;
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import java.util.Date;
+import lombok.Data;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -13,9 +14,9 @@ import java.util.Date;
 @Data
 public class PlayerStateRepresentation {
 
-    private boolean running;
-    private Date started;
-    private Date estimatedEnd;
-    private int estimatedSecondsToPlay;
-    private PlayerStateTrackRepresentation track;
+    boolean running;
+    Date started;
+    Date estimatedEnd;
+    int estimatedSecondsToPlay;
+    PlayerStateTrackRepresentation track;
 }

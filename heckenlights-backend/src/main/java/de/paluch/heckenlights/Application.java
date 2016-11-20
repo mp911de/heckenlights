@@ -1,5 +1,11 @@
 package de.paluch.heckenlights;
 
+import java.io.IOException;
+import java.time.Clock;
+import java.util.TimeZone;
+
+import javax.xml.bind.JAXB;
+
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -8,17 +14,17 @@ import org.apache.http.params.HttpConnectionParamBean;
 import org.apache.http.params.HttpParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.io.Resource;
 
 import com.google.common.collect.ImmutableSet;
 
 import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.model.Rules;
 import de.paluch.heckenlights.tracking.TrackingMDCFilter;
 
 @Configuration
@@ -66,5 +72,15 @@ public class Application {
         registrationBean.setEnabled(true);
         registrationBean.setUrlPatterns(ImmutableSet.of("/*"));
         return registrationBean;
+    }
+
+    @Bean
+    Clock clock(Rules rules) {
+        return Clock.system(TimeZone.getTimeZone(rules.getTimezone()).toZoneId());
+    }
+
+    @Bean
+    Rules rules(@Value("${rules.location}") Resource ruleLocation) throws IOException {
+        return JAXB.unmarshal(ruleLocation.getFile(), Rules.class);
     }
 }

@@ -1,17 +1,21 @@
 package de.paluch.heckenlights.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 @Component
+@RequiredArgsConstructor
 public class MidiRelayClientHealth extends AbstractHealthIndicator {
-    @Autowired
-    private MidiRelayClient midiRelayClient;
+
+    @NonNull
+    MidiRelayClient midiRelayClient;
 
     @Override
     protected void doHealthCheck(Health.Builder builder) throws Exception {

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class TrackContent {
 
-    private String id;
-    private String filename;
-    private byte[] content;
+    String id;
+    String filename;
+    byte[] content;
 }

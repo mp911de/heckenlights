@@ -2,7 +2,6 @@ package de.paluch.heckenlights.client;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -11,23 +10,26 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 01.12.13 20:52
  */
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class MidiRelayClient {
 
-    private Logger log = Logger.getLogger(getClass());
-
-    @Inject
-    private MidiRelayClientProxy clientProxy;
+    @NonNull
+    MidiRelayClientProxy clientProxy;
 
     private Cache<Long, PlayerStateRepresentation> semaphore = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES)
             .build();

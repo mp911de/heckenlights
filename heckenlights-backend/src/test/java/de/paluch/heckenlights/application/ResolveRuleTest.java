@@ -1,23 +1,27 @@
 package de.paluch.heckenlights.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import com.google.common.io.Resources;
-import de.paluch.heckenlights.model.Rule;
-import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.model.Rules;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.xml.bind.JAXB;
 import java.time.Clock;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.bind.JAXB;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import com.google.common.io.Resources;
+
+import de.paluch.heckenlights.model.Rule;
+import de.paluch.heckenlights.model.RuleState;
+import de.paluch.heckenlights.model.Rules;
+
 public class ResolveRuleTest {
 
-    private ResolveRule sut = new ResolveRule();
+    private ResolveRule sut;
     private RuleState ruleState;
 
     @Before
@@ -25,8 +29,8 @@ public class ResolveRuleTest {
 
         ruleState = new RuleState();
         Rules rules = JAXB.unmarshal(Resources.getResource("rules.xml"), Rules.class);
-        ReflectionTestUtils.setField(sut, "rules", rules);
-        ReflectionTestUtils.setField(sut, "ruleState", ruleState);
+
+        sut = new ResolveRule(ruleState, rules, Clock.systemDefaultZone());
     }
 
     @Test

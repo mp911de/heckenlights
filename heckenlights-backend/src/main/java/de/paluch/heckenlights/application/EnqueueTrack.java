@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
-import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
@@ -16,7 +15,6 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Track;
 
-import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
@@ -32,28 +30,20 @@ import de.paluch.heckenlights.model.PlayStatus;
 import de.paluch.heckenlights.model.QuotaExceededException;
 import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.repositories.PlayCommandService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:47
  */
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class EnqueueTrack {
 
     public static final String CONTENT_TYPE = "audio/midi";
-    private Logger log = Logger.getLogger(getClass());
-
-    @Inject
-    private PlayCommandService playCommandService;
-
-    @Inject
-    private RuleState ruleState;
-
-    @Inject
-    private IsQueueOpen isQueueOpen;
-
-    @Inject
-    private GetOnlineState getOnlineState;
 
     private static Sequencer sequencer;
 
@@ -62,6 +52,18 @@ public class EnqueueTrack {
     private final static int QUOTA = 10;
     private final static int LIMIT_ENEUQUED = 20;
     private final static int QUOTA_MINUTES = 30;
+
+    @NonNull
+    PlayCommandService playCommandService;
+
+    @NonNull
+    RuleState ruleState;
+
+    @NonNull
+    IsQueueOpen isQueueOpen;
+
+    @NonNull
+    GetOnlineState getOnlineState;
 
     public EnqueueResult enqueueWithQuotaCheck(EnqueueRequest enqueue)
             throws IOException, InvalidMidiDataException, DurationExceededException, QuotaExceededException, OfflineException {

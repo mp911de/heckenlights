@@ -1,4 +1,4 @@
-package de.paluch.heckenlights.rest;
+package de.paluch.heckenlights.web;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -21,19 +21,19 @@ import lombok.NoArgsConstructor;
 public class EnqueueResponseRepresentation {
 
     @XmlAttribute(name = "enqueuedCommandId")
-    private String enqueuedCommandId;
+    String enqueuedCommandId;
 
     @XmlElement(name = "playStatus")
-    private PlayStatus playStatus;
+    PlayStatus playStatus;
 
     @XmlElement(name = "message")
-    private String message;
+    String message;
 
     @XmlElement(name = "trackName")
-    private String trackName;
+    String trackName;
 
     @XmlElement(name = "durationToPlay")
-    private int durationToPlay;
+    int durationToPlay;
 
     public EnqueueResponseRepresentation(PlayStatus playStatus, String message) {
         this.playStatus = playStatus;

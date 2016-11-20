@@ -1,4 +1,4 @@
-package de.paluch.heckenlights.rest;
+package de.paluch.heckenlights.web;
 
 import java.util.Date;
 
@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 /**
@@ -17,10 +18,11 @@ import lombok.Data;
 @XmlAccessorType(XmlAccessType.NONE)
 @Data
 public class PlayCaptureRepresentation {
+
     @XmlAttribute(name = "id")
-    private int id;
+    int id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @XmlElement(name = "created")
-    private Date created;
+    Date created;
 }

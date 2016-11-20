@@ -1,4 +1,4 @@
-package de.paluch.heckenlights.rest;
+package de.paluch.heckenlights.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +20,15 @@ import lombok.Data;
 public class PlayCommandsRepresentation {
 
     @XmlElement(name = "playCommand")
-    private List<PlayCommandRepresentation> playCommands = new ArrayList<>();
+    List<PlayCommandRepresentation> playCommands = new ArrayList<>();
 
     @XmlElement(name = "online")
-    private boolean online;
+    boolean online;
 
     @XmlElement(name = "queueOpen")
-    private boolean queueOpen;
+    boolean queueOpen;
 
     @XmlElement(name = "processingPlayback")
-    private boolean processingPlayback;
+    boolean processingPlayback;
 
 }

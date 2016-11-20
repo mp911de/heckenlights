@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.time.Clock;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.sound.midi.InvalidMidiDataException;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import de.paluch.heckenlights.client.MidiRelayClient;
@@ -19,36 +17,33 @@ import de.paluch.heckenlights.model.RuleState;
 import de.paluch.heckenlights.model.TrackContent;
 import de.paluch.heckenlights.repositories.PlayCommandService;
 import de.paluch.heckenlights.repositories.StateService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 28.11.13 21:47
  */
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class ProcessQueue {
 
-    private Logger log = Logger.getLogger(getClass());
-
-    @Inject
-    private MidiRelayClient client;
-
-    @Inject
-    private PlayCommandService playCommandService;
-
-    @Inject
-    private PopulateQueue populateQueue;
-
-    @Inject
-    private RuleState ruleState;
-
-    @Inject
-    private ResolveRule resolveRule;
-
-    @Inject
-    private StateService stateService;
-
-    @Inject
-    private Clock clock;
+    @NonNull
+    MidiRelayClient client;
+    @NonNull
+    PlayCommandService playCommandService;
+    @NonNull
+    PopulateQueue populateQueue;
+    @NonNull
+    RuleState ruleState;
+    @NonNull
+    ResolveRule resolveRule;
+    @NonNull
+    StateService stateService;
+    @NonNull
+    Clock clock;
 
     private long lastScanMs = -1;
 
@@ -160,8 +155,8 @@ public class ProcessQueue {
         }
     }
 
-    private void playlist(List<PlayCommandSummary> commands, boolean ruleSwitched, boolean actionSwitched) throws IOException,
-            InvalidMidiDataException, DurationExceededException {
+    private void playlist(List<PlayCommandSummary> commands, boolean ruleSwitched, boolean actionSwitched)
+            throws IOException, InvalidMidiDataException, DurationExceededException {
         if (commands.isEmpty()) {
             if (ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE) {
                 populateQueue.populateQueue();
@@ -190,9 +185,9 @@ public class ProcessQueue {
                 found = true;
             }
 
-            if (!found
-                    && (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON
-                            || ruleState.getActiveAction() == Rule.Action.PLAYLIST || ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE)) {
+            if (!found && (ruleState.getActiveAction() == Rule.Action.LIGHTS_ON
+                    || ruleState.getActiveAction() == Rule.Action.PLAYLIST
+                    || ruleState.getActiveAction() == Rule.Action.PLAYLIST_AUTO_ENQEUE)) {
                 long played = clock.millis() - lastScanMs;
                 ruleState.addLightsOnTimeMs(played);
                 found = true;

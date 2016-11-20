@@ -1,21 +1,22 @@
-package de.paluch.heckenlights.rest;
+package de.paluch.heckenlights.web;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.io.FilenameUtils;
 
 import com.google.common.collect.Lists;
+
 import de.paluch.heckenlights.model.EnqueueRequest;
 import de.paluch.heckenlights.model.EnqueueResult;
 import de.paluch.heckenlights.model.PlayCommandSummary;
 import de.paluch.heckenlights.model.PlayStatus;
-import org.apache.commons.io.FilenameUtils;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  */
 class Mapper {
     private Mapper() {
-
     }
 
     static void toPlayCommand(PlayCommandSummary summaryModel, PlayCommandRepresentation playCommandRepresentation) {
