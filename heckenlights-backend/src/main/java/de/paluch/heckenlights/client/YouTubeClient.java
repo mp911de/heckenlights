@@ -61,24 +61,12 @@ public class YouTubeClient {
             localReceiver = null;
         }
 
-        cache = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).build(new CacheLoader<String, String>() {
+        cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build(new CacheLoader<String, String>() {
             @Override
             public String load(String s) throws Exception {
                 return fetchStreamingId();
             }
         });
-    }
-
-    public Credential authorize() throws IOException {
-
-        FileDataStoreFactory fileDataStoreFactory = new FileDataStoreFactory(new File(CREDENTIALS_DIRECTORY));
-        DataStore<StoredCredential> datastore = fileDataStoreFactory.getDataStore("listbroadcasts");
-
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets,
-                scopes).setCredentialDataStore(datastore).build();
-
-        // Authorize.
-        return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
     }
 
     public String getYouTubeStreamingId() {
@@ -111,5 +99,17 @@ public class YouTubeClient {
         }
 
         return response.getItems().get(0).getId();
+    }
+
+    private Credential authorize() throws IOException {
+
+        FileDataStoreFactory fileDataStoreFactory = new FileDataStoreFactory(new File(CREDENTIALS_DIRECTORY));
+        DataStore<StoredCredential> datastore = fileDataStoreFactory.getDataStore("listbroadcasts");
+
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets,
+                scopes).setCredentialDataStore(datastore).build();
+
+        // Authorize.
+        return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
     }
 }
