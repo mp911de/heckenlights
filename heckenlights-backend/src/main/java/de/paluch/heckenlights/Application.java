@@ -1,10 +1,7 @@
 package de.paluch.heckenlights;
 
-import java.io.IOException;
 import java.time.Clock;
 import java.util.TimeZone;
-
-import javax.xml.bind.JAXB;
 
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -19,12 +16,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.core.io.Resource;
 
 import com.google.common.collect.ImmutableSet;
 
+import de.paluch.heckenlights.application.RuleService;
 import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.model.Rules;
 import de.paluch.heckenlights.tracking.TrackingMDCFilter;
 
 @Configuration
@@ -75,12 +71,7 @@ public class Application {
     }
 
     @Bean
-    Clock clock(Rules rules) {
-        return Clock.system(TimeZone.getTimeZone(rules.getTimezone()).toZoneId());
-    }
-
-    @Bean
-    Rules rules(@Value("${rules.location}") Resource ruleLocation) throws IOException {
-        return JAXB.unmarshal(ruleLocation.getFile(), Rules.class);
+    Clock clock(RuleService ruleService) {
+        return Clock.system(TimeZone.getTimeZone(ruleService.getRules().getTimezone()).toZoneId());
     }
 }

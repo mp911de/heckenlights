@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -22,6 +23,7 @@ import de.paluch.heckenlights.application.EnqueueTrack;
 import de.paluch.heckenlights.application.GetOnlineState;
 import de.paluch.heckenlights.application.GetPlaylist;
 import de.paluch.heckenlights.application.IsQueueOpen;
+import de.paluch.heckenlights.client.YouTubeClient;
 import de.paluch.heckenlights.model.DurationExceededException;
 import de.paluch.heckenlights.model.EnqueueRequest;
 import de.paluch.heckenlights.model.EnqueueResult;
@@ -41,8 +43,7 @@ import lombok.experimental.FieldDefaults;
 @ResponseBody
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true)
-public class HeckenlightsEndpoint
-{
+public class HeckenlightsEndpoint {
 
     @NonNull
     EnqueueTrack enqueueTrack;
@@ -52,6 +53,8 @@ public class HeckenlightsEndpoint
     GetOnlineState getOnlineState;
     @NonNull
     IsQueueOpen isQueueOpen;
+    @NonNull
+    YouTubeClient youTubeClient;
 
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.POST)
     public ResponseEntity<EnqueueResponseRepresentation> uploadFile(
@@ -89,7 +92,6 @@ public class HeckenlightsEndpoint
                     HttpStatus.LOCKED);
 
         }
-
     }
 
     @RequestMapping(value = "/", produces = { MediaType.TEXT_XML, MediaType.APPLICATION_JSON }, method = RequestMethod.GET)
@@ -123,7 +125,10 @@ public class HeckenlightsEndpoint
 
         Mapper.toPlayCommand(playCommand, result);
         return result;
-
     }
 
+    @GetMapping(value = "youtube-streaming-id", produces = { MediaType.TEXT_PLAIN })
+    public String getYoutubeStreamingId() {
+        return youTubeClient.getYouTubeStreamingId();
+    }
 }

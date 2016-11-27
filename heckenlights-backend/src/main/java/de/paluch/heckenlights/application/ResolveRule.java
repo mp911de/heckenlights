@@ -25,7 +25,7 @@ public class ResolveRule {
     RuleState ruleState;
 
     @NonNull
-    Rules rules;
+    RuleService ruleService;
 
     @NonNull
     Clock clock;
@@ -33,6 +33,8 @@ public class ResolveRule {
     public Rule getRule() {
 
         LocalTime zonedDateTime = LocalTime.now(clock);
+
+        Rules rules = ruleService.getRules();
 
         for (Rule rule : rules.getRules()) {
             int hour = zonedDateTime.getHour();

@@ -7,17 +7,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.bind.JAXB;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.UrlResource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.google.common.io.Resources;
 
 import de.paluch.heckenlights.model.Rule;
 import de.paluch.heckenlights.model.RuleState;
-import de.paluch.heckenlights.model.Rules;
 
 public class ResolveRuleTest {
 
@@ -28,9 +26,9 @@ public class ResolveRuleTest {
     public void before() throws Exception {
 
         ruleState = new RuleState();
-        Rules rules = JAXB.unmarshal(Resources.getResource("rules.xml"), Rules.class);
+        RuleService ruleService = new RuleService(new UrlResource(Resources.getResource("rules.xml")));
 
-        sut = new ResolveRule(ruleState, rules, Clock.systemDefaultZone());
+        sut = new ResolveRule(ruleState, ruleService, Clock.systemDefaultZone());
     }
 
     @Test

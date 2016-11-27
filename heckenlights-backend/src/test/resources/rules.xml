@@ -25,7 +25,6 @@
         <action>LIGHTS_ON</action>
     </rule>
 
-
     <rule>
         <from>5:00</from>
         <to>8:00</to>

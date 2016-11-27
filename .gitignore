@@ -142,3 +142,5 @@ rpi-rgb-led-matrix/text-example
 rpi-rgb-led-matrix/led-matrix
 heckenlights-messagebox-controller/temp
 config.ini
+oauth-credentials
+client_secret.*
