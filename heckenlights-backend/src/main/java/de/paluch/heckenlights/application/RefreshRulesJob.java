@@ -1,8 +1,5 @@
 package de.paluch.heckenlights.application;
 
-import java.io.IOException;
-
-import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXB;
 
 import org.apache.log4j.Logger;
@@ -10,8 +7,6 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
@@ -27,18 +22,7 @@ public class RefreshRulesJob implements Job {
 
     private Logger log = Logger.getLogger(getClass());
 
-    @Value("${rules.location}")
-    Resource ruleLocation;
-
-    @Autowired
-    Rules rules;
-
     private volatile long lastModified;
-
-    @PostConstruct
-    private void postConstruct() throws IOException {
-        lastModified = ruleLocation.lastModified();
-    }
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
@@ -46,6 +30,13 @@ public class RefreshRulesJob implements Job {
         try {
             ApplicationContext context = (ApplicationContext) jobExecutionContext.getScheduler().getContext()
                     .get(APPLICATION_CONTEXT_KEY);
+
+            Resource ruleLocation = context.getResource(context.getEnvironment().getProperty("rules.location"));
+            Rules rules = context.getBean(Rules.class);
+
+            if (lastModified == 0) {
+                lastModified = ruleLocation.lastModified();
+            }
 
             if (lastModified != ruleLocation.lastModified()) {
 
