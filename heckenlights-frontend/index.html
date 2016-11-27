@@ -77,41 +77,51 @@
     </div>
 </div>
 
-<div id="top" class="header">
+<header id="top" class="header">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
 
                 <h1>Heckenlights</h1>
 
-                <p id="intro" class="lead" style="display: none">{{index_intro1}}</p>
+                <p id="intro" class="lead">{{index_intro1}}</p>
+                <p id="countdown" class="lead" style="display: none;">{{index_countdown_a}} <span
+                        id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
+                        id="countdowntext"></span> {{index_countdown_d}}</p>
+                <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
 
-                <!-- <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p> -->
+                <div>
+                    <?php
+    require 'app/settings.php';
+    require 'app/settings-override.php';
+    require 'app/youtube.php';
+    if ($streamingId == "" ){
+    ?>
+                   <a href="/"><img src="images/offline.png" width="720" border="0"></a>
+                    <br />
+                    <?php
+    } else {
+    ?>
+                    <iframe id="livestream" width="720" height="404"
+                            src="https://www.youtube.com/embed/<?php echo $streamingId; ?>?autoplay=1"
+                            frameborder="0" allowfullscreen></iframe>
+                    <p class="bordered light">
+                        <a href="https://www.youtube.com/c/MarkPaluch/live"
+                           target="_blank">{{index_watch_on_youtube}}</a>
+                        <br/>
+                        {{index_hint_delay}}<br/>
+                        <br/>
+                        {{index_hint_nothing_happening}}
+                    </p>
+                    <?php
+    }
+    ?>
 
-                <div class="bordered" style="width: 580px; height: 300px; margin: auto; background-color: rgba(90, 3, 0, 0.74)">
-                    <p style="margin-top: 50px" class="lead">{{index_suspended}}</p>
-                    <!-- <iframe src="https://www.ustream.tv/embed/19162154?wmode=direct" style="border: 0 none transparent;"
-                             frameborder="no" width="100%" height="372"></iframe>
-                     <br/><a href="http://www.ustream.tv/"
-                             style="display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;"
-                             target="_blank">Live streaming video by Ustream</a>
 
-                     <p class="bordered light">
-                         <a href="http://ustream.tv/channel/heckenlights" target="_blank">{{index_watch_on_ustream}}</a>
-                         <br/>
-                         {{index_hint_delay}}<br/>
-                         <br/>
-                         {{index_hint_nothing_happening}}
-                     </p>-->
                 </div>
             </div>
             <div id="controls" class="col-md-4">
-                <div id="closed" class="closedoverlay overlay" style="display: none;">
-                </div>
                 <div id="closedsign" class="overlay" style="display: none"></div>
-                <div id="offlinenote2" class="overlay" style="display: none">
-                   <!-- <div><p class="lead">{{{info_offline_suspended}}}</p></div> -->
-                </div>
                 <div class="list-group">
                     <h3 class="light">{{index_playlist}}</h3>
 
@@ -180,11 +190,10 @@
             </div>
 
         </div>
-    </div>
-</div>
+</header>
 
 <!-- About -->
-<div id="about" class="about">
+<section id="about" class="about">
     <div class="sectiondivider"></div>
     <div class="container">
         <div class="row">
@@ -199,11 +208,14 @@
                 </div>
             </div>
         </div>
+        <!-- /.row -->
     </div>
-</div>
+    <!-- /.container -->
+</section>
+
 
 <!-- Legal -->
-<div id="legal" class="legal">
+<section id="legal" class="legal">
     <div class="sectiondivider"></div>
     <div class="container">
         <div class="row">
@@ -226,16 +238,18 @@
                 </div>
             </div>
         </div>
+        <!-- /.row -->
     </div>
-</div>
+    <!-- /.container -->
+</section>
 
 <!-- Footer -->
-<div>
+<footer>
     <div class="sectiondivider"></div>
 
     <div id="contact" class="container">
         <div class="row">
-            <div class="col-sm-10 col-sm-offset-1 text-center">
+            <div class="col-lg-10 col-lg-offset-1 text-center">
                 <h4><strong>Heckenlights</strong>
                 </h4>
 
@@ -263,13 +277,11 @@
                         href="http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/">http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/</a>
                 </p>
 
-                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2016</p>
+                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2015</p>
             </div>
         </div>
     </div>
-</div>
-
-<div id="fb-root"></div>
+</footer>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -300,6 +312,10 @@
 <script src="js/heckenlights-frontend.js"></script>
 <!-- endbuild -->
 
+<!-- build:js js/heckenlights-countdown.js -->
+<script src="js/heckenlights-countdown.js"></script>
+<!-- endbuild -->
+
 <script>
 
     var language = '{{language}}';
@@ -322,6 +338,7 @@
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
             h.initialize();
+            countdown().initialize();
         });
     });
 
@@ -356,3 +373,4 @@
 
 </body>
 </html>
+0

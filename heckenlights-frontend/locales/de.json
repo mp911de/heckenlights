@@ -35,7 +35,7 @@
     "index_countdown_b": "1. Dez. um 17:00 Uhr",
     "index_countdown_c": "Also noch",
     "index_countdown_d": "lang warten.",
-    "index_watch_on_ustream": "Auf ustream.tv ansehen",
+    "index_watch_on_youtube": "Auf YouTube ansehen",
     "index_hint_delay": "Der Live-Stream hat eine Verzögerung von ca. 10 bis 20 Sekunden.",
     "index_hint_nothing_happening": "Du siehst Lichter, aber es passiert nichts? Du hörst keine Musik? Wahrscheinlich ist die Wiedergabeliste leer. Klick doch einfach einen Titel an um ihn zur Wiedergabeliste hinzuzufügen.",
     "index_upload_info": "Hast du Musik im MIDI-Format? Lade deine eigenen Weihnachtstracks hoch. Dein Track muss zwischen 10 Sekunden und 5 Minuten lang sein.",
@@ -62,6 +62,5 @@
     "enqueue_success_plural": "<strong>Dein Titel __track__ wurde eingetragen!</strong><br/> Es dauert nur noch __count__ Sekunden bis dein Titel gespielt wird.",
     "enqueue_tweet": "Ich habe __track__ auf http://heckenlights.org hochgeladen. In __count__ Sekunden geht es los. #Heckenlights",
     "enqueue_tweet_now": "Ich habe __track__ auf http://heckenlights.org hochgeladen. Jetzt geht es los. #Heckenlights",
-    "index_suspended": "Heckenlights ist nun geschlossen. Vielen Dank für die rege teilnahme. Heckenlights kommt im Dezember wieder zurück."
-
+    "index_suspended": "Heckenlights ist nun geschlossen. Vielen Dank für die rege Teilnahme. Heckenlights kommt im Dezember wieder zurück."
 }

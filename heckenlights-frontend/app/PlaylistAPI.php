@@ -4,7 +4,6 @@ require_once 'AbstractAPI.php';
 require_once 'settings.php';
 require_once 'playlist.php';
 
-
 class PlaylistAPI extends AbstractAPI
 {
 
@@ -46,8 +45,6 @@ class PlaylistAPI extends AbstractAPI
         }
         throw new InvalidArgumentException();
     }
-
-
 }
 
 ?>

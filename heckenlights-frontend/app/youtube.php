@@ -26,10 +26,9 @@ function getYouTubeStreamingId()
         throw new Exception("Bad Request");
     }
 
-    return createPlaylistModel($rawResponse->body);
+    return $rawResponse->body;
 }
 
 ?>
-<iframe width="720" height="404" src="https://www.youtube.com/embed/<?php echo $streamingId; ?>&autoplay=1"
-        frameborder="0" allowfullscreen></iframe>
+
 

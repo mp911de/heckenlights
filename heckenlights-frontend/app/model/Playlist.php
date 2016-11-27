@@ -59,10 +59,4 @@ class Playlist
     {
         $this->queueOpen = $queueOpen;
     }
-
-
-
-
-
-
-} 
+}

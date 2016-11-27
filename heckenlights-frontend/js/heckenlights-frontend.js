@@ -166,9 +166,9 @@ var heckenlights = (function () {
         }
 
         function enqueueFailed(enqueued, status) {
+
             $('#progress .progress-bar').removeClass('progress-bar-success');
             $('#progress .progress-bar').addClass('progress-bar-warning');
-
 
             var message = null;
             if (status == 401 && enqueued) {
@@ -209,6 +209,7 @@ var heckenlights = (function () {
         }
 
         function enqueuePreset(presetfile) {
+
             var uri = config.submitpreset;
 
             $.ajax({
@@ -235,7 +236,6 @@ var heckenlights = (function () {
                     enqueueFailed(enqueued, status);
                 });
         }
-
 
         function loadPresets() {
 
@@ -403,7 +403,6 @@ var heckenlights = (function () {
                 });
         }
 
-
         function siteClosed() {
             siteIsOpen = false;
             $("#closed").show();
@@ -426,6 +425,7 @@ var heckenlights = (function () {
         }
 
         function siteOpen() {
+
             siteIsOpen = true;
             $("#closed").hide();
             $("#closedsign").hide();
@@ -445,7 +445,6 @@ var heckenlights = (function () {
         function updateSiteState(data) {
 
             if (data && data.online) {
-
 
                 if (!siteIsOpen) {
                     siteOpen();
