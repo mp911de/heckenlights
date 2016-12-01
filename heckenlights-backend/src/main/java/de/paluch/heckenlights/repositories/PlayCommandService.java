@@ -146,6 +146,11 @@ public class PlayCommandService {
 
     private int appendCurrentTrack(List<PlayCommandSummary> result, PlayerStateRepresentation state) {
         int timeToStart = 0;
+
+        if (state.getTrack() == null || state.getTrack().getId() == null) {
+            return timeToStart;
+        }
+
         PlayCommandDocument playCommandDocument = playCommandRepository.findOne(state.getTrack().getId());
         if (playCommandDocument != null) {
             PlayCommandSummary currentTrack = toSummaryModel(playCommandDocument);
