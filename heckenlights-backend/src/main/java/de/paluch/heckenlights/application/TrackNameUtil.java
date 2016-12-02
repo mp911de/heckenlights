@@ -36,8 +36,8 @@ class TrackNameUtil {
         return Arrays.stream(sequence.getTracks()) //
                 .map(TrackNameUtil::getText) //
                 .filter(s -> s.isPresent() && StringUtils.hasText(s.get())) //
-                .findFirst() //
-                .orElse(null);
+                .map(Optional::get)
+                .findFirst();//
     }
 
     private static Optional<String> getText(Track track) {

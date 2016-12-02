@@ -135,8 +135,7 @@ public class EnqueueTrack {
     }
 
     private Sequence getSequence(Closer closer, byte[] content) throws InvalidMidiDataException, IOException {
-        Sequence sequence = MidiSystem.getSequence(closer.register(new ByteArrayInputStream(content)));
-        return sequence;
+        return MidiSystem.getSequence(closer.register(new ByteArrayInputStream(content)));
     }
 
     private void validateDuration(int durationInSecs) throws DurationExceededException {
