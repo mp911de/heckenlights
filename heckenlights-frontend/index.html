@@ -84,11 +84,9 @@
 
                 <h1>Heckenlights</h1>
 
-                <p id="intro" class="lead">{{index_intro1}}</p>
                 <p id="countdown" class="lead" style="display: none;">{{index_countdown_a}} <span
                         id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
                         id="countdowntext"></span> {{index_countdown_d}}</p>
-                <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
 
                 <div>
                     <?php
@@ -97,8 +95,8 @@
     require 'app/youtube.php';
     if ($streamingId == "" ){
     ?>
-                   <a href="/"><img src="images/offline.png" width="720" border="0"></a>
-                    <br />
+                    <a href="/"><img src="images/offline.png" width="720" border="0"></a>
+                    <br/>
                     <?php
     } else {
     ?>
@@ -116,7 +114,9 @@
                     <?php
     }
     ?>
-
+                    <br/>
+                    <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
+                    <p id="intro" class="lead">{{index_intro1}}</p>
 
                 </div>
             </div>
