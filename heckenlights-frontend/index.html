@@ -83,11 +83,6 @@
             <div class="col-md-8">
 
                 <h1>Heckenlights</h1>
-
-                <p id="countdown" class="lead" style="display: none;">{{index_countdown_a}} <span
-                        id="localizedstart">{{index_countdown_b}}</span>. {{index_countdown_c}} <span
-                        id="countdowntext"></span> {{index_countdown_d}}</p>
-
                 <div>
                     <?php
     require 'app/settings.php';
@@ -312,10 +307,6 @@
 <script src="js/heckenlights-frontend.js"></script>
 <!-- endbuild -->
 
-<!-- build:js js/heckenlights-countdown.js -->
-<script src="js/heckenlights-countdown.js"></script>
-<!-- endbuild -->
-
 <script>
 
     var language = '{{language}}';
@@ -338,7 +329,6 @@
         $(':not([data-i18n=""])').i18n();
         $(document).ready(function () {
             h.initialize();
-            countdown().initialize();
         });
     });
 
