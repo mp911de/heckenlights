@@ -17,7 +17,7 @@ var heckenlights = (function () {
         var playlistRefresh = 5000;
         var captchaInitialized = false;
         var captchaRendered = null;
-        var suspended = false;
+        var suspended = true;
 
         var config = {
             'fileupload': 'api/v1/playlist/queue',
@@ -25,7 +25,7 @@ var heckenlights = (function () {
             'authentication': 'api/v1/authentication',
             'playlist': 'api/v1/playlist',
             'presets': 'api/v1/presets'
-        }
+        };
 
 
         instance.initialize = function () {

@@ -84,39 +84,21 @@
 
                 <h1>Heckenlights</h1>
                 <div>
-                    <?php
-    require 'app/settings.php';
-    require 'app/settings-override.php';
-    require 'app/youtube.php';
-    if ($streamingId == "" ){
-    ?>
-                    <a href="/"><img src="images/offline.png" width="720" border="0"></a>
-                    <br/>
-                    <?php
-    } else {
-    ?>
-                    <iframe id="livestream" width="720" height="404"
-                            src="https://www.youtube.com/embed/<?php echo $streamingId; ?>?autoplay=1"
-                            frameborder="0" allowfullscreen></iframe>
-                    <p class="bordered light">
-                        <a href="https://www.youtube.com/c/MarkPaluch/live"
-                           target="_blank">{{index_watch_on_youtube}}</a>
-                        <br/>
-                        {{index_hint_delay}}<br/>
-                        <br/>
-                        {{index_hint_nothing_happening}}
-                    </p>
-                    <?php
-    }
-    ?>
-                    <br/>
-                    <p id="offlinenote" class="lead" style="display: none">{{{info_offline}}}</p>
                     <p id="intro" class="lead">{{index_intro1}}</p>
+                    <div class="bordered"
+                         style="width: 580px; height: 300px; margin: auto; background-color: rgba(90, 3, 0, 0.74)">
+                        <p style="margin-top: 50px" class="lead">{{index_suspended}}</p>
+                    </div>
+                    <br/>
 
                 </div>
             </div>
             <div id="controls" class="col-md-4">
                 <div id="closedsign" class="overlay" style="display: none"></div>
+                <div id="closed" class="closedoverlay overlay" style="display: none;">
+                </div>
+                <div id="offlinenote2" class="overlay" style="display: none">
+                </div>
                 <div class="list-group">
                     <h3 class="light">{{index_playlist}}</h3>
 
@@ -272,7 +254,7 @@
                         href="http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/">http://freedesignfile.com/32769-red-style-christmas-background-art-vector-01/</a>
                 </p>
 
-                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2015</p>
+                <p>Copyright &copy; <a href="http://www.paluch.biz">Mark Paluch</a> 2014-2017</p>
             </div>
         </div>
     </div>
